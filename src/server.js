@@ -1,8 +1,13 @@
 var express = require('express')
+  , bodyParser = require('body-parser')
+  , errorHandler = require('errorhandler')
   , routes = require('./routes')
   , errors = require('./errors');
 
 var server = express();
+server.use(bodyParser.urlencoded({extended: true}));
+server.use(bodyParser.json());
+server.use(errorHandler({showStack: true, dumpExceptions: true}));
 
 function setParams (req, res, next) {
   switch (req.routeId) {
@@ -64,6 +69,7 @@ function setParams (req, res, next) {
   return next();
 }
 
+
 // Text-based search for records
 server.post(/^\/metadata\/search\/$/, function (req, res, next) {
   req.routeId = 'search';
@@ -90,11 +96,15 @@ server.post(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
   return next();
 }, setParams, routes.newResource);
 
+*/
+
 // Harvest an existing record
 server.post(/^\/metadata\/harvest\/$/, function (req, res, next) {
   req.routeId = 'harvestRecord';
   return next();
 }, setParams, routes.harvestRecord, routes.saveRecord);
+
+/*
 
 // Upload an existing record
 server.post(/^\/metadata\/upload\/$/, function (req, res, next) {
