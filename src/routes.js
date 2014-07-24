@@ -12,17 +12,17 @@ var mongo = require('./mongo-config')
 module.exports = routes = {
   // Text-based search for records
   search: function (req, res, next) {
-    opts = {
+    var opts = {
       search_terms: req.searchTerms,
       limit: req.limit,
       skip: req.skip,
       published_only: req.publishedOnly || false,
       error: function (err) {
         return next(new errors.DatabaseReadError(
-          'Error searching for documents'))
+          'Error searching for documents'));
       },
       success: function (result) {
-        console.log('SEARCH FOR ' + req.searchTerms);
+        console.log('SEARCH FOR', req.searchTerms);
         res.header('Content-Type', 'application/json');
         return res.send(result);
       }
@@ -31,11 +31,23 @@ module.exports = routes = {
   },
   // List records or collections (as JSON)
   listResources: function (req, res, next) {
-
+    var db = mongo.getDb(req.resourceType)
+      , opts = {
+        include_docs: true,
+        clean_docs: true,
+        error: function (err) {
+          return next(new errors.DatabaseReadError(
+            'Error searching for documents'));
+        },
+        success: function (result) {
+          console.log('GET ALL', req.resourceType, 's');
+        }
+      };
+    return da.listDocs(db, opts);
   },
   // List records in a specific format
   viewRecords: function (req, res, next) {
-
+    var db = mongo.getDb('record');
   },
   // Create a new record or collection
   newResource: function (req, res, next) {
@@ -99,6 +111,6 @@ module.exports = routes = {
   },
   // Get a specific schema used by this application
   getSchema: function (req, res, next) {
-    
+
   }
 };

@@ -3,38 +3,30 @@ var _ = require('underscore');
 
 var config = {
   dbHost: 'localhost',
-  dbPort: 27071
+  port: '27071'
 };
 
-var mongoUrl = 'mongodb://' + config.dbHost + ':' + config.dbPort;
+var mongoUrl = 'mongodb://' + config.dbHost;
 
 // These three functions return a connection to the database and nothing more.  The db
 // object that's returned from each of these functions can be used to actually open
 // up the database and perform operations within it.  Use mongoose's
 // createConnection() function to make connections to more than one database.
-var recordsDb = function (mongoUrl) {
-  var dbUrl = [mongoUrl, 'records'].join('/');
-  mongoose.createConnection(dbUrl);
-  return mongoose.connection;
-};
+function connectToMongoDb (mongoUrl, db) {
+  var dbUrl = [mongoUrl, db].join('/')
+    , connection = mongoose.createConnection(dbUrl);
 
-var collectionsDb = function (mongoUrl) {
-  var dbUrl = [mongoUrl, 'collections'].join('/');
-  mongoose.createConnection(dbUrl);
-  return mongoose.connection;
-};
+  connection.on('error', function (err) {
+    console.log('MongoDB connection error:', err);
+  });
 
-var harvestsDb = function (mongoUrl) {
-  var dbUrl = [mongoUrl, 'collections'].join('/');
-  mongoose.createConnection(dbUrl);
-  return mongoose.connection;
-};
-
+  return connection;
+}
 
 var mongo = {
-  recordsDb: recordsDb(mongoUrl),
-  collectionsDb: collectionsDb(mongoUrl),
-  harvestsDb: harvestsDb(mongoUrl)
+  recordsDb: connectToMongoDb(mongoUrl, 'records'),
+  collectionsDb: connectToMongoDb(mongoUrl, 'collections'),
+  harvestsDb: connectToMongoDb(mongoUrl, 'harvests')
 };
 
 // Make this into a search Url!  ElasticSearch?

@@ -76,6 +76,8 @@ server.get(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
   return next();
 }, setParams, routes.listResources);
 
+/*
+
 // List records in a specific format
 server.get(/^\/metadata\/record\.(iso\.xml|atom\.xml|geojson)$/, function (req, res, next) {
   req.routeId = 'viewRecords';
@@ -169,9 +171,14 @@ server.get(/^\/metadata\/schema\/([^\/]*)\/$/, function (req, res, next) {
   return next();
 }, setParams, routes.getSchema);
 
-server.error(function (err, req, res, next) {
-  res.send(err.msg, err.status);
+*/
+
+// Error handler for express server
+function errorHandler (err, req, res, next) {
+  res.send(err.msg. err.status);
   return next(err);
-});
+}
+
+server.use(errorHandler);
 
 server.listen(3000);
