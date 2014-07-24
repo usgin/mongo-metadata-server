@@ -125,7 +125,55 @@ var recordsSchema = new mongoose.Schema({
     }
   },
   metadata: {
-    Ti
+    Title: {
+      type: String,
+      required: true
+    },
+    Description: {
+      type: String,
+      required: true
+    },
+    PublicationDate: {
+      type: String,
+      required: true
+    },
+    ResourceId: {
+      type: String,
+      required: false
+    },
+    Authors: {
+      type: Array,
+      required: true
+    },
+    Keywords: {
+      type: Array,
+      required: true
+    },
+    GeographicExtent: {
+      required: true
+    },
+    Distributors: {
+      type: Array,
+      required: true
+    },
+    Links: {
+      type: Array,
+      required: true
+    },
+    MetadataContact: {
+      required: true
+    },
+    HarvestInformation: {
+      required: false
+    },
+    Collections: {
+      type: Array,
+      required: true
+    },
+    Published: {
+      type: Boolean,
+      required: true
+    }
   },
   collection: {}
 });

@@ -1,7 +1,7 @@
-var schemas = require('./schemas');
-var orgConfig = require('./organization-config');
-var request = require('request');
-var _ = require('underscore');
+var schemas = require('./schemas')
+  , orgConfig = require('./organization-config')
+  , request = require('request')
+  , _ = require('underscore');
 
 function cleanKeywords (doc) {
 

@@ -1,4 +1,7 @@
-var express = require('express');
+var express = require('express')
+  , routes = require('./routes')
+  , errors = require('./errors');
+
 var server = express();
 
 function setParams (req, res, next) {

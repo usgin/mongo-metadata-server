@@ -6,26 +6,27 @@ var config = {
   dbPort: 27071
 };
 
-var mongoUrl = 'http://' + config.dbHost + ':' + config.dbPort;
+var mongoUrl = 'mongodb://' + config.dbHost + ':' + config.dbPort;
 
 // These three functions return a connection to the database and nothing more.  The db
 // object that's returned from each of these functions can be used to actually open
-// up the database and perform operations within it.
+// up the database and perform operations within it.  Use mongoose's
+// createConnection() function to make connections to more than one database.
 var recordsDb = function (mongoUrl) {
   var dbUrl = [mongoUrl, 'records'].join('/');
-  mongoose.connect(dbUrl);
+  mongoose.createConnection(dbUrl);
   return mongoose.connection;
 };
 
 var collectionsDb = function (mongoUrl) {
   var dbUrl = [mongoUrl, 'collections'].join('/');
-  mongoose.connect(dbUrl);
+  mongoose.createConnection(dbUrl);
   return mongoose.connection;
 };
 
 var harvestsDb = function (mongoUrl) {
   var dbUrl = [mongoUrl, 'collections'].join('/');
-  mongoose.connect(dbUrl);
+  mongoose.createConnection(dbUrl);
   return mongoose.connection;
 };
 
@@ -35,6 +36,9 @@ var mongo = {
   collectionsDb: collectionsDb(mongoUrl),
   harvestsDb: harvestsDb(mongoUrl)
 };
+
+// Make this into a search Url!  ElasticSearch?
+var searchUrl = 'http://' + config.dbHost + ':' + config.dbPort;
 
 function createDb (dbName) {
   // Not sure if we really need this with Mongo.  Collections are created by connecting to a
@@ -68,4 +72,5 @@ function getDb (resourceType) {
 
 exports.mongo = mongo;
 exports.fileUrl = fileUrl;
+exports.searchUrl = searchUrl;
 exports.getDb = getDb;

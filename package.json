@@ -16,7 +16,9 @@
     "request": "2.36.0",
     "mongodb": "1.4.7",
     "mongoose": "3.8.12",
-    "csv": "0.4.0"
+    "csv": "0.4.0",
+    "underscore": "1.6.0",
+    "xml2json": "0.4.0"
   },
   "author": "",
   "license": "ISC",
