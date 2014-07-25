@@ -1,49 +1,21 @@
 var mongoose = require('mongoose');
 
-
-
-var recordsSchema = new mongoose.Schema({
-
-});
-
+// *********************
+// * Records DB Schema *
+// *********************
+var recordsSchema = new mongoose.Schema({});
 var Records = mongoose.model('Records', recordsSchema);
 
-exports.Records = Records;
-
-
-var mongoose = require('mongoose');
-
-var harvestsSchema = new mongoose.Schema({
-  // Did harvest objects have a schema in CouchDB?
-});
-
+// **********************
+// * Harvests DB Schema *
+// **********************
+var harvestsSchema = new mongoose.Schema({});
 var Harvests = mongoose.model('Harvests', harvestsSchema);
 
-exports.Harvests = Harvests;
-
-//atom.xml, csv, iso.xml, fgdc.xml
-
-var mongoose = require('mongoose');
-
-var collectionsSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    default: 'http://resources.usgin.org/uri-gin/usgin/schema/json-metadata-collection/'
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  parentCollections: [{
-    type: String,
-    required: false
-  }]
-});
-
+// *************************
+// * Collections DB Schema *
+// *************************
+var collectionsSchema = new mongoose.Schema({});
 var Collections = mongoose.model('Collections', collectionsSchema);
 
 collectionsSchema.methods.allNames = function (callback) {
@@ -59,4 +31,8 @@ collectionsSchema.methods.ids = function (callback) {
 
 };
 
+
+
+exports.Records = Records;
+exports.Harvests = Harvests;
 exports.Collections = Collections;
