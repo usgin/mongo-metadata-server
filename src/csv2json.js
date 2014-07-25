@@ -12,37 +12,34 @@ function readCsv (body, req, res, next) {
   var fields = [];
   var entries = [];
 
-  csv().from(body).transform(function (data) {
-
-    data.on('record', function (data, index) {
-      if (index === 0) {
-        for (var i = 0; i < requiredFields.length; i++) {
-          if (data.indexOf(requiredFields[i]) === -1) {
-            next(new errors.ValidationError('This is not a valid CSV metadata.'));
-          }
-        }
-        for (var i = 0; i < data.length; i++) {
-          fields.push(data[i]);
-        }
-      } else {
-        // This block of code does validation
-        if (data.length === fields.length) {
-          record = {};
-          for (var i = 0, len = data.length; i < len; i++) {
-            record[fields[i]] = data[i];
-          }
-          return entries.push(record);
-        } else {
-          return console.log('Record', index, 'is not correct!');
+  return csv().from(body).transform(function (data) {
+    return data;
+  }).on('record', function (data, index) {
+    if (index === 0) {
+      for (var i = 0; i < requiredFields.length; i++) {
+        if (data.indexOf(requiredFields[i]) === -1) {
+          next(new errors.ValidationError('This is not a valid CSV metadata.'));
         }
       }
-    });
-
-    data.on('end', function (count) {
-      req.entries = entries;
-      return next();
-    });
+      for (var i = 0; i < data.length; i++) {
+        fields.push(data[i]);
+      }
+    } else {
+      // This block of code does validation
+      if (data.length === fields.length) {
+        record = {};
+        for (var i = 0, len = data.length; i < len; i++) {
+          record[fields[i]] = data[i];
+        }
+        return entries.push(record);
+      } else {
+        return console.log('Record', index, 'is not correct!');
+      }
+    }
+  }).on('end', function (count) {
+    req.entries = entries;
+    return next();
   })
 }
 
-exports.csv2json = readCsv;
+exports.readCsv = readCsv;

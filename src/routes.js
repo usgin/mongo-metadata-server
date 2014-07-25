@@ -73,7 +73,7 @@ function harvestRecord (req, res, next) {
             'The document at the given URL did not match the format specified.'));
         } else {
           if (req.format === 'csv') {
-            csv2json.readCSV(body, req, res, next);
+            csv2json.readCsv(body, req, res, next);
           } else {
             var data = xml2json.toJson(body, {object: true, reversible: true})
               , entries;

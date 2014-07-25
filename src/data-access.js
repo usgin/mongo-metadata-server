@@ -3,8 +3,36 @@ var schemas = require('./schemas')
   , request = require('request')
   , _ = require('underscore');
 
-function cleanKeywords (doc) {
+function cleanDoc (doc) {
+  var cleaned = _.extend({}, doc);
+  if (doc.id) cleaned.id = doc._id;
+  delete cleaned._id;
+  delete cleaned._rev;
+  delete cleaned._attatchments;
+  return cleaned;
+}
 
+function cleanKeywords (doc) {
+  if (!doc.Keywords) doc.Keywords = [];
+  _.each(doc.Keywords, function (keyword) {
+    if (keyword.split(',').length > 1) {
+      return doc.Keywords = _.union(doc.Keywords, keyword,split(','));
+    } else if (keyword.split(';').length > 1) {
+      return doc.Keywords = _.union(doc.Keywords, keyword.split(';'));
+    }
+  });
+
+  doc.Keywords = _.map(doc.Keywords, function (keyword) {
+    return keyword.toLowerCase().trim();
+  });
+
+  doc.Keywords = _.reject(doc.Keywords, function (keyword) {
+    return keyword === ''
+      || keyword.indexOf(',') !== -1
+      || keyword.indexOf(';') !== -1;
+  });
+
+  return doc;
 }
 
 // Create a single document in the database
@@ -30,7 +58,13 @@ function createDoc (db, options) {
 
 // Create multiple documents in the given database
 function createDocs (db, options) {
+  if (!options.docs) options.docs = [];
+  if (!options.success) options.success = function () {};
+  if (!options.error) options.error = function () {};
 
+  options.docs = _.map(options.docs, cleanKeywords);
+
+  console.log(options.docs);
 }
 
 // Retrieve a document by it's ID from a given database
