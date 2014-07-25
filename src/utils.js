@@ -82,7 +82,7 @@ function addCollectionKeywords (iso, collectionNames) {
       var results = [];
       _.each(collectionNames, function (name) {
         results.push({'gco:CharacterString': {'$t': name}});
-      })
+      });
       return results;
     })();
   if (collectionNames.length > 0) {

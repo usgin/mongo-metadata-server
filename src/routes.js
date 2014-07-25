@@ -106,7 +106,38 @@ function harvestRecord (req, res, next) {
 
 // Upload an existing record
 function uploadRecord (req, res, next) {
-
+  var body = req.data;
+  if ((!req.data) || (!req.format)) {
+    return next(new errors.ArgumentError(
+      'Request did not supply the requisite arguments: data and format.'))
+  } else {
+    if (req.format === 'csv') {
+      req.entries = body;
+    } else {
+      var data = xml2json.toJson(body, {object: true, reversible: true})
+        , entries;
+      switch (req.format) {
+        case 'atom.xml':
+          var entry = data.feed.entry;
+          if (_.isArray(entry)) {
+            entries = entry;
+          } else if (_.isObject(entry)) {
+            entries = [entry];
+          } else {
+            entries = [];
+          }
+          break;
+        case 'iso.xml':
+          entries = [data];
+          break;
+        case 'fgdc.xml':
+          entries = [data];
+          break;
+      }
+      req.entries = entries;
+      return next();
+    }
+  }
 }
 
 // Put data in the database

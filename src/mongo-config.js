@@ -51,13 +51,13 @@ function fileUrl (id, fileName) {
 function getDb (resourceType) {
   switch (resourceType) {
     case 'record':
-      return recordsDb(mongoUrl);
+      return connectToMongoDb(mongoUrl, 'records');
       break;
     case 'collection':
-      return collectionsDb(mongoUrl);
+      return connectToMongoDb(mongoUrl, 'collections');
       break;
     case 'harvest':
-      return harvestsDb(mongoUrl);
+      return connectToMongoDb(mongoUrl, 'harvests');
       break;
   }
 }

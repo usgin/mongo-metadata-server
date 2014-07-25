@@ -69,13 +69,47 @@ function setParams (req, res, next) {
   return next();
 }
 
-
+// ********
+// * POST *
+// ********
 // Text-based search for records
 server.post(/^\/metadata\/search\/$/, function (req, res, next) {
   req.routeId = 'search';
   return next();
 }, setParams, routes.search);
 
+// Harvest an existing record
+server.post(/^\/metadata\/harvest\/$/, function (req, res, next) {
+  req.routeId = 'harvestRecord';
+  return next();
+}, setParams, routes.harvestRecord, routes.saveRecord);
+
+/*
+
+// Create a new record or collection
+server.post(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
+  req.routeId = 'newResource';
+  return next();
+}, setParams, routes.newResource);
+
+// Upload an existing record
+server.post(/^\/metadata\/upload\/$/, function (req, res, next) {
+  req.routeId = 'uploadRecord';
+  return next();
+}, setParams, routes.uploadRecord, routes.saveRecord);
+
+
+// Associate a new file with a specific record
+server.post(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) {
+  req.routeId = 'newFile';
+  return next();
+}, setParams, routes.newFile);
+
+*/
+
+// *******
+// * GET *
+// *******
 // List records or collections as (JSON)
 server.get(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
   req.routeId = 'listResources';
@@ -89,28 +123,6 @@ server.get(/^\/metadata\/record\.(iso\.xml|atom\.xml|geojson)$/, function (req, 
   req.routeId = 'viewRecords';
   return next();
 }, setParams, routes.viewRecords);
-
-// Create a new record or collection
-server.post(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
-  req.routeId = 'newResource';
-  return next();
-}, setParams, routes.newResource);
-
-*/
-
-// Harvest an existing record
-server.post(/^\/metadata\/harvest\/$/, function (req, res, next) {
-  req.routeId = 'harvestRecord';
-  return next();
-}, setParams, routes.harvestRecord, routes.saveRecord);
-
-/*
-
-// Upload an existing record
-server.post(/^\/metadata\/upload\/$/, function (req, res, next) {
-  req.routeId = 'uploadRecord';
-  return next();
-}, setParams, routes.uploadRecord, routes.saveRecord);
 
 // Retrieve a specific record or collection (as JSON)
 server.get(/^\/metadata\/(record|collection)\/([^\/]*)\/$/, function (req, res, next) {
@@ -136,17 +148,14 @@ server.get(/^\/metadata\/collection\/([^\/]*)\/records\.(iso.xml|atom\.xml|geojs
   return next();
 }, setParams, routes.viewCollectionRecords);
 
-// Update an existing record or collection
-server.put(/^\/metadata\/(record|collection)\/([^\/]*)\/$/, function (req, res, next) {
-  req.routeId = 'updateResource';
+// Retrieve a specific schema by ID
+server.get(/^\/metadata\/schema\/([^\/]*)\/$/, function (req, res, next) {
+  req.routeId = 'getSchema';
   return next();
-}, setParams, routes.updateResource);
+}, setParams, routes.getSchema);
 
-// Delete a record or collection
-server.del(/^\/metadata\/(record|collection)\/([^\/]*)\/$/, function (req, res, next) {
-  req.routeId = 'deleteResource';
-  return next();
-}, setParams, routes.deleteResource);
+// Retrieve a list of schemas used by the server
+server.get(/^\/metadata\/schema\/$/, routes.listSchemas);
 
 // List files associated with a specific record
 server.get(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) {
@@ -154,17 +163,37 @@ server.get(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) {
   return next();
 }, setParams, routes.listFiles);
 
-// Associate a new file with a specific record
-server.post(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) {
-  req.routeId = 'newFile';
-  return next();
-}, setParams, routes.newFile);
-
 // Retrieve a specific file associated with a specific record
 server.get(/^\/metadata\/record\/([^\/]*)\/file\/(.*)$/, function (req, res, next) {
   req.routeId = 'getFile';
   return next();
 }, setParams, routes.getFile);
+
+*/
+
+// *******
+// * PUT *
+// *******
+/*
+
+// Update an existing record or collection
+server.put(/^\/metadata\/(record|collection)\/([^\/]*)\/$/, function (req, res, next) {
+  req.routeId = 'updateResource';
+  return next();
+}, setParams, routes.updateResource);
+
+*/
+
+// *******
+// * DEL *
+// *******
+/*
+
+// Delete a record or collection
+server.del(/^\/metadata\/(record|collection)\/([^\/]*)\/$/, function (req, res, next) {
+  req.routeId = 'deleteResource';
+  return next();
+}, setParams, routes.deleteResource);
 
 // Delete a specific file associated with a specific record
 server.del(/^\/metadata\/record\/([^\/]*)\/file\/(.*)$/, function (req, res, next) {
@@ -172,14 +201,6 @@ server.del(/^\/metadata\/record\/([^\/]*)\/file\/(.*)$/, function (req, res, nex
   return next();
 }, setParams, routes.deleteFile);
 
-// Retrieve a list of schemas used by the server
-server.get(/^\/metadata\/schema\/$/, routes.listSchemas);
-
-// Retrieve a specific schema by ID
-server.get(/^\/metadata\/schema\/([^\/]*)\/$/, function (req, res, next) {
-  req.routeId = 'getSchema';
-  return next();
-}, setParams, routes.getSchema);
 
 */
 
