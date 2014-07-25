@@ -3,6 +3,7 @@ var mongo = require('./mongo-config')
   , errors = require('./errors')
   , utils = require('./utils')
   , schemas = require('./schemas')
+  , models = require('./models')
   , csv2json = require('./csv2json')
   , _ = require('underscore')
   , fs = require('fs')
@@ -143,7 +144,7 @@ function uploadRecord (req, res, next) {
 // Put data in the database
 function saveRecord (req, res, next) {
   var entries = req.entries
-    , db = mongo.getDb('harvest');
+    , dbModel = models.Harvest;
   var opts = {
     docs: entries,
     error: function (err) {
@@ -166,7 +167,7 @@ function saveRecord (req, res, next) {
             'Error reading document from database'));
         },
         success: function (transformedDocs) {
-          var db = mongo.getDb('record');
+          var dbModel = models.Record;
           _.each(transformedDocs.row, function (doc) {
             var harvestInfo = {
               OriginalFormat: req.format,
@@ -203,13 +204,13 @@ function saveRecord (req, res, next) {
               return res.send(resBody, 200);
             }
           };
-          return da.createDocs(db, opts);
+          return da.createDocs(dbModel, opts);
         }
       };
-      return da.viewDocs(db, opts);
+      return da.viewDocs(dbModel, opts);
     }
   };
-  return da.createDocs(db, opts);
+  return da.createDocs(dbModel, opts);
 }
 
 // Retrieve a specific record or collection (as JSON)

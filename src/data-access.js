@@ -1,4 +1,5 @@
 var schemas = require('./schemas')
+  , models = require('./models')
   , orgConfig = require('./organization-config')
   , request = require('request')
   , _ = require('underscore');
@@ -57,14 +58,21 @@ function createDoc (db, options) {
 }
 
 // Create multiple documents in the given database
-function createDocs (db, options) {
+function createDocs (dbModel, options) {
   if (!options.docs) options.docs = [];
   if (!options.success) options.success = function () {};
   if (!options.error) options.error = function () {};
 
   options.docs = _.map(options.docs, cleanKeywords);
 
-  console.log(options.docs);
+  // Use Mongo's model.create() method to do bulk uploads of data
+  dbModel.create(options.docs, function (err, response) {
+    if (err) {
+      return options.error(err)
+    } else {
+      return options.success(response);
+    }
+  });
 }
 
 // Retrieve a document by it's ID from a given database
