@@ -1,5 +1,4 @@
 var schemas = require('./schemas')
-  , models = require('./models')
   , orgConfig = require('./organization-config')
   , request = require('request')
   , _ = require('underscore');

@@ -95,7 +95,7 @@ var schemas = {
         required: false
       },
       ContactInformation: {
-        required: true
+        required: true,
         $ref: 'http://resources.usgin.org/uri-gin/usgin/schema/json-contact-information/'
       }
     }

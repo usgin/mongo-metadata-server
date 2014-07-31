@@ -3,16 +3,32 @@ var mongoose = require('mongoose')
 
 var config = {
   dbHost: 'localhost',
-  port: '27071'
+  dbPort: '27071',
+  dbName: 'cinergi'
 };
 
-var mongoUrl = 'mongodb://' + config.dbHost;
+var mongoUrl = 'mongodb://' + config.dbHost
+  , collections = {};
 
-// These three functions return a connection to the database and nothing more.  The db
-// object that's returned from each of these functions can be used to actually open
-// up the database and perform operations within it.  Use mongoose's
-// createConnection() function to make connections to more than one database.
-function connectToMongoDb (mongoUrl, db) {
+// *****************************
+// * Records collection schema *
+// *****************************
+var recordsSchema = new mongoose.Schema({});
+collections['Records'] = recordsSchema;
+
+// ******************************************************************
+// * Collections collection schema... Might want to rename this one *
+// ******************************************************************
+var collectionsSchema = new mongoose.Schema({});
+collections['Collections'] = collectionsSchema;
+
+// ******************************
+// * Harvests collection schema *
+// ******************************
+var harvestsSchema = new mongoose.Schema({});
+collections['Harvests'] = harvestsSchema;
+
+function connectToMongoDB (mongoUrl, db) {
   var dbUrl = [mongoUrl, db].join('/')
     , connection = mongoose.createConnection(dbUrl);
 
@@ -20,49 +36,62 @@ function connectToMongoDb (mongoUrl, db) {
     console.log('MongoDB connection error:', err);
   });
 
+  connection.on('open', function () {
+    console.log('Connected to MongoDB server');
+  });
+
   return connection;
 }
 
-var mongo = {
-  recordsDb: connectToMongoDb(mongoUrl, 'records'),
-  collectionsDb: connectToMongoDb(mongoUrl, 'collections'),
-  harvestsDb: connectToMongoDb(mongoUrl, 'harvests')
-};
+function connectToMongoCollection (mongoUrl, )
 
-// Make this into a search Url!  ElasticSearch?
-var searchUrl = 'http://' + config.dbHost + ':' + config.dbPort;
+function initializeMongoDB (callback) {
+  connectToMongoDB(mongoUrl, config.dbName, function (connection) {
+    var dbModels = {}, schema, schemaObj;
+    connection.db.collectionNames(function (err, names) {
+      if (err) console.log (err);
 
-function createDb (dbName) {
-  // Not sure if we really need this with Mongo.  Collections are created by connecting to a
-  // database and inserting a piece of data.  So, the way we make connections to MongoDB
-  // completely takes the worry out of whether or not we need to check if a database exists
-  // first.  Kind of a genius workflow...
+      for (schema in collections) {
+        if (collections.hasOwnProperty(schema)) {
+          schemaObj = collections[schema];
+          if (names.indexOf(schema) === -1) {
+            dbModels[schema] = connection.model(schema, schemaObj);
+            console.log('Created collection --', schema);
+          }
+          if (names.indexOf(schema) > -1) {
+            dbModels[schema] = connection.model(schema);
+            console.log('Found collection --', schema);
+          }
+        }
+      }
+
+      callback(dbModels);
+    })
+  });
 }
 
-function saveDesignDoc (dbName, designDoc) {
-  // Not really sure if we need this either.  Mongo supports flexible schema mapping, so we
-  // should just be able to populate collections with records in the schemas that we want.
-  // But it doesn't seem like Mongo needs records of these design docs in the database.
-}
+initializeMongoDB(function (models) {
+  console.log(models);
+});
 
-function fileUrl (id, fileName) {
-  return [mongoUrl, 'records', id, fileName].join('/');
-}
-function getDb (resourceType) {
+
+/*
+function getCollection (resourceType) {
   switch (resourceType) {
     case 'record':
-      return connectToMongoDb(mongoUrl, 'records');
+      return connectToMongoCollection(mongoUrl, config.dbName,
+        'Records', recordsSchema);
       break;
     case 'collection':
-      return connectToMongoDb(mongoUrl, 'collections');
+      return connectToMongoCollection(mongoUrl, config.dbName,
+        'Collections', collectionsSchema);
       break;
     case 'harvest':
-      return connectToMongoDb(mongoUrl, 'harvests');
+      return connectToMongoCollection(mongoUrl, config.dbName,
+        'Harvests', harvestsSchema);
       break;
   }
 }
 
 exports.mongo = mongo;
-exports.fileUrl = fileUrl;
-exports.searchUrl = searchUrl;
-exports.getDb = getDb;
+exports.getCollection = getCollection;*/
