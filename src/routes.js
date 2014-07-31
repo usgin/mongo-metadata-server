@@ -157,7 +157,7 @@ function saveRecord (req, res, next) {
         keys: (function () {
           var docIds = [];
           _.each(newHarvestDocs, function (doc) {
-            docIds.push(doc.id);
+            docIds.push(doc._id);
           });
           return docIds;
         })(),
