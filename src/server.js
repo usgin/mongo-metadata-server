@@ -72,7 +72,6 @@ function setParams (req, res, next) {
 // ********
 // * POST *
 // ********
-/*
 // Text-based search for records
 server.post(/^\/metadata\/search\/$/, function (req, res, next) {
   req.routeId = 'search';
@@ -112,7 +111,7 @@ server.post(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) 
 // * GET *
 // *******
 // List records or collections as (JSON)
-/*
+
 server.get(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
   req.routeId = 'listResources';
   return next();

@@ -143,7 +143,7 @@ function uploadRecord (req, res, next) {
 // Put data in the database
 function saveRecord (req, res, next) {
   var entries = req.entries
-    , dbModel = models.Harvest;
+    , dbModel = mongo.getCollection('harvest');
   var opts = {
     docs: entries,
     error: function (err) {
@@ -166,7 +166,7 @@ function saveRecord (req, res, next) {
             'Error reading document from database'));
         },
         success: function (transformedDocs) {
-          var dbModel = models.Record;
+          var dbModel = mongo.getCollection('record');
           _.each(transformedDocs.row, function (doc) {
             var harvestInfo = {
               OriginalFormat: req.format,

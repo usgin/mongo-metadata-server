@@ -65,7 +65,7 @@ function createDocs (dbModel, options) {
   options.docs = _.map(options.docs, cleanKeywords);
 
   // Use Mongo's model.create() method to do bulk uploads of data
-  dbModel.create(options.docs, function (err, response) {
+  dbModel.collection.insert(options.docs, function (err, response) {
     if (err) {
       return options.error(err)
     } else {
