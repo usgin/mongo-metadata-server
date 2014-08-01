@@ -96,6 +96,17 @@ function listDocs (db, options) {
 
 // Pass all or specific documents through a specified database view
 function viewDocs (db, options) {
+  var params;
+  if (!options.design) options.design = '';
+  if (!options.format) options.format = '';
+  if (!options.clean_docs) options.clean_docs = false;
+  if (!options.success) options.success = function () {};
+  if (!options.error) options.error = function () {};
+
+  params = {};
+  if (options.key) params.key = options.key;
+  if (options.keys) params.keys = options.keys;
+  if (options.reduce) params.reduce = options.reduce;
 
 }
 
