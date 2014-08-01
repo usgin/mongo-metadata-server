@@ -1,4 +1,5 @@
 function map (csv, debug) {
+  /*
   if (!debug) debug = false;
   var doc
     , obj
@@ -200,4 +201,13 @@ function map (csv, debug) {
   doc.Published = false;
 
   if (!debug) emit(csv._id, doc);
+  */
+  emit(this._id, this);
 }
+
+function reduce (k, vals) {
+  return k;
+}
+
+exports.map = map;
+exports.reduce = reduce;

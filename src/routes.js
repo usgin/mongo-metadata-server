@@ -152,14 +152,13 @@ function saveRecord (req, res, next) {
     },
     success: function (newHarvestDocs) {
       var opts = {
-        design: 'input',
         format: req.format,
-        keys: (function () {
+        query: (function () {
           var docIds = [];
           _.each(newHarvestDocs, function (doc) {
             docIds.push(doc._id);
           });
-          return docIds;
+          return { _id: { $in: docIds }};
         })(),
         error: function (err) {
           return next(new errors.DatabaseReadError(
@@ -206,7 +205,7 @@ function saveRecord (req, res, next) {
           return da.createDocs(dbModel, opts);
         }
       };
-      return da.viewDocs(dbModel, opts);
+      return da.mapReduce(dbModel, opts);
     }
   };
   return da.createDocs(dbModel, opts);

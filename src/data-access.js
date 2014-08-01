@@ -1,4 +1,8 @@
 var schemas = require('./schemas')
+  , atomMapReduce = require('./mapReduce/atom')
+  , csvMapReduce = require('./mapReduce/csv')
+  , fgdcMapReduce = require('./mapReduce/fgdc')
+  , isoMapReduce = require('./mapReduce/iso')
   , orgConfig = require('./organization-config')
   , request = require('request')
   , _ = require('underscore');
@@ -64,7 +68,6 @@ function createDocs (dbModel, options) {
 
   options.docs = _.map(options.docs, cleanKeywords);
 
-  // Use Mongo's model.create() method to do bulk uploads of data
   dbModel.collection.insert(options.docs, function (err, response) {
     if (err) {
       return options.error(err)
@@ -95,19 +98,38 @@ function listDocs (db, options) {
 }
 
 // Pass all or specific documents through a specified database view
-function viewDocs (db, options) {
-  var params;
-  if (!options.design) options.design = '';
+function mapReduce (dbModel, options) {
+  var thisMapReduce;
   if (!options.format) options.format = '';
+  if (!options.query) options.query = '';
   if (!options.clean_docs) options.clean_docs = false;
   if (!options.success) options.success = function () {};
   if (!options.error) options.error = function () {};
 
-  params = {};
-  if (options.key) params.key = options.key;
-  if (options.keys) params.keys = options.keys;
-  if (options.reduce) params.reduce = options.reduce;
+  switch (options.format) {
+    case 'atom':
+      thisMapReduce = atomMapReduce;
+      break;
+    case 'csv':
+      thisMapReduce = csvMapReduce;
+      break;
+    case 'fgdc':
+      thisMapReduce = fgdcMapReduce;
+      break;
+    case 'iso':
+      thisMapReduce = isoMapReduce;
+      break;
+  }
 
+  var o = {};
+  o.map = thisMapReduce.map;
+  o.reduce = thisMapReduce.reduce;
+  o.query = options.query;
+
+  dbModel.mapReduce(o, function (err, result) {
+    if (err) console.log(err);
+    else console.log(result);
+  })
 }
 
 // Delete a document
@@ -141,7 +163,7 @@ exports.getDoc = getDoc;
 exports.exists = exists;
 exports.getRev = getRev;
 exports.listDocs = listDocs;
-exports.viewDocs = viewDocs;
+exports.mapReduce = mapReduce;
 exports.deleteDoc = deleteDoc;
 exports.deleteFile =deleteFile;
 exports.getCollectionNames = getCollectionNames;
