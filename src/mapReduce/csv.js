@@ -1,6 +1,4 @@
-function map (csv, debug) {
-  /*
-  if (!debug) debug = false;
+function map () {
   var doc
     , obj
     , kws
@@ -63,11 +61,11 @@ function map (csv, debug) {
       , org
       , results;
 
-    persons = csv[obj.person];
+    persons = this[obj.person];
     if (persons) {
       persons = persons.split('|');
     } else {
-      persons = csv[obj.position];
+      persons = this[obj.position];
       if (persons) {
         persons = persons.split('|');
       }
@@ -84,26 +82,26 @@ function map (csv, debug) {
     }
 
     results = [];
-    org = csv[obj.organization] || 'Missing';
+    org = this[obj.organization] || 'Missing';
     for (i = 0; i < prop.length; i++) {
       a = prop[i];
       a.OrganizationName = org;
       coninfo = a.ContactInformation = {};
-      coninfo.Phone = csv[obj.phone] || 'Missing';
-      coninfo.email = csv[obj.email] || 'Missing';
+      coninfo.Phone = this[obj.phone] || 'Missing';
+      coninfo.email = this[obj.email] || 'Missing';
       addr = coninfo.Address = {};
-      addr.Street = csv[obj.street] || 'Missing';
-      addr.City = csv[obj.city] || 'Missing';
-      addr.State = csv[obj.state] || 'Missing';
-      addr.Zip = csv[obj.zip].toString() || 'Missing';
+      addr.Street = this[obj.street] || 'Missing';
+      addr.City = this[obj.city] || 'Missing';
+      addr.State = this[obj.state] || 'Missing';
+      addr.Zip = this[obj.zip] || 'Missing';
       results.push(addr.Zip);
     }
   }
 
-  doc.Title = csv['title'] || 'Missing';
-  doc.Description = csv['description'] || 'No Abstract Was Provided';
-  doc.PublicationDate = csv['publication_date'] || 'Missing';
-  doc.ResourceId = csv['resource_id'] || 'Missing';
+  doc.Title = this['title'] || 'Missing';
+  doc.Description = this['description'] || 'No Abstract Was Provided';
+  doc.PublicationDate = this['publication_date'] || 'Missing';
+  doc.ResourceId = this['resource_id'] || 'Missing';
 
   doc.Authors = [];
   obj = {
@@ -121,18 +119,18 @@ function map (csv, debug) {
   setContacts(doc.Authors, obj);
 
   doc.Keywords = [];
-  kws = csv['keywords_thematic'];
+  kws = this['keywords_thematic'];
   if (kws) doc.Keywords = doc.Keywords.concat(kws.split('|'));
-  kws = csv['keywords_spatial'];
+  kws = this['keywords_spatial'];
   if (kws) doc.Keywords = doc.Keywords.concat(kws.split('|'));
-  kws = csv['keywords_temporal'];
+  kws = this['keywords_temporal'];
   if (kws) doc.Keywords = doc.Keywords.concat(kws.split('|'));
 
   doc.GeographicExtent = {
-    NorthBound: (parseFloat(csv['north_bounding_latitude'])) || 'Missing',
-    SouthBound: (parseFloat(csv['south_bounding_latitude'])) || 'Missing',
-    EastBound: (parseFloat(csv['east_bounding_longitude'])) || 'Missing',
-    WestBound: (parseFloat(csv['west_bounding_longitude'])) || 'Missing'
+    NorthBound: (parseFloat(this['north_bounding_latitude'])) || 'Missing',
+    SouthBound: (parseFloat(this['south_bounding_latitude'])) || 'Missing',
+    EastBound: (parseFloat(this['east_bounding_longitude'])) || 'Missing',
+    WestBound: (parseFloat(this['west_bounding_longitude'])) || 'Missing'
   };
 
   doc.Distributors = [];
@@ -151,7 +149,7 @@ function map (csv, debug) {
   setContacts(doc.Distributors, obj);
 
   doc.Links = [];
-  links = csv['resource_url'];
+  links = this['resource_url'];
   if (links) links = links.split('|');
   else links = [];
 
@@ -178,35 +176,33 @@ function map (csv, debug) {
   }
 
   doc.MetadataContact = {
-    Name: csv['metadata_contact_person_name']
-      || csv['metadata_contact_position_name']
+    Name: this['metadata_contact_person_name']
+      || this['metadata_contact_position_name']
       || 'Missing',
-    OrganizationName: csv['metadata_contact_org_name'] || 'Missing',
+    OrganizationName: this['metadata_contact_org_name'] || 'Missing',
     ContactInformation: {
-      Phone: csv['metadata_contact_phone'] || 'Missing',
-      email: csv['metadata_contact_email'] || 'Missing',
+      Phone: this['metadata_contact_phone'] || 'Missing',
+      email: this['metadata_contact_email'] || 'Missing',
       Address: {
-        Street: csv['metadata_contact_street_address'] || 'Missing',
-        City: csv['metadata_contact_city'] || 'Missing',
-        State: csv['metadata_contact_state'] || 'Missing',
-        Zip: csv['metadata_contact_zip'] || 'Missing'
+        Street: this['metadata_contact_street_address'] || 'Missing',
+        City: this['metadata_contact_city'] || 'Missing',
+        State: this['metadata_contact_state'] || 'Missing',
+        Zip: this['metadata_contact_zip'] || 'Missing'
       }
     }
   };
 
   doc.HarvestInformation = {
-    OriginalFileIdentifier: csv['resource_id'] || 'csv_metadata'
+    OriginalFileIdentifier: this['resource_id'] || 'this_metadata'
   };
 
   doc.Published = false;
 
-  if (!debug) emit(csv._id, doc);
-  */
-  emit(this._id, this);
+  emit(this._id, doc);
 }
 
-function reduce (k, vals) {
-  return k;
+function reduce (key, values) {
+  return key;
 }
 
 exports.map = map;

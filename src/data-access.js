@@ -74,7 +74,7 @@ function createDocs (dbModel, options) {
     } else {
       return options.success(response);
     }
-  });
+  })
 }
 
 // Retrieve a document by it's ID from a given database
@@ -126,9 +126,12 @@ function mapReduce (dbModel, options) {
   o.reduce = thisMapReduce.reduce;
   o.query = options.query;
 
-  dbModel.mapReduce(o, function (err, result) {
-    if (err) console.log(err);
-    else console.log(result);
+  dbModel.mapReduce(o, function (err, response) {
+    if (err) {
+      return options.error(err);
+    } else {
+      return options.success(response);
+    }
   })
 }
 

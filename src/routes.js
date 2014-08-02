@@ -166,7 +166,7 @@ function saveRecord (req, res, next) {
         },
         success: function (transformedDocs) {
           var dbModel = mongo.getCollection('record');
-          _.each(transformedDocs.row, function (doc) {
+          _.each(transformedDocs, function (doc) {
             var harvestInfo = {
               OriginalFormat: req.format,
               HarvestURL: req.url,
@@ -182,7 +182,7 @@ function saveRecord (req, res, next) {
           var opts = {
             docs: (function () {
               var docVals = [];
-              _.each(transformedDocs.rows, function (doc) {
+              _.each(transformedDocs, function (doc) {
                 docVals.push(doc.value);
               });
               return docVals;
