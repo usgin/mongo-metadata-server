@@ -16,3 +16,5 @@ app.get('/sample-csv.csv', function (req, res) {
 });
 
 testServer = app.listen(3030);
+
+exports.testServer = testServer;

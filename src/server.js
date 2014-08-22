@@ -2,29 +2,87 @@ var express = require('express')
   , bodyParser = require('body-parser')
   , errorHandler = require('errorhandler')
   , routes = require('./routes')
-  , errors = require('./errors')
-  , controller = require('./controller');
+  , errors = require('./errors');
 
 var server = express();
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(bodyParser.json());
 server.use(errorHandler({showStack: true, dumpExceptions: true}));
 
+function setParams (req, res, next) {
+  switch (req.routeId) {
+    case 'search':
+      req.searchTerms = req.body.searchTerms;
+      req.publishedOnly = req.body.publishedOnly || false;
+      if (req.body.limit) req.limit = req.body.limit;
+      if (req.body.skip) req.skip = req.body.skip;
+      break;
+    case 'listResources':
+    case 'newResource':
+      req.resourceType = req.params[0];
+      break;
+    case 'viewRecords':
+      req.format = req.params[0];
+      break;
+    case 'harvestRecord':
+      req.url = req.body.recordUrl;
+      req.format = req.body.inputFormat;
+      if (req.body.destinationCollections) req.collections = req.body.desinationCollections;
+      break;
+    case 'uploadRecord':
+      if (req.body.destinationCollections) req.collections = req.body.desinationCollections;
+      req.format = req.body.format;
+      req.data = req.body.data;
+      break;
+    case 'getResource':
+    case 'updateResource':
+    case 'deleteResource':
+      req.resourceType = req.params[0];
+      req.resourceId = req.params[1];
+      break;
+    case 'viewRecord':
+    case 'viewCollectionRecords':
+      req.resourceId = req.params[0];
+      req.format = req.params[1];
+      break;
+    case 'listFiles':
+    case 'newFile':
+    case 'getCollectionRecords':
+      req.resourceId = req.params[0];
+      break;
+    case 'getFile':
+    case 'deleteFile':
+      req.resourceId = req.params[0];
+      req.fileName = req.params[1];
+      break;
+    case 'getSchema':
+      req.schemaId = req.params[0];
+      var params = ['resolve', 'emptyInstance'];
+      for (var i = 0; i < params.length; i++) {
+        if ((req.query[params[i]] != null) && req.query[params[i]] === 'true') {
+          req.query[params[i]] = JSON.parse(req.query[params[i]]);
+        } else {
+          req.query[params[i]] = false;
+        }
+      }
+  }
+  return next();
+}
+
 // ********
 // * POST *
 // ********
 // Text-based search for records
-server.post(/^\/metadata\/search\/$/
-  , controller.textSearch.route
-  , controller.textSearch.params
-  , controller.textSearch.search);
+server.post(/^\/metadata\/search\/$/, function (req, res, next) {
+  req.routeId = 'search';
+  return next();
+}, setParams, routes.search);
 
 // Harvest an existing record
-server.post(/^\/metadata\/harvest\/$/
-  , controller.harvestRecord.route
-  , controller.harvestRecord.params
-  , controller.harvestRecord.harvest
-  , controller.harvestRecord.save);
+server.post('/metadata/harvest', function (req, res, next) {
+  req.routeId = 'harvestRecord';
+  return next();
+}, setParams, routes.harvestRecord, routes.saveRecord);
 
 /*
 
@@ -53,12 +111,13 @@ server.post(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) 
 // * GET *
 // *******
 // List records or collections as (JSON)
-/*
 
 server.get(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
   req.routeId = 'listResources';
   return next();
 }, setParams, routes.listResources);
+
+/*
 
 // List records in a specific format
 server.get(/^\/metadata\/record\.(iso\.xml|atom\.xml|geojson)$/, function (req, res, next) {
@@ -155,3 +214,5 @@ function errorHandler (err, req, res, next) {
 server.use(errorHandler);
 
 server.listen(3000);
+
+module.exports = server;

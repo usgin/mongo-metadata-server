@@ -4,7 +4,6 @@ var mongoose = require('mongoose')
 var config = {dbHost: 'localhost', dbPort: '27071', dbName: 'cinergi'}
   , mongoUrl = ['mongodb:/', config.dbHost, config.dbName].join('/');
 
-
 // *****************************
 // * Records collection schema *
 // *****************************
