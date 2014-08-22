@@ -63,7 +63,7 @@ function map () {
     }
   }
 
-  var doc = {
+  doc = {
     setProperty: function (prop, value) {
       var count
         , obj
@@ -391,8 +391,8 @@ function map () {
 
 }
 
-function reduce () {
-
+function reduce (key, values) {
+  return key;
 }
 
 exports.map = map;
