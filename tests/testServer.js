@@ -5,14 +5,14 @@ var express = require('express')
 
 var app
   , testServer
-  , testCsv;
+  , sampleCsv;
 
 app = express();
-testCsv = path.join(__dirname, 'test-csv.csv');
+sampleCsv = path.join(__dirname, 'sample-csv.csv');
 
-app.get('/test-csv.csv', function (req, res) {
-  res.attachment('test-csv.csv');
-  csv().from(testCsv).to(res);
+app.get('/sample-csv.csv', function (req, res) {
+  res.attachment('sample-csv.csv');
+  csv().from(sampleCsv).to(res);
 });
 
 testServer = app.listen(3030);
