@@ -3,29 +3,26 @@ var should = require('should')
   , request = require('supertest')
   , mongoose = require('mongoose')
   , mocha = require('mocha')
-  , config = require('./config-debug')
-  , server = require('./../src/server');
+  , metadataServer = require('./../src/server');
 
 describe('CSV', function () {
-  var url
-    , req;
-
-  url = 'http://localhost:3000';
+  var req
+    , testDataServer;
 
   before(function (done) {
-    //mongoose.connect(config.db.mongodb);
+    testDataServer = require('./test-data-server');
     done();
   });
 
-  describe('Harvest', function () {
+  describe('Harvest and save', function () {
     it('should return 200 when posting to the server', function (done) {
       req = {
         "destinationCollections": [""],
         "inputFormat": "csv",
-        "recordUrl": "http://repository.stategeothermaldata.org/resources/metadata/TestNRRC/NRRCMetadataCompilation_ALL.csv"
+        "recordUrl": "http://localhost:3030/sample-csv.csv"
       };
 
-      request(url)
+      request(metadataServer)
         .post('/metadata/harvest')
         .send(req)
         .expect(200, done)

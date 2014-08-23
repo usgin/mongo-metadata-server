@@ -1,6 +1,7 @@
 var express = require('express')
   , bodyParser = require('body-parser')
   , errorHandler = require('errorhandler')
+  , mongo = require('./mongo-config')
   , routes = require('./routes')
   , errors = require('./errors');
 

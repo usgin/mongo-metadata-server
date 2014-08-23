@@ -4,7 +4,7 @@ var express = require('express')
   , csv = require('csv');
 
 var app
-  , testServer
+  , server
   , sampleCsv;
 
 app = express();
@@ -15,6 +15,6 @@ app.get('/sample-csv.csv', function (req, res) {
   csv().from(sampleCsv).to(res);
 });
 
-testServer = app.listen(3030);
+server = app.listen(3030);
 
-exports.testServer = testServer;
+module.exports = server;
