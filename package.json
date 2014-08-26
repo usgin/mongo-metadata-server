@@ -21,7 +21,10 @@
     "body-parser": "1.6.5",
     "errorHandler": "1.1.1",
     "vows": "0.7.0",
-    "assert": "1.1.1"
+    "assert": "1.1.1",
+    "should": "4.0.4",
+    "supertest": "0.13.0",
+    "mocha": "1.21.4"
   },
   "author": "",
   "license": "ISC",
