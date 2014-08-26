@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><!DOCTYPE metadata SYSTEM "http://www.fgdc.gov/metadata/fgdc-std-001-1998.dtd"><metadata>
+<idinfo>
+<citation>
+<citeinfo>
+<origin>Idaho National Engineering &amp; Environmental Laboratory</origin>
+<pubdate>11/2003</pubdate>
+<title>Regions of Known or Potential Geothermal Resources</title>
+<edition>Rev 1</edition>
+<geoform>vector digital data</geoform>
+<serinfo>
+<sername>None</sername>
+<issue>None</issue>
+</serinfo>
+<pubinfo>
+<pubplace>Idaho Falls, Idaho</pubplace>
+<publish>Idaho National Engineering &amp; Environmental Laboratory</publish>
+</pubinfo>
+<othercit>Renewable Energy and Power Technology - Pat Laney</othercit>
+<onlink>\\server3\projects\currentprojects\geothermal_doe\data\coverages\az_known_inl</onlink>
+</citeinfo>
+</citation>
+<descript>
+<abstract>This coverage shows areas favorable for discovery and development of low-temperature (lower than 100°C) geothermal resources.  They are defined on the basis of thermal springs, thermal wells, and ground-water, geologic and geophysical surveys.  These gray areas are modified, in the light of later information, from those shown in the U.S. Geological Survey Circular 790 (Muffler, 1979).  Existing knowledge does not in general permit the inference that thermal waters may be found everywhere within the depicted areas, nor do the boundaries represent certain knowledge of the areal extent of the geothermal resources.  The boundaries are subject to change as new information is obtained.</abstract>
+<purpose>Provides a visual representation of existing geothermal resources and potiential areas for residential and commerical direct use applications.</purpose>
+<supplinf>This data layer is shown on a map in conjuction with land ownership and spring and well temperatures.</supplinf>
+</descript>
+<timeperd>
+<timeinfo>
+<sngdate>
+<caldate>November 2003</caldate>
+<time>unknown</time>
+</sngdate>
+</timeinfo>
+<current>publication date</current>
+</timeperd>
+<status>
+<progress>Complete</progress>
+<update>None planned</update>
+</status>
+<spdom>
+<bounding>
+<westbc>
+-114.743292</westbc>
+<eastbc>
+-108.540015</eastbc>
+<northbc>
+35.750278</northbc>
+<southbc>
+31.230871</southbc>
+</bounding>
+</spdom>
+<keywords>
+<theme>
+<themekt>None</themekt>
+<themekey>Geothermal Resources</themekey>
+</theme>
+<place>
+<placekt>None</placekt>
+<placekey>Western United States</placekey>
+<placekey>Alaska</placekey>
+<placekey>Idaho</placekey>
+<placekey>Wyoming</placekey>
+<placekey>Nevada</placekey>
+<placekey>Utah</placekey>
+<placekey>New Mexico</placekey>
+<placekey>Montana</placekey>
+<placekey>Hawaii</placekey>
+<placekey>Washington</placekey>
+<placekey>Oregon</placekey>
+<placekey>California</placekey>
+</place>
+<stratum>
+<stratkt>None</stratkt>
+<stratkey>none</stratkey>
+</stratum>
+<temporal>
+<tempkt>None</tempkt>
+<tempkey>none</tempkey>
+</temporal>
+</keywords>
+<accconst>None</accconst>
+<useconst>This data set is provided "as-is" without warranty of any kind, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. The user assumes all responsibility for the accuracy and suitability of this data set for a specific application. In no event will the INEEL Spatial Analysis Laboratory and/or the Idaho National Engineering and Environmental Laboratory (INEEL) are liable for any damages, including lost profits, lost savings, or other incidental or consequential damages arising from the use of or inability to use this data set.</useconst>
+<ptcontac>
+<cntinfo>
+<cntorgp>
+<cntorg>Renewable Energy and Power Technology</cntorg>
+<cntper>Pat Laney</cntper>
+</cntorgp>
+<cntpos>Staff Engineer</cntpos>
+<cntaddr>
+<addrtype>mailing address</addrtype>
+<address>P.O. Box 1625</address>
+<city>Idaho Falls</city>
+<state>Idaho</state>
+<postal>83415</postal>
+<country>USA</country>
+</cntaddr>
+<cntvoice>208-526-7468</cntvoice>
+<cntfax>208-526-0990</cntfax>
+<cntemail>ptl@inel.gov</cntemail>
+<hours>Mon - Thurs 7:00 am to 5:00 pm, Fri 7:00 am to 4:00 pm (Mountain Time)</hours>
+<cntinst>In order to generate updates to this data layer a formal request must be submitted to Pat Laney at the INEEL Renewable Energy &amp; Power Technology</cntinst>
+</cntinfo>
+</ptcontac>
+<datacred>INEEL - Pat Laney &amp; Julie Brizzee</datacred>
+<secinfo>
+<secsys>None</secsys>
+<secclass>Unclassified</secclass>
+<sechandl>None</sechandl>
+</secinfo>
+<native>Microsoft Windows XP Version 5.1 (Build 2600) Service Pack 3; ESRI ArcCatalog 9.3.1.3000</native>
+</idinfo>
+<dataqual>
+<attracc>
+<attraccr>Accuracy of attributes is unknown.</attraccr>
+</attracc>
+<logic>Polygon topology present. Every polygon has a label and all polygons are closed.</logic>
+<complete>Data set is complete.</complete>
+<posacc>
+<horizpa>
+<horizpar>Accuracy is unknown.</horizpar>
+</horizpa>
+<vertacc>
+<vertaccr>unknown</vertaccr>
+</vertacc>
+</posacc>
+<lineage>
+<srcinfo>
+<srccite>
+<citeinfo>
+<origin>Idaho National Engineering &amp; Environmental Laboratory</origin>
+<pubdate>11/2003</pubdate>
+<title>Regions of Known or Potential Geothermal Resources</title>
+<edition>Rev 1</edition>
+<geoform>vector digital data</geoform>
+<serinfo>
+<sername>None</sername>
+<issue>None</issue>
+</serinfo>
+<pubinfo>
+<pubplace>Idaho Falls, Idaho</pubplace>
+<publish>Idaho National Engineering &amp; Environmental Laboratory</publish>
+</pubinfo>
+<othercit>Renewable Energy and Power Technology - Pat Laney</othercit>
+<onlink>\\schwartz\gis\gis_projects3\usa\ak_geothermal_maps\potgeo_clp</onlink>
+</citeinfo>
+</srccite>
+<srcscale>1:500,000</srcscale>
+<typesrc>paper</typesrc>
+<srctime>
+<timeinfo>
+<sngdate>
+<caldate>1982</caldate>
+<time>unknown</time>
+</sngdate>
+</timeinfo>
+<srccurr>publication date</srccurr>
+</srctime>
+<srccitea>USGS</srccitea>
+<srccontr>Map Title:  Geothermal Resources of Arizona, 1982
+
+Geothermal data compiled and interpreted by James C. Witcher, Claudia Stone, W. Richard Hahman, Sr. of the State of Arizona Bureau of Geology and Mineral Technology, A Division of the University of Arizona, Tucson
+Map prepared by the National Geophysical and Solar-Terrestrial Data Center
+National Oceanic and Atmospheric Administration
+for the Division of Geothermal Energy United States Department of Energy
+Alaska E Series Map
+National geodetic vertical datum of 1929
+Modified transverse mercator projection
+Base map supplied by U.S. Geological Survey
+Topographic maps scale 1:250,000 and other official sources
+1927 North American Datum
+Lambert conformal conic projection based on standard parallels 33° and 45°</srccontr>
+</srcinfo>
+<procstep>
+<procdesc>The original maps were registered on a digitizer tablet and the identified thermal waters polygons were
+digitized.  A polygon coverage was generated and projected. Once the layer was drawn on a map and reviewed with other geothermal feature, such as spring and well temperature data, the polygons were modified by heads-up digitizing on the screen based on drawings provided by the Renewable Energy and Power Technology group.</procdesc>
+<procdate>May 2003</procdate>
+<proccont>
+<cntinfo>
+<cntorgp>
+<cntorg>INEEL Spatial Analysis Laboratory</cntorg>
+<cntper>Julie Brizzee</cntper>
+</cntorgp>
+<cntpos>Principal Technical Specialist</cntpos>
+<cntaddr>
+<addrtype>mailing address</addrtype>
+<address>P.O. Box 1625</address>
+<city>Idaho Falls</city>
+<state>Idaho</state>
+<postal>83415</postal>
+<country>USA</country>
+</cntaddr>
+<cntvoice>208-526-8440</cntvoice>
+<cntfax>208-526-3370</cntfax>
+<cntemail>bzj@inel.gov</cntemail>
+<hours>Mon. - Thurs 7:00 am to 5:00 pm, Fri 7:00 am to 4:00 (Mountain Time</hours>
+</cntinfo>
+</proccont>
+</procstep>
+<procstep>
+<procdesc>Metadata imported.</procdesc>
+<srcused>C:\DOCUME~1\bzj\LOCALS~1\Temp\xml486.tmp</srcused>
+</procstep>
+</lineage>
+</dataqual>
+<spdoinfo>
+<direct>Vector</direct>
+<ptvctinf>
+<sdtsterm>
+<sdtstype>Complete chain</sdtstype>
+<ptvctcnt>33</ptvctcnt>
+</sdtsterm>
+<sdtsterm>
+<sdtstype>Label point</sdtstype>
+<ptvctcnt>30</ptvctcnt>
+</sdtsterm>
+<sdtsterm>
+<sdtstype>GT-polygon composed of chains</sdtstype>
+<ptvctcnt>30</ptvctcnt>
+</sdtsterm>
+<sdtsterm>
+<sdtstype>Point</sdtstype>
+<ptvctcnt>5</ptvctcnt>
+</sdtsterm>
+</ptvctinf>
+</spdoinfo>
+<spref>
+<horizsys>
+<planar>
+<mapproj>
+<mapprojn>Lambert Conformal Conic</mapprojn>
+<lambertc>
+<stdparll>33.000000</stdparll>
+<stdparll>45.000000</stdparll>
+<longcm>-121.000000</longcm>
+<latprjo>42.000000</latprjo>
+<feast>0.000000</feast>
+<fnorth>0.000000</fnorth>
+</lambertc>
+</mapproj>
+<planci>
+<plance>coordinate pair</plance>
+<coordrep>
+<absres>0.000000</absres>
+<ordres>0.000000</ordres>
+</coordrep>
+<plandu>meters</plandu>
+</planci>
+</planar>
+<geodetic>
+<horizdn>North American Datum of 1927</horizdn>
+<ellips>Clarke 1866</ellips>
+<semiaxis>6378206.400000</semiaxis>
+<denflat>294.978698</denflat>
+</geodetic>
+</horizsys>
+</spref>
+<eainfo>
+<detailed>
+<enttyp>
+<enttypl>
+az_known_inl.pat</enttypl>
+</enttyp>
+<attr>
+<attrlabl>FID</attrlabl>
+<attrdef>Internal feature number.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Sequential unique whole numbers that are automatically generated.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>Shape</attrlabl>
+<attrdef>Feature geometry.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Coordinates defining the features.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>AREA</attrlabl>
+<attrdef>Area of feature in internal units squared.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Positive real numbers that are automatically generated.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>PERIMETER</attrlabl>
+<attrdef>Perimeter of feature in internal units.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Positive real numbers that are automatically generated.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>AZ_KNOWN_INL#</attrlabl>
+<attrdef>Internal feature number.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Sequential unique whole numbers that are automatically generated.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>AZ_KNOWN_INL-ID</attrlabl>
+<attrdef>User-defined feature number.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Positive real numbers that are automatically generated.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>MAPPED_BY</attrlabl>
+<attrdef>Internal feature number.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Sequential unique whole numbers that are automatically generated.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>MAPPED_VIA</attrlabl>
+<attrdef>User-defined feature number.</attrdef>
+<attrdefs>ESRI</attrdefs>
+</attr>
+<attr>
+<attrlabl>LOC_ACCURACY</attrlabl>
+<attrdef>Feature geometry.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Coordinates defining the features.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>DATE_MAPPED</attrlabl>
+</attr>
+<attr>
+<attrlabl>DESCRIPTION</attrlabl>
+</attr>
+</detailed>
+<overview>
+<eaover>Several fields was added by the GIS anyalyst, the date mapped, a general description and mapped via field.</eaover>
+</overview>
+</eainfo>
+<distinfo>
+<distrib>
+<cntinfo>
+<cntorgp>
+<cntorg>Renewable Energy and Power Technology</cntorg>
+<cntper>Pat Laney</cntper>
+</cntorgp>
+<cntpos>Staff Engineer</cntpos>
+<cntaddr>
+<addrtype>mailing address</addrtype>
+<address>P.O. Box 1625</address>
+<city>Idaho Falls</city>
+<state>Idaho</state>
+<postal>83415</postal>
+<country>USA</country>
+</cntaddr>
+<cntvoice>208-526-7468</cntvoice>
+<cntfax>208-526-0990</cntfax>
+<cntemail>ptl@inel.gov</cntemail>
+<hours>Mon - Thurs 7:00 am to 5:00 pm, Fri 7:00 am to 4:00 pm (Mountain Time)</hours>
+<cntinst>In order to generate updates to this data layer a formal request must be submitted to Pat Laney at the INEEL Renewable Energy &amp; Power Technology</cntinst>
+</cntinfo>
+</distrib>
+<resdesc>Downloadable Data</resdesc>
+<distliab>This data set is provided "as-is" without warranty of any kind, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. The user assumes all responsibility for the accuracy and suitability of this data set for a specific application. In no event will the INEEL Spatial Analysis Laboratory and/or the Idaho National Engineering and Environmental Laboratory (INEEL) be liable for any damages, including lost profits, lost savings, or other incidental or consequential damages arising from the use of or inability to use this data set.</distliab>
+<stdorder>
+<digform>
+<digtinfo>
+<transize>0.064</transize>
+</digtinfo>
+</digform>
+<ordering>Written data request (e-mail or letter) must be received specifying exactly what the data will be used for along with a charge number to fill the request. Requestor must also specify the projection and datum information, as well as the digital format type (ie. .e00, shape file, AutoCAD DXF). Once request has been approved for external release the data will be exported into requestors desired GIS data format along with the INEEL Spatial Analysis Laboratory disclaimer.</ordering>
+<turnarnd>Varies based on request</turnarnd>
+</stdorder>
+<stdorder>
+<digform>
+<digtinfo>
+</digtinfo>
+</digform>
+<ordering>Written data request (e-mail or letter) must be received specifying exactly what the data will be used for along with a charge number to fill the request. Requestor must also specify the projection and datum information, as well as the digital format type (ie. .e00, shape file, AutoCAD DXF). Once request has been approved for external release the data will be exported into requestors desired GIS data format along with the INEEL Spatial Analysis Laboratory disclaimer.</ordering>
+<turnarnd>Varies based on request</turnarnd>
+</stdorder>
+<custom>Written data request (e-mail or letter) must be received specifying exactly what the data will be used for along with a charge number to fill the request. Requestor must also specify the projection and datum information, as well as the digital format type (ie. .e00, shape file, AutoCAD DXF). Once request has been approved for external release the data will be exported into requestors desired GIS data format along with the INEEL Spatial Analysis Laboratory disclaimer.</custom>
+<availabl>
+<timeinfo>
+<sngdate>
+<time>unknown</time>
+</sngdate>
+</timeinfo>
+</availabl>
+</distinfo>
+<metainfo>
+<metd>20100216</metd>
+<metc>
+<cntinfo>
+<cntorgp>
+<cntorg>Renewable Energy and Power Technology</cntorg>
+<cntper>Pat Laney</cntper>
+</cntorgp>
+<cntpos>Staff Engineer</cntpos>
+<cntaddr>
+<addrtype>mailing address</addrtype>
+<address>P.O. Box 1625</address>
+<city>Idaho Falls</city>
+<state>Idaho</state>
+<postal>83415</postal>
+<country>USA</country>
+</cntaddr>
+<cntvoice>208-526-7468</cntvoice>
+<cntfax>208-526-0990</cntfax>
+<cntemail>ptl@inel.gov</cntemail>
+<hours>Mon - Thurs 7:00 am to 5:00 pm, Fri 7:00 am to 4:00 pm (Mountain Time)</hours>
+<cntinst>In order to generate updates to this data layer a formal request must be submitted to Pat Laney at the INEEL Renewable Energy &amp; Power Technology</cntinst>
+</cntinfo>
+</metc>
+<metstdn>FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+<metstdv>FGDC-STD-001-1998</metstdv>
+<mettc>local time</mettc>
+<metac>None</metac>
+<metuc>None</metuc>
+<metsi>
+<metscs>None</metscs>
+<metsc>Unclassified</metsc>
+<metshd>None</metshd>
+</metsi>
+<metextns>
+<onlink>http://www.esri.com/metadata/esriprof80.html</onlink>
+<metprof>ESRI Metadata Profile</metprof>
+</metextns>
+<metextns>
+<onlink>http://www.esri.com/metadata/esriprof80.html</onlink>
+<metprof>ESRI Metadata Profile</metprof>
+</metextns>
+</metainfo>
+</metadata>
