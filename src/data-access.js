@@ -68,7 +68,13 @@ function createDocs (dbModel, options) {
 
   options.docs = _.map(options.docs, cleanKeywords);
 
-  dbModel.collection.insert(options.docs, function (err, response) {
+  var data = JSON.stringify(options.docs);
+  var search = new RegExp('\\$t', 'g');
+  var newdata = data.replace(search, 'DOLLARSIGN');
+  var newerdata = JSON.parse(newdata);
+
+
+  dbModel.collection.insert(newerdata, function (err, response) {
     if (err) {
       return options.error(err)
     } else {
@@ -107,16 +113,16 @@ function mapReduce (dbModel, options) {
   if (!options.error) options.error = function () {};
 
   switch (options.format) {
-    case 'atom':
+    case 'atom.xml':
       thisMapReduce = atomMapReduce;
       break;
     case 'csv':
       thisMapReduce = csvMapReduce;
       break;
-    case 'fgdc':
+    case 'fgdc.xml':
       thisMapReduce = fgdcMapReduce;
       break;
-    case 'iso':
+    case 'iso.xml':
       thisMapReduce = isoMapReduce;
       break;
   }
@@ -128,6 +134,7 @@ function mapReduce (dbModel, options) {
 
   dbModel.mapReduce(o, function (err, response) {
     if (err) {
+      console.log(err);
       return options.error(err);
     } else {
       return options.success(response);

@@ -36,7 +36,10 @@ function map () {
     , distOutput
     , linkLookup
     , responsibleParty
-    , link;
+    , link
+    , iso;
+
+  iso = this;
 
   function objGet (obj, prop, defVal) {
     var props
@@ -75,6 +78,7 @@ function map () {
       obj = this;
       props = prop.split('.');
       count = 0;
+      results = [];
 
       for (i = 0; i < props.length; i ++) {
         p = props[i];
@@ -234,6 +238,8 @@ function map () {
   authors = (function () {
     var i
       , results;
+
+    results = [];
     for (i = 0; i < resParties.length; i++) {
       resParty = resParties[i];
       results.push(buildContact(resParty));

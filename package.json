@@ -17,7 +17,7 @@
     "mongoose": "3.8.15",
     "csv": "0.3.0",
     "underscore": "1.6.0",
-    "xml2json": "0.4.0",
+    "xml2json": "0.5.1",
     "body-parser": "1.6.5",
     "errorHandler": "1.1.1",
     "vows": "0.7.0",

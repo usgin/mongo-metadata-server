@@ -79,7 +79,7 @@ function harvestRecord (req, res, next) {
               , entries;
             switch (req.format) {
               case 'atom.xml':
-                var entry = data.feed.entry;
+                var entry = data.feed.entries.entry;
                 if (_.isArray(entry)) {
                   entries = entry;
                 } else if (_.isObject(entry)) {

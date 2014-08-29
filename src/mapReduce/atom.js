@@ -1,4 +1,4 @@
-function map (atom) {
+function map () {
   var doc
     , type
     , author
@@ -6,7 +6,10 @@ function map (atom) {
     , serviceTypes
     , capServiceTypes
     , atomAuthors
-    , docAuthors;
+    , docAuthors
+    , atom;
+
+  atom = this;
 
   function objGet (obj, prop, defVal) {
     var i
@@ -63,6 +66,8 @@ function map (atom) {
   capServiceTypes = (function () {
     var i
       , results;
+
+    results = [];
     for (i = 0; i < serviceTypes.length; i++) {
       type = serviceTypes[i];
       results.push(type.toUpperCase());
@@ -93,6 +98,8 @@ function map (atom) {
       if ((function () {
         var j
           , results;
+
+        results = [];
         for (j = 0; j < conditionSet.length; j++) {
           condition = conditionSet[j];
           results.push(url.match(condition) == null);
@@ -117,6 +124,8 @@ function map (atom) {
   docAuthors = (function () {
     var i
       , results;
+
+    results = [];
     for (i = 0; i < atomAuthors.length; i++) {
       author = atomAuthors[i];
       results.push({
@@ -184,10 +193,11 @@ function map (atom) {
     }
   }
 
+  emit(this._id, doc);
 }
 
-function reduce () {
-
+function reduce (key, values) {
+  return key;
 }
 
 exports.map = map;
