@@ -121,8 +121,26 @@ function addCollectionKeywords (iso, collectionNames) {
   return iso;
 }
 
+function cleanJsonReservedChars (json) {
+
+  if (json instanceof Object) {
+    for (var key in json) {
+      if (json.hasOwnProperty(key)) {
+        json[key.replace(/\$/g, '')] = cleanJsonReservedChars(json[key]);
+        if (key.indexOf('$') > -1) {
+          delete json[key];
+        }
+      }
+    }
+    return json;
+  } else {
+    return json;
+  }
+}
+
 exports.atomWrapper = atomWrapper;
 exports.featureCollection = featureCollection;
 exports.getCurrentDate = getCurrentDate;
 exports.validateHarvestFormat = validateHarvestFormat;
 exports.addCollectionKeywords = addCollectionKeywords;
+exports.cleanJsonReservedChars = cleanJsonReservedChars;

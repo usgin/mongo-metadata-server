@@ -75,7 +75,8 @@ function harvestRecord (req, res, next) {
           if (req.format === 'csv') {
             csv2json.readCsv(body, req, res, next);
           } else {
-            var data = xml2json.toJson(body, {object: true, reversible: true})
+            var json = xml2json.toJson(body, {object: true, reversible: true})
+              , data = utils.cleanJsonReservedChars(json)
               , entries;
             switch (req.format) {
               case 'atom.xml':
