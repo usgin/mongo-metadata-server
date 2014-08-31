@@ -128,7 +128,6 @@ function mapReduce (dbModel, options) {
 
   dbModel.mapReduce(o, function (err, response) {
     if (err) {
-      console.log(err);
       return options.error(err);
     } else {
       return options.success(response);

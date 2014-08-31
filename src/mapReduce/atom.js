@@ -115,8 +115,8 @@ function map () {
     return null;
   }
 
-  doc.setProperty('Title', objGet(atom, 'title.$t', 'No Title Was Given'));
-  doc.setProperty('Description', objGet(atom, 'summary.$t', 'No Abstract Was Given'));
+  doc.setProperty('Title', objGet(atom, 'title.t', 'No Title Was Given'));
+  doc.setProperty('Description', objGet(atom, 'summary.t', 'No Abstract Was Given'));
 
   atomAuthors = objGet(atom, 'author', []);
   if (atomAuthors.name) atomAuthors = [atomAuthors];
@@ -129,15 +129,15 @@ function map () {
     for (i = 0; i < atomAuthors.length; i++) {
       author = atomAuthors[i];
       results.push({
-        Name: objGet(author, 'name.$t', 'No Name Was Given'),
+        Name: objGet(author, 'name.t', 'No Name Was Given'),
         ContactInformation: {
-          Phone: objGet(author, 'contactInformation.phone.$t', 'No Phone Was Given'),
-          email: objGet(author, 'contactInformation.email.$t', 'No email Was Given'),
+          Phone: objGet(author, 'contactInformation.phone.t', 'No Phone Was Given'),
+          email: objGet(author, 'contactInformation.email.t', 'No email Was Given'),
           Address: {
-            Street: objGet(author, "contactInformation.address.street.$t", "No address found"),
-            City: objGet(author, "contactInformation.address.city.$t", "No city found"),
-            State: objGet(author, "contactInformation.address.state.$t", "No state found"),
-            Zip: objGet(author, "contactInformation.address.zip.$t", "No zip found")
+            Street: objGet(author, "contactInformation.address.street.t", "No address found"),
+            City: objGet(author, "contactInformation.address.city.t", "No city found"),
+            State: objGet(author, "contactInformation.address.state.t", "No state found"),
+            Zip: objGet(author, "contactInformation.address.zip.t", "No zip found")
           }
         }
       });
@@ -163,7 +163,7 @@ function map () {
 
   doc.setProperty('Authors', docAuthors);
   doc.setProperty('PublicationDate', '1900-01-01T0:00:00');
-  extent = objGet(atom, 'georss:box.$t', null);
+  extent = objGet(atom, 'georss:box.t', null);
   if (extent) {
     extent = extent.split(' ');
   } else {
@@ -192,6 +192,10 @@ function map () {
       }
     }
   }
+
+  doc.HarvestInformation = {
+    OriginalFileIdentifier: this['resource_id'] || 'this_metadata'
+  };
 
   emit(this._id, doc);
 }

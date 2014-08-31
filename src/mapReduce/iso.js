@@ -146,21 +146,21 @@ function map () {
 
     role = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:role.gmd:CI_RoleCode.codeListValue", "");
     contact = {
-      Name: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString.$t", "No Name Was Given"),
+      Name: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString.t", "No Name Was Given"),
       ContactInformation: {
-        Phone: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:phone.gmd:CI_Telephone.gmd:voice.gco:CharacterString.$t", "No Phone Number Was Given"),
-        email: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress.gco:CharacterString.$t", "No email Was Given"),
+        Phone: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:phone.gmd:CI_Telephone.gmd:voice.gco:CharacterString.t", "No Phone Number Was Given"),
+        email: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress.gco:CharacterString.t", "No email Was Given"),
         Address: {
-          Street: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:deliveryPoint.gco:CharacterString.$t", "No Street Address Was Given"),
-          City: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:city.gco:CharacterString.$t", "No City Was Given"),
-          State: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:administrativeArea.gco:CharacterString.$t", "No State Was Given"),
-          Zip: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:postalCode.gco:CharacterString.$t", "No Zip Was Given")
+          Street: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:deliveryPoint.gco:CharacterString.t", "No Street Address Was Given"),
+          City: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:city.gco:CharacterString.t", "No City Was Given"),
+          State: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:administrativeArea.gco:CharacterString.t", "No State Was Given"),
+          Zip: objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:postalCode.gco:CharacterString.t", "No Zip Was Given")
         }
       }
     };
 
     if (['Missing', 'missing', 'No Name Was given'].indexOf(contact.Name) > -1) {
-      contact["OrganizationName"] = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.$t", "No Organization Name Was Given");
+      contact["OrganizationName"] = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.t", "No Organization Name Was Given");
     }
 
     return contact;
@@ -174,8 +174,8 @@ function map () {
       , serviceType
       , name;
 
-    url = objGet(onlineResource, "gmd:linkage.gmd:URL.$t", "No URL Was Given");
-    protocol = objGet(onlineResource, "gmd:protocol.gco:CharacterString.$t", "No Protocol Was Given");
+    url = objGet(onlineResource, "gmd:linkage.gmd:URL.t", "No URL Was Given");
+    protocol = objGet(onlineResource, "gmd:protocol.gco:CharacterString.t", "No Protocol Was Given");
     protocol = protocol.toUpperCase();
 
     if (capServiceTypes.indexOf(protocol) >= 0) {
@@ -187,15 +187,15 @@ function map () {
 
     name = null;
     if (responsibleParty) {
-      name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString.$t", "No Name Was Given");
+      name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString.t", "No Name Was Given");
       if (['Missing', 'missing', 'No Name Was Given'].indexOf(name) > -1) {
-        name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.$t", "No Organization Name Was Given");
+        name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.t", "No Organization Name Was Given");
       }
     }
 
     link = {
       URL: url,
-      Description: objGet(onlineResource, "gmd:description.gco:CharacterString.$t", "No Description Was Given")
+      Description: objGet(onlineResource, "gmd:description.gco:CharacterString.t", "No Description Was Given")
     };
 
     if (serviceType) {
@@ -216,11 +216,11 @@ function map () {
   ident = objGet(ident, "gmd:MD_DataIdentification", objGet(ident, "srv:SV_ServiceIdentification", {}));
 
   // Find the title and description
-  doc.setProperty("Title", objGet(ident, "gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString.$t", "No Title Was Given"));
-  doc.setProperty("Description", objGet(ident, "gmd:abstract.gco:CharacterString.$t", "No Description Was Given"));
+  doc.setProperty("Title", objGet(ident, "gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString.t", "No Title Was Given"));
+  doc.setProperty("Description", objGet(ident, "gmd:abstract.gco:CharacterString.t", "No Description Was Given"));
 
   // Publication date
-  pubDate = objGet(ident, "gmd:citation.gmd:CI_Citation.gmd:date.gmd:CI_Date.gmd:date.gco:DateTime.$t", "Publication Date Not Given").trim();
+  pubDate = objGet(ident, "gmd:citation.gmd:CI_Citation.gmd:date.gmd:CI_Date.gmd:date.gco:DateTime.t", "Publication Date Not Given").trim();
   if (pubDate.match(/T\d\d:\d\d(?!:)/)) {
     pubDate = pubDate + ":00Z";
   }
@@ -262,7 +262,7 @@ function map () {
     }
     for (j = 0; j < keywords.length; j++) {
       keyword = keywords[j];
-      words = objGet(keyword, "gco:CharacterString.$t", null);
+      words = objGet(keyword, "gco:CharacterString.t", null);
       split = words.split(',');
       for (k = 0; k < split.length; k++) {
         word = split[k];
@@ -288,10 +288,10 @@ function map () {
     extent = validExtents[0];
   }
 
-  doc.setProperty("GeographicExtent.NorthBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.$t", 89);
-  doc.setProperty("GeographicExtent.SouthBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.$t", -89);
-  doc.setProperty("GeographicExtent.EastBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.$t", 179);
-  doc.setProperty("GeographicExtent.WestBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.$t", -179);
+  doc.setProperty("GeographicExtent.NorthBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.t", 89);
+  doc.setProperty("GeographicExtent.SouthBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.t", -89);
+  doc.setProperty("GeographicExtent.EastBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.t", 179);
+  doc.setProperty("GeographicExtent.WestBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.t", -179);
 
   // Distributors
   isoDistributors = objGet(iso, "gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor", []);
@@ -389,8 +389,12 @@ function map () {
     return results;
   })();
 
-  doc.setProperty('ResourceId', objGet(iso, "gmd:MD_Metadata.gmd:dataSetURI.gco:CharacterString.$t", null));
-  doc.setProperty("HarvestInformation.OriginalFileIdentifier", objGet(iso, "gmd:MD_Metadata.gmd:fileIdentifier.gco:CharacterString.$t"));
+  doc.HarvestInformation = {
+    OriginalFileIdentifier: this['resource_id'] || 'this_metadata'
+  };
+
+  doc.setProperty('ResourceId', objGet(iso, "gmd:MD_Metadata.gmd:dataSetURI.gco:CharacterString.t", null));
+  doc.setProperty("HarvestInformation.OriginalFileIdentifier", objGet(iso, "gmd:MD_Metadata.gmd:fileIdentifier.gco:CharacterString.t"));
   doc.setProperty('Pubslihed', false);
 
   emit(this._id, doc);

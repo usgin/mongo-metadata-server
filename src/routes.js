@@ -21,7 +21,6 @@ function search (req, res, next) {
         'Error searching for documents'));
     },
     success: function (result) {
-      console.log('SEARCH FOR', req.searchTerms);
       res.header('Content-Type', 'application/json');
       return res.send(result);
     }
