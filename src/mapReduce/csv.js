@@ -1,5 +1,6 @@
 function map () {
   var doc
+    , csv
     , obj
     , kws
     , links
@@ -10,6 +11,8 @@ function map () {
     , objLink
     , urls
     , link;
+
+  csv = this;
 
   doc = {};
   serviceTypes = ['OGC:WMS', 'OGC:WFS', 'OGC:WCS', 'esri', 'opendap'];
@@ -61,11 +64,11 @@ function map () {
       , org
       , results;
 
-    persons = this[obj.person];
+    persons = csv[obj.person];
     if (persons) {
       persons = persons.split('|');
     } else {
-      persons = this[obj.position];
+      persons = csv[obj.position];
       if (persons) {
         persons = persons.split('|');
       }
@@ -82,26 +85,26 @@ function map () {
     }
 
     results = [];
-    org = this[obj.organization] || 'Missing';
+    org = csv[obj.organization] || 'Missing';
     for (i = 0; i < prop.length; i++) {
       a = prop[i];
       a.OrganizationName = org;
       coninfo = a.ContactInformation = {};
-      coninfo.Phone = this[obj.phone] || 'Missing';
-      coninfo.email = this[obj.email] || 'Missing';
+      coninfo.Phone = csv[obj.phone] || 'Missing';
+      coninfo.email = csv[obj.email] || 'Missing';
       addr = coninfo.Address = {};
-      addr.Street = this[obj.street] || 'Missing';
-      addr.City = this[obj.city] || 'Missing';
-      addr.State = this[obj.state] || 'Missing';
-      addr.Zip = this[obj.zip] || 'Missing';
+      addr.Street = csv[obj.street] || 'Missing';
+      addr.City = csv[obj.city] || 'Missing';
+      addr.State = csv[obj.state] || 'Missing';
+      addr.Zip = csv[obj.zip] || 'Missing';
       results.push(addr.Zip);
     }
   }
 
-  doc.Title = this['title'] || 'Missing';
-  doc.Description = this['description'] || 'No Abstract Was Provided';
-  doc.PublicationDate = this['publication_date'] || 'Missing';
-  doc.ResourceId = this['resource_id'] || 'Missing';
+  doc.Title = csv['title'] || 'Missing';
+  doc.Description = csv['description'] || 'No Abstract Was Provided';
+  doc.PublicationDate = csv['publication_date'] || 'Missing';
+  doc.ResourceId = csv['resource_id'] || 'Missing';
 
   doc.Authors = [];
   obj = {
@@ -119,18 +122,18 @@ function map () {
   setContacts(doc.Authors, obj);
 
   doc.Keywords = [];
-  kws = this['keywords_thematic'];
+  kws = csv['keywords_thematic'];
   if (kws) doc.Keywords = doc.Keywords.concat(kws.split('|'));
-  kws = this['keywords_spatial'];
+  kws = csv['keywords_spatial'];
   if (kws) doc.Keywords = doc.Keywords.concat(kws.split('|'));
-  kws = this['keywords_temporal'];
+  kws = csv['keywords_temporal'];
   if (kws) doc.Keywords = doc.Keywords.concat(kws.split('|'));
 
   doc.GeographicExtent = {
-    NorthBound: (parseFloat(this['north_bounding_latitude'])) || 'Missing',
-    SouthBound: (parseFloat(this['south_bounding_latitude'])) || 'Missing',
-    EastBound: (parseFloat(this['east_bounding_longitude'])) || 'Missing',
-    WestBound: (parseFloat(this['west_bounding_longitude'])) || 'Missing'
+    NorthBound: (parseFloat(csv['north_bounding_latitude'])) || 'Missing',
+    SouthBound: (parseFloat(csv['south_bounding_latitude'])) || 'Missing',
+    EastBound: (parseFloat(csv['east_bounding_longitude'])) || 'Missing',
+    WestBound: (parseFloat(csv['west_bounding_longitude'])) || 'Missing'
   };
 
   doc.Distributors = [];
@@ -149,7 +152,7 @@ function map () {
   setContacts(doc.Distributors, obj);
 
   doc.Links = [];
-  links = this['resource_url'];
+  links = csv['resource_url'];
   if (links) links = links.split('|');
   else links = [];
 
@@ -176,29 +179,29 @@ function map () {
   }
 
   doc.MetadataContact = {
-    Name: this['metadata_contact_person_name']
-      || this['metadata_contact_position_name']
+    Name: csv['metadata_contact_person_name']
+      || csv['metadata_contact_position_name']
       || 'Missing',
-    OrganizationName: this['metadata_contact_org_name'] || 'Missing',
+    OrganizationName: csv['metadata_contact_org_name'] || 'Missing',
     ContactInformation: {
-      Phone: this['metadata_contact_phone'] || 'Missing',
-      email: this['metadata_contact_email'] || 'Missing',
+      Phone: csv['metadata_contact_phone'] || 'Missing',
+      email: csv['metadata_contact_email'] || 'Missing',
       Address: {
-        Street: this['metadata_contact_street_address'] || 'Missing',
-        City: this['metadata_contact_city'] || 'Missing',
-        State: this['metadata_contact_state'] || 'Missing',
-        Zip: this['metadata_contact_zip'] || 'Missing'
+        Street: csv['metadata_contact_street_address'] || 'Missing',
+        City: csv['metadata_contact_city'] || 'Missing',
+        State: csv['metadata_contact_state'] || 'Missing',
+        Zip: csv['metadata_contact_zip'] || 'Missing'
       }
     }
   };
 
   doc.HarvestInformation = {
-    OriginalFileIdentifier: this['resource_id'] || 'this_metadata'
+    OriginalFileIdentifier: csv['resource_id'] || 'csv_metadata'
   };
 
   doc.Published = false;
 
-  emit(this._id, doc);
+  emit(csv._id, doc);
 }
 
 function reduce (key, values) {
