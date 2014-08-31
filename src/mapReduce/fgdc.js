@@ -4,7 +4,53 @@ function map () {
     , serviceTypes
     , capServiceTypes
     , ident
-    , desc;
+    , desc
+    , pubdate
+    , origins
+    , origin
+    , themeKeywords
+    , placeKeywords
+    , stratKeywords
+    , tempKeywords
+    , keyword
+    , distributors
+    , distributor
+    , linksCite
+    , linkCite
+    , crossRefs
+    , crossRef
+    , linksRef
+    , linkRef
+    , onlink
+    , srcInfos
+    , srcInfo
+    , linksSrc
+    , linkSrc
+    , metaContact
+    , entity
+    , contPer
+    , contOrg
+    , contTel
+    , contEma
+    , address
+    , contStr
+    , contact
+    , contCit
+    , contSta
+    , contZip
+    , i
+    , j
+    , k
+    , l
+    , m
+    , n
+    , o
+    , p
+    , q
+    , r
+    , s
+    , t
+    ;
 
   fgdc = this;
 
@@ -221,7 +267,7 @@ function map () {
       email: objGet(distributor, "distrib.cntinfo.cntemail.$t", "Missing"),
       street: objGet(distributor, "distrib.cntinfo.cntaddr.address.$t", "Missing"),
       city: objGet(distributor, "distrib.cntinfo.cntaddr.city.$t", "Missing"),
-      state objGet(distributor, "distrib.cntinfo.cntaddr.state.$t", "Missing"),
+      state: objGet(distributor, "distrib.cntinfo.cntaddr.state.$t", "Missing"),
       zip: objGet(distributor, "distrib.cntinfo.cntaddr.postal.$t", "Missing")
     };
     doc.Distributors.push(buildContact(contact));
@@ -321,7 +367,7 @@ function map () {
   contact = {
     name: contPer,
     organization: contOrg,
-    phone: conTel,
+    phone: contTel,
     email: contEma,
     street: contStr,
     city: contCit,
