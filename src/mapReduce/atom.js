@@ -7,7 +7,13 @@ function map () {
     , capServiceTypes
     , atomAuthors
     , docAuthors
-    , atom;
+    , atom
+    , atomLink
+    , atomLinks
+    , scastSemantics
+    , adjSemantics
+    , serviceType
+    , docLinks;
 
   atom = this;
 
@@ -85,10 +91,10 @@ function map () {
 
     conditions = [
       [/getcapabilities/i, /wms/i]
-      [/getcapabilities/i, /wfs/i]
-      [/getcapabilities/i, /wcs/i]
-      [/\/services\//i, /\/mapserver\/?$/i]
-      [/\.dds$/]
+      , [/getcapabilities/i, /wfs/i]
+      , [/getcapabilities/i, /wcs/i]
+      , [/\/services\//i, /\/mapserver\/?$/i]
+      , [/\.dds$/]
     ];
 
     for (i = 0; i < serviceTypes.length; i++) {
@@ -186,12 +192,51 @@ function map () {
     };
 
     if (serviceType) {
-      rel = objGet(atomLink, 'href', 'alternate');
+      rel = objGet(atomLink, 'rel', 'alternate');
       if (['scast:interfaceDescription', 'scast:serviceInterface'].indexOf(rel) > -1) {
         result.serviceType = serviceType;
       }
     }
+
+    if (result.ServiceType == null) {
+      guess = guessServiceType(result.URL);
+      if (guess) {
+        result.ServiceType = guess;
+      }
+    }
+
+    return result;
   }
+
+  atomLinks = objGet(atom, 'link', []);
+
+  if (atomLinks.href) atomLinks = [atomLinks];
+
+  scastSemantics = objGet(atom, 'scast:serviceSemantics.t', null);
+
+  if (scastSemantics) {
+    adjSemantics = scastSemantics.replace(/\./, ':').toUpperCase();
+    for (i = 0; i < capServiceTypes.length; i++) {
+      type = capServiceTypes[i];
+      if (type.search(adjSemantics) > -1) {
+        serviceType = type;
+      }
+    }
+  }
+
+  docLinks = (function () {
+    var i
+      , results;
+    results = [];
+    for (i = 0; i < atomLinks.length; i++) {
+      atomLink = atomLinks[i];
+      results.push(buildLink(atomLink, serviceType));
+    }
+    return results;
+  })();
+
+  doc.Links = docLinks;
+  doc.setProperty('Published', false);
 
   doc.HarvestInformation = {
     OriginalFileIdentifier: this['resource_id'] || 'this_metadata'

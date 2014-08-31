@@ -37,7 +37,8 @@ function map () {
     , linkLookup
     , responsibleParty
     , link
-    , iso;
+    , iso
+    , ext;
 
   iso = this;
 
@@ -120,11 +121,11 @@ function map () {
       , type;
 
     conditions = [
-      [/getcapabilities/i, /wms/i],
-      [/getcapabilities/i, /wfs/i],
-      [/getcapabilities/i, /wcs/i],
-      [/\/services\//i, /\/mapserver\/?$/i],
-      [/\.dds$/]
+      [/getcapabilities/i, /wms/i]
+      , [/getcapabilities/i, /wfs/i]
+      , [/getcapabilities/i, /wcs/i]
+      , [/\/services\//i, /\/mapserver\/?$/i]
+      , [/\.dds$/]
     ];
 
     for (i = 0; i < serviceTypes.length; i++) {
@@ -288,10 +289,10 @@ function map () {
     extent = validExtents[0];
   }
 
-  doc.setProperty("GeographicExtent.NorthBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.t", 89);
-  doc.setProperty("GeographicExtent.SouthBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.t", -89);
-  doc.setProperty("GeographicExtent.EastBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.t", 179);
-  doc.setProperty("GeographicExtent.WestBound", parseFloat(objGet(extent)), "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.t", -179);
+  doc.setProperty("GeographicExtent.NorthBound", parseFloat(objGet(extent, "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.t", 89)));
+  doc.setProperty("GeographicExtent.SouthBound", parseFloat(objGet(extent, "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.t", -89)));
+  doc.setProperty("GeographicExtent.EastBound", parseFloat(objGet(extent, "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.t", 179)));
+  doc.setProperty("GeographicExtent.WestBound", parseFloat(objGet(extent, "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.t", -179)));
 
   // Distributors
   isoDistributors = objGet(iso, "gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor", []);
@@ -322,6 +323,7 @@ function map () {
   moreLinks = (function () {
     var i
       , results;
+    results = [];
     for (i = 0; i < distributions.length; i++) {
       distOpt = distributions[i];
       results.push(buildLink(onlineResource(distOpt)));
