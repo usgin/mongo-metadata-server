@@ -30,19 +30,23 @@ function search (req, res, next) {
 
 // List records or collections (as JSON)
 function listResources (req, res, next) {
-  var db = mongo.getDb(req.resourceType)
-    , opts = {
-        include_docs: true,
-        clean_docs: true,
-        error: function (err) {
-          return next(new errors.DatabaseReadError(
-            'Error searching for documents'));
-        },
-        success: function (result) {
-          console.log('GET ALL', req.resourceType, 's');
-        }
-      };
-  return da.listDocs(db, opts);
+  var dbModel
+    , opts
+    ;
+
+  dbModel = mongo.getCollection(req.resourceType);
+  opts = {
+    include_docs: true,
+    clean_docs: true,
+    error: function (err) {
+      return next(new errors.DatabaseReadError(
+        'Error searching for documents'));
+    },
+    success: function (result) {
+      console.log('GET ALL', req.resourceType + 's');
+    }
+  };
+  return da.listDocs(dbModel, opts);
 }
 
 // List records in a specific format
@@ -55,7 +59,8 @@ function newResource (req, res, next) {
   var dbModel
     , opts
     ;
-  dbModel = mongo.getCollection(req.params.resourceType);
+
+  dbModel = mongo.getCollection(req.resourceType);
 
   opts = {
     data: _.extend(req.body, {

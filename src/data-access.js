@@ -90,8 +90,28 @@ function getRev (db, options) {
 }
 
 // List all documents in a given database
-function listDocs (db, options) {
+function listDocs (dbModel, options) {
+  var params
+    , ids
+    ;
 
+  if (!options.include_docs) options.include_docs = false;
+  if (!options.clean_docs) options.clean_docs = false;
+  if (!options.success) options.success = function () {};
+  if (!options.error) options.error = function () {};
+
+  ids = [];
+  dbModel.find({}, function (err, res) {
+    if (err) {
+      return options.error(err);
+    } else {
+      _.each(res, function (doc) {
+        ids.push(doc._id);
+      });
+      console.log(ids);
+      return options.success(ids);
+    }
+  })
 }
 
 // Pass all or specific documents through a specified database view

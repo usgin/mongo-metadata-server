@@ -21,7 +21,7 @@ function setParams (req, res, next) {
       break;
     case 'listResources':
     case 'newResource':
-      req.resourceType = req.params[0];
+      req.resourceType = req.params.resourceType;
       break;
     case 'viewRecords':
       req.format = req.params[0];
@@ -39,7 +39,7 @@ function setParams (req, res, next) {
     case 'getResource':
     case 'updateResource':
     case 'deleteResource':
-      req.resourceType = req.params[0];
+      req.resourceType = req.params.resourceType;
       req.resourceId = req.params[1];
       break;
     case 'viewRecord':
@@ -114,7 +114,7 @@ server.post(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) 
 // *******
 // List records or collections as (JSON)
 
-server.get('/metadata', function (req, res, next) {
+server.get('/metadata/:resourceType', function (req, res, next) {
   req.routeId = 'listResources';
   return next();
 }, setParams, routes.listResources);
