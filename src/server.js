@@ -39,6 +39,7 @@ function setParams (req, res, next) {
     case 'getResource':
     case 'updateResource':
     case 'deleteResource':
+    case 'emptyCollection':
       req.resourceType = req.params.resourceType;
       req.resourceId = req.params[1];
       break;
@@ -190,21 +191,25 @@ server.put(/^\/metadata\/(record|collection)\/([^\/]*)\/$/, function (req, res, 
 // *******
 // * DEL *
 // *******
-/*
 
 // Delete a record or collection
-server.del(/^\/metadata\/(record|collection)\/([^\/]*)\/$/, function (req, res, next) {
+server.delete('/metadata/:resourceType/:resourceId', function (req, res, next) {
   req.routeId = 'deleteResource';
   return next();
 }, setParams, routes.deleteResource);
 
+// Drop a MongoDB collection
+server.delete('/metadata/:resourceType', function (req, res, next) {
+  req.routeId = 'emptyCollection';
+  return next();
+}, setParams, routes.emptyCollection);
+
+/*
 // Delete a specific file associated with a specific record
 server.del(/^\/metadata\/record\/([^\/]*)\/file\/(.*)$/, function (req, res, next) {
   req.routeId = 'deleteFile';
   return next();
 }, setParams, routes.deleteFile);
-
-
 */
 
 // Error handler for express server

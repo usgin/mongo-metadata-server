@@ -44,6 +44,7 @@ function listResources (req, res, next) {
     },
     success: function (result) {
       console.log('GET ALL', req.resourceType + 's');
+      res.send(result);
     }
   };
   return da.listDocs(dbModel, opts);
@@ -282,7 +283,22 @@ function updateResource (req, res, next) {
 
 // Delete a record or collection
 function deleteResource (req, res, next) {
+  var dbModel
+    , opts
+    ;
 
+  dbModel = mongo.getCollection(req.resourceType);
+  opts = {
+    id: req.resourceId,
+    error: function (err) {
+      return next(new errors.DatabaseReadError('Error reading document from database'));
+    },
+    success: function (result) {
+      console.log('DELETE', req.resourceType, ':', req.resourceId);
+      return res.send();
+    }
+  };
+  return da.deleteDoc(dbModel, opts);
 }
 
 // List files associated with a specific record
@@ -315,6 +331,24 @@ function getSchema (req, res, next) {
 
 }
 
+function emptyCollection (req, res, next) {
+  var dbModel
+    , opts
+    ;
+
+  dbModel = mongo.getCollection(req.resourceType);
+  opts = {
+    error: function (err) {
+      return next(new errors.DatabaseReadError('Error reading document from database'));
+    },
+    success: function (empty) {
+      console.log('EMPTY', req.resourceType + 's collection');
+      return res.send(empty, 200);
+    }
+  };
+  return da.emptyCollection(dbModel, opts);
+}
+
 exports.search = search;
 exports.listResources = listResources;
 exports.viewRecords = viewRecords;
@@ -334,3 +368,4 @@ exports.getFile = getFile;
 exports.deleteFile = deleteFile;
 exports.listSchemas = listSchemas;
 exports.getSchema = getSchema;
+exports.emptyCollection = emptyCollection;

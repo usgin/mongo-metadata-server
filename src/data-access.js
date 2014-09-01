@@ -47,12 +47,12 @@ function createDoc (dbModel, options) {
 
   options.data = cleanKeywords(options.data);
 
-  dbModel.create(options.data, function (err, response) {
+  dbModel.create(options.data, function (err, res) {
     if (err) {
       console.log(err);
       return options.error(err);
     } else {
-      return options.success(response);
+      return options.success(res);
     }
   })
 }
@@ -65,11 +65,11 @@ function createDocs (dbModel, options) {
 
   options.docs = _.map(options.docs, cleanKeywords);
 
-  dbModel.collection.insert(options.docs, function (err, response) {
+  dbModel.collection.insert(options.docs, function (err, res) {
     if (err) {
       return options.error(err)
     } else {
-      return options.success(response);
+      return options.success(res);
     }
   })
 }
@@ -81,11 +81,6 @@ function getDoc (db, options) {
 
 // Check that a document exists in a given database
 function exists (db, options) {
-
-}
-
-// Return the revision ID for a specific document from a given database
-function getRev (db, options) {
 
 }
 
@@ -108,7 +103,6 @@ function listDocs (dbModel, options) {
       _.each(res, function (doc) {
         ids.push(doc._id);
       });
-      console.log(ids);
       return options.success(ids);
     }
   })
@@ -143,18 +137,49 @@ function mapReduce (dbModel, options) {
   o.reduce = thisMapReduce.reduce;
   o.query = options.query;
 
-  dbModel.mapReduce(o, function (err, response) {
+  dbModel.mapReduce(o, function (err, res) {
     if (err) {
       return options.error(err);
     } else {
-      return options.success(response);
+      return options.success(res);
     }
   })
 }
 
-// Delete a document
-function deleteDoc (db, options) {
+// Delete a single document
+function deleteDoc (dbModel, options) {
+  var query;
+  if (!options.id) options.id = '';
+  if (!options.fileName) options.fileName = '';
+  if (!options.success) options.success = function () {};
+  if (!options.error) options.error = function () {};
 
+  query = { _id: options.id };
+
+  dbModel.remove(query, function (err, res) {
+    if (err) {
+      return options.error(err);
+    } else {
+      return options.success(res);
+    }
+  })
+}
+
+// Empty an entire collection
+function emptyCollection (dbModel, options) {
+  if (!options.id) options.id = '';
+  if (!options.fileName) options.fileName = '';
+  if (!options.success) options.success = function () {};
+  if (!options.error) options.error = function () {};
+
+  dbModel.remove({}, function (err, res) {
+    if (err) {
+      return options.error(err);
+    } else {
+      res = 'Deleted ' + res + ' records';
+      return options.success(res);
+    }
+  })
 }
 
 // Delete an attachment
@@ -176,10 +201,10 @@ exports.createDoc = createDoc;
 exports.createDocs = createDocs;
 exports.getDoc = getDoc;
 exports.exists = exists;
-exports.getRev = getRev;
 exports.listDocs = listDocs;
 exports.mapReduce = mapReduce;
 exports.deleteDoc = deleteDoc;
 exports.deleteFile =deleteFile;
 exports.getCollectionNames = getCollectionNames;
 exports.search = search;
+exports.emptyCollection = emptyCollection;
