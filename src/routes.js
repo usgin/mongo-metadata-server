@@ -55,13 +55,30 @@ function newResource (req, res, next) {
   var dbModel
     , opts
     ;
+  dbModel = mongo.getCollection(req.params.resourceType);
+
+  opts = {
+    data: _.extend(req.body, {
+      ModifiedDate: utils.getCurrentDate()
+    }),
+    error: function (err) {
+      return next(new errors.DatabaseWriteError('Error writing to the database'));
+    },
+    success: function (newRecord) {
+      return res.send('', {
+        Location: "/metadata/" + req.resourceType + "/" + newRecord.id + "/"
+      }, 201);
+    }
+  };
+  return da.createDoc(dbModel, opts);
+  /*
   dbModel = mongo.getCollection(req.resourceType);
   if (!da.validateRecord(req.body, req.resourceType)) {
     return next(new errors.ValidatorError('Uploaded data did not pass validation'));
   } else {
     opts = {
       data: _.extend(req.body, {
-        ModifiedDat: utils.getCurrentDate()
+        ModifiedDate: utils.getCurrentDate()
       }),
       error: function (err) {
         return next(new errors.DatabaseWriteError('Error writing to the database'));
@@ -74,7 +91,7 @@ function newResource (req, res, next) {
     };
     return da.createDoc(dbModel, opts);
   }
-
+  */
 }
 
 // Harvest an existing record

@@ -47,8 +47,6 @@ function createDoc (dbModel, options) {
 
   options.data = cleanKeywords(options.data);
 
-  if (options.id) options.data._id = options.id;
-
   dbModel.create(options.data, function (err, response) {
     if (err) {
       return options.error(err);
@@ -148,11 +146,6 @@ function getCollectionNames (options) {
 
 }
 
-// Validate data
-function validateRecord (data, resourceType) {
-
-}
-
 // Perform a search
 function search (searchUrl, options) {
 
@@ -168,5 +161,4 @@ exports.mapReduce = mapReduce;
 exports.deleteDoc = deleteDoc;
 exports.deleteFile =deleteFile;
 exports.getCollectionNames = getCollectionNames;
-exports.validateRecord = validateRecord;
 exports.search = search;

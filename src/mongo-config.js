@@ -1,96 +1,104 @@
 var mongoose = require('mongoose')
   , _ = require('underscore');
 
-var config = {dbHost: 'localhost', dbPort: '27071', dbName: 'cinergi'}
-  , mongoUrl = ['mongodb:/', config.dbHost, config.dbName].join('/');
+var config
+  , mongoUrl
+  , recordsSchema
+  , harvestsSchema
+  , collectionsSchema
+  , mongoDb
+  ;
+
+config = {dbHost: 'localhost', dbPort: '27071', dbName: 'cinergi'};
+mongoUrl = ['mongodb:/', config.dbHost, config.dbName].join('/');
 
 // *****************************
 // * Records collection schema *
 // *****************************
-var recordsSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
-  Title: String,
-  Description: String,
-  PublicationDate: Date,
-  ResourceId: String,
+recordsSchema = new mongoose.Schema({
+  id: {type: String, required: true},
+  Title: {type: String, required: true},
+  Description: {type: String, required: true},
+  PublicationDate: {type: Date, required: true},
+  ResourceId: {type: String, required: false},
   Authors: [{
-    Name: String,
-    OrganizationName: String,
+    Name: {type: String, required: false},
+    OrganizationName: {type: String, required: false},
     ContactInformation: {
-      Phone: String,
-      email: String,
+      Phone: {type: String, required: false},
+      email: {type: String, required: true},
       Address: {
-        Street: String,
-        City: String,
-        State: String,
-        Zip: String
+        Street: {type: String, required: true},
+        City: {type: String, required: true},
+        State: {type: String, required: true},
+        Zip: {type: String, required: true}
       }
     }
   }],
   Keywords: [],
   GeographicExtent: {
-    NorthBound: Number,
-    SouthBound: Number,
-    EastBound: Number,
-    WestBound: Number
+    NorthBound: {type: Number, required: true, min: -90, max: 90},
+    SouthBound: {type: Number, required: true, min: -90, max: 90},
+    EastBound: {type: Number, required: true, min: -180, max: 180},
+    WestBound: {type: Number, required: true, min: -180, max: 180}
   },
   Distributors: [{
-    Name: String,
-    OrganizationName: String,
+    Name: {type: String, required: false},
+    OrganizationName: {type: String, required: false},
     ContactInformation: {
-      Phone: String,
-      email: String,
+      Phone: {type: String, required: false},
+      email: {type: String, required: true},
       Address: {
-        Street: String,
-        City: String,
-        State: String,
-        Zip: String
+        Street: {type: String, required: true},
+        City: {type: String, required: true},
+        State: {type: String, required: true},
+        Zip: {type: String, required: true}
       }
     }
   }],
   Links: [{
-    URL: String,
-    Name: String,
-    Description: String,
-    Distributor: String,
-    ServiceType: String
+    URL: {type: String, required: true},
+    Name: {type: String, required: false},
+    Description: {type: String, required: false},
+    Distributor: {type: String, required: false},
+    ServiceType: {type: String, required: false}
   }],
   MetadataContact: {
-    Name: String,
-    OrganizationName: String,
+    Name: {type: String, required: false},
+    OrganizationName: {type: String, required: false},
     ContactInformation: {
-      Phone: String,
-      email: String,
+      Phone: {type: String, required: false},
+      email: {type: String, required: true},
       Address: {
-        Street: String,
-        City: String,
-        State: String,
-        Zip: String
+        Street: {type: String, required: true},
+        City: {type: String, required: true},
+        State: {type: String, required: true},
+        Zip: {type: String, required: true}
       }
     }
   },
   HarvestInformation: {
-    OriginalFileIdentifier: String,
-    OriginalFormat: String,
-    HarvestRecordId: String,
-    HarvestURL: String,
-    HarvestDate: String
+    OriginalFileIdentifier: {type: String, required: false},
+    OriginalFormat: {type: String, required: false},
+    HarvestRecordId: {type: String, required: true},
+    HarvestURL: {type: String, required: true},
+    HarvestDate: {type: String, required: true}
   },
-  Collections: [],
-  Published: Boolean
+  Collections: {type: Array, required: true},
+  Published: {type: Boolean, required: true}
 });
 
 // ******************************************************************
 // * Collections collection schema... Might want to rename this one *
 // ******************************************************************
-var collectionsSchema = new mongoose.Schema({});
+collectionsSchema = new mongoose.Schema({});
 
 // ******************************
 // * Harvests collection schema *
 // ******************************
-var harvestsSchema = new mongoose.Schema({});
+harvestsSchema = new mongoose.Schema({});
 
-var mongoDb = mongoose.connect(mongoUrl);
+mongoDb = mongoose.connect(mongoUrl);
 mongoDb.connection.on('error', function (err) {
   console.log('Error connecting to MongoDB', err);
 });

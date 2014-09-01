@@ -24,11 +24,7 @@ describe('Create Single Record', function () {
       }, function (err, res, body) {
         if (res.statusCode === 200) {
 
-          req = {
-            "resourceType": "record",
-            "id": "123abc",
-            "data": body
-          };
+          req = body;
 
           supertest(metadataServer)
             .post('/metadata/record')

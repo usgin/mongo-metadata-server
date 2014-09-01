@@ -89,7 +89,7 @@ server.post('/metadata/harvest', function (req, res, next) {
 }, setParams, routes.harvestRecord, routes.saveRecord);
 
 // Create a new record or collection
-server.post('/metadata/record', function (req, res, next) {
+server.post('/metadata/:resourceType', function (req, res, next) {
   req.routeId = 'newResource';
   return next();
 }, setParams, routes.newResource);
