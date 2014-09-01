@@ -99,7 +99,7 @@ describe('Tests', function () {
     })
   });
 
-  describe('Post json and save record', function () {
+  describe('Post single json record and save', function () {
     it('should return 200 when posting to the server', function (done) {
 
       request({
@@ -116,6 +116,14 @@ describe('Tests', function () {
             .expect(200, done)
         }
       })
+    })
+  });
+
+  describe('Delete single record', function () {
+    it('should return when deleting from the server', function (done) {
+      supertest(metadataServer)
+        .del('/metadata/record/hd943huo492hjnqpqncq384923d')
+        .expect(200, done)
     })
   });
 
