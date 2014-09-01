@@ -242,6 +242,8 @@ function map () {
     OriginalFileIdentifier: this['resource_id'] || 'this_metadata'
   };
 
+  doc._id = objGet(atom, 'id.t');
+
   emit(this._id, doc);
 }
 

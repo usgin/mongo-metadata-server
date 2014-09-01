@@ -49,6 +49,7 @@ function createDoc (dbModel, options) {
 
   dbModel.create(options.data, function (err, response) {
     if (err) {
+      console.log(err);
       return options.error(err);
     } else {
       return options.success(response);

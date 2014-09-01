@@ -3,7 +3,8 @@ var express = require('express')
   , errorHandler = require('errorhandler')
   , mongo = require('./mongo-config')
   , routes = require('./routes')
-  , errors = require('./errors');
+  , errors = require('./errors')
+  ;
 
 var server = express();
 server.use(bodyParser.urlencoded({extended: true}));
@@ -73,14 +74,6 @@ function setParams (req, res, next) {
 // ********
 // * POST *
 // ********
-// Text-based search for records
-
-/*
-server.post(/^\/metadata\/search\/$/, function (req, res, next) {
-  req.routeId = 'search';
-  return next();
-}, setParams, routes.search);
-*/
 
 // Harvest an existing record
 server.post('/metadata/harvest', function (req, res, next) {
@@ -95,6 +88,12 @@ server.post('/metadata/:resourceType', function (req, res, next) {
 }, setParams, routes.newResource);
 
 /*
+// Text-based search for records
+server.post(/^\/metadata\/search\/$/, function (req, res, next) {
+  req.routeId = 'search';
+  return next();
+}, setParams, routes.search);
+
 // Upload an existing record
 server.post(/^\/metadata\/upload\/$/, function (req, res, next) {
   req.routeId = 'uploadRecord';

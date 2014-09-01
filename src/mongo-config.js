@@ -16,7 +16,7 @@ mongoUrl = ['mongodb:/', config.dbHost, config.dbName].join('/');
 // * Records collection schema *
 // *****************************
 recordsSchema = new mongoose.Schema({
-  id: {type: String, required: true},
+  _id: {type: String, required: true, unique: true},
   Title: {type: String, required: true},
   Description: {type: String, required: true},
   PublicationDate: {type: Date, required: true},

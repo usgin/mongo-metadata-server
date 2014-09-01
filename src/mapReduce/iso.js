@@ -397,10 +397,11 @@ function map () {
 
   doc.setProperty('ResourceId', objGet(iso, "gmd:MD_Metadata.gmd:dataSetURI.gco:CharacterString.t", null));
   doc.setProperty("HarvestInformation.OriginalFileIdentifier", objGet(iso, "gmd:MD_Metadata.gmd:fileIdentifier.gco:CharacterString.t"));
-  doc.setProperty('Pubslihed', false);
+  doc.setProperty('Published', false);
+
+  doc.setProperty('_id', objGet(iso, "gmd:MD_Metadata.gmd:fileIdentifier.gco:CharacterString.t"));
 
   emit(this._id, doc);
-
 }
 
 function reduce (key, values) {

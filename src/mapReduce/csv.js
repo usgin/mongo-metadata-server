@@ -199,6 +199,10 @@ function map () {
     OriginalFileIdentifier: csv['resource_id'] || 'csv_metadata'
   };
 
+  if (csv['metadata_uuid']) {
+    doc._id = csv['metadata_uuid'];
+  }
+
   doc.Published = false;
 
   emit(csv._id, doc);

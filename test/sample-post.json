@@ -1,5 +1,5 @@
 {
-  "id": "testmetadatarecord",
+  "_id": "hd943huo492hjnqpqncq384923d",
   "Title" : "NHD Hydrologic Features",
   "Description" : "Hydrology feature layers gathered from the NHD and managed by ASLD. Display hydrologic features available in the Catalog, including: Springs - NHD, Dams & Weirs - NHD Line, Dams & Weirs - NHD Polygon, Canals, Ditches, & Pipelines - NHD Line, Canals, Ditches, & Pipelines - NHD Polygon, Lakes and Reservoirs - (Major) NHD, Lakes and Reservoirs - (All) NHD, Washes - NHD, Subbasin (8-digit HUC) Boundaries - NHD, Subregion (4-digit HUC) Boundaries - NHD, Basin (6-digit HUC) Boundaries - NHD, Hydrologic Unit Code (HUC) Areas",
   "PublicationDate" : "2013-07-31T00:00",
