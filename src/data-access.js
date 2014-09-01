@@ -1,9 +1,7 @@
-var schemas = require('./schemas')
-  , atomMapReduce = require('./mapReduce/atom')
+var atomMapReduce = require('./mapReduce/atom')
   , csvMapReduce = require('./mapReduce/csv')
   , fgdcMapReduce = require('./mapReduce/fgdc')
   , isoMapReduce = require('./mapReduce/iso')
-  , orgConfig = require('./organization-config')
   , request = require('request')
   , _ = require('underscore');
 
@@ -75,8 +73,23 @@ function createDocs (dbModel, options) {
 }
 
 // Retrieve a document by it's ID from a given database
-function getDoc (db, options) {
+function getDoc (dbModel, options) {
+  var query
+    , doc
+    ;
+  if (!options.success) options.success = function () {};
+  if (!options.error) options.error = function () {};
+  if (!options.id) options.id = '';
 
+  query = { _id: options.id };
+
+  dbModel.find(query, function (err, res) {
+    if (err) {
+      return options.error(err);
+    } else {
+      return options.success(JSON.stringify(res));
+    }
+  })
 }
 
 // Check that a document exists in a given database
@@ -160,6 +173,7 @@ function deleteDoc (dbModel, options) {
     if (err) {
       return options.error(err);
     } else {
+      res = 'Deleted ' + res + ' record';
       return options.success(res);
     }
   })

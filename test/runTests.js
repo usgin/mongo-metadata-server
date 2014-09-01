@@ -119,6 +119,14 @@ describe('Tests', function () {
     })
   });
 
+  describe('Retrieve single record as json', function () {
+    it('should return 200 when getting data from the server', function (done) {
+      supertest(metadataServer)
+        .get('/metadata/record/hd943huo492hjnqpqncq384923d')
+        .expect(200, done);
+    })
+  });
+
   describe('Delete single record', function () {
     it('should return when deleting from the server', function (done) {
       supertest(metadataServer)

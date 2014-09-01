@@ -41,7 +41,7 @@ function setParams (req, res, next) {
     case 'deleteResource':
     case 'emptyCollection':
       req.resourceType = req.params.resourceType;
-      req.resourceId = req.params[1];
+      req.resourceId = req.params.resourceId;
       break;
     case 'viewRecord':
     case 'viewCollectionRecords':
@@ -120,6 +120,12 @@ server.get('/metadata/:resourceType', function (req, res, next) {
   return next();
 }, setParams, routes.listResources);
 
+// Retrieve a specific record or collection (as JSON)
+server.get('/metadata/:resourceType/:resourceId', function (req, res, next) {
+  req.routeId = 'getResource';
+  return next();
+}, setParams, routes.getResource);
+
 /*
 
 // List records in a specific format
@@ -127,12 +133,6 @@ server.get(/^\/metadata\/record\.(iso\.xml|atom\.xml|geojson)$/, function (req, 
   req.routeId = 'viewRecords';
   return next();
 }, setParams, routes.viewRecords);
-
-// Retrieve a specific record or collection (as JSON)
-server.get(/^\/metadata\/(record|collection)\/([^\/]*)\/$/, function (req, res, next) {
-  req.routeId = 'getResource';
-  return next();
-}, setParams, routes.getResource);
 
 // Retrieve a specific record in a specific format
 server.get(/^\/metadata\/record\/([^\/]*)\.(iso.xml|atom\.xml|geojson)$/, function (req, res, next) {

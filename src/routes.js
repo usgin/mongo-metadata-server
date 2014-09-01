@@ -2,7 +2,6 @@ var mongo = require('./mongo-config')
   , da = require('./data-access')
   , errors = require('./errors')
   , utils = require('./utils')
-  , schemas = require('./schemas')
   , csv2json = require('./csv2json')
   , _ = require('underscore')
   , fs = require('fs')
@@ -77,27 +76,6 @@ function newResource (req, res, next) {
     }
   };
   return da.createDoc(dbModel, opts);
-  /*
-  dbModel = mongo.getCollection(req.resourceType);
-  if (!da.validateRecord(req.body, req.resourceType)) {
-    return next(new errors.ValidatorError('Uploaded data did not pass validation'));
-  } else {
-    opts = {
-      data: _.extend(req.body, {
-        ModifiedDate: utils.getCurrentDate()
-      }),
-      error: function (err) {
-        return next(new errors.DatabaseWriteError('Error writing to the database'));
-      },
-      success: function (newRecord) {
-        return res.send('', {
-          Location: "/metadata/" + req.resourceType + "/" + newRecord.id + "/"
-        }, 201);
-      }
-    };
-    return da.createDoc(dbModel, opts);
-  }
-  */
 }
 
 // Harvest an existing record
@@ -258,7 +236,25 @@ function saveRecord (req, res, next) {
 
 // Retrieve a specific record or collection (as JSON)
 function getResource (req, res, next) {
-
+  var dbModel
+    , opts
+    ;
+  dbModel = mongo.getCollection(req.resourceType);
+  opts = {
+    id: req.resourceId,
+    error: function (err) {
+      if ((err) && (err['status-code'] = 404)) {
+        return next(new errors.NotFoundError('Requested document:', req.resourceId, 'was not found'));
+      } else {
+        return next(new errors.DatabaseReadError('Error reading document from database'));
+      }
+    },
+    success: function (result) {
+      console.log('RETRIEVE', req.resourceType, ':', req.resourceId);
+      return res.send(result, 200);
+    }
+  };
+  return da.getDoc(dbModel, opts);
 }
 
 // Retrieve a specific record in a specific format
@@ -295,7 +291,7 @@ function deleteResource (req, res, next) {
     },
     success: function (result) {
       console.log('DELETE', req.resourceType, ':', req.resourceId);
-      return res.send();
+      return res.send(result, 200);
     }
   };
   return da.deleteDoc(dbModel, opts);
@@ -341,9 +337,9 @@ function emptyCollection (req, res, next) {
     error: function (err) {
       return next(new errors.DatabaseReadError('Error reading document from database'));
     },
-    success: function (empty) {
+    success: function (result) {
       console.log('EMPTY', req.resourceType + 's collection');
-      return res.send(empty, 200);
+      return res.send(result, 200);
     }
   };
   return da.emptyCollection(dbModel, opts);
