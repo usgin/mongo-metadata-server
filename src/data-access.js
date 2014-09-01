@@ -40,24 +40,22 @@ function cleanKeywords (doc) {
 }
 
 // Create a single document in the database
-function createDoc (db, options) {
+function createDoc (dbModel, options) {
   options.data = options.data !== null ? options.data : {};
   options.success = options.success !== null ? options.success : function () {};
   options.error = options.error !== null ? options.error : function () {};
 
-  // We might need to call 'cleanKeywords()' here
+  options.data = cleanKeywords(options.data);
 
-  function results (err, response) {
-   if (err) {
-     return options.error(err);
-   } else {
-     return options.success(response);
-   }
-  }
+  if (options.id) options.data._id = options.id;
 
-  if (options.id) {
-    return db.instert
-  }
+  dbModel.create(options.data, function (err, response) {
+    if (err) {
+      return options.error(err);
+    } else {
+      return options.success(response);
+    }
+  })
 }
 
 // Create multiple documents in the given database
@@ -128,7 +126,6 @@ function mapReduce (dbModel, options) {
 
   dbModel.mapReduce(o, function (err, response) {
     if (err) {
-      console.log(options.format, err);
       return options.error(err);
     } else {
       return options.success(response);

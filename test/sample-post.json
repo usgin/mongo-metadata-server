@@ -1,0 +1,92 @@
+{
+  "Title" : "NHD Hydrologic Features",
+  "Description" : "Hydrology feature layers gathered from the NHD and managed by ASLD. Display hydrologic features available in the Catalog, including: Springs - NHD, Dams & Weirs - NHD Line, Dams & Weirs - NHD Polygon, Canals, Ditches, & Pipelines - NHD Line, Canals, Ditches, & Pipelines - NHD Polygon, Lakes and Reservoirs - (Major) NHD, Lakes and Reservoirs - (All) NHD, Washes - NHD, Subbasin (8-digit HUC) Boundaries - NHD, Subregion (4-digit HUC) Boundaries - NHD, Basin (6-digit HUC) Boundaries - NHD, Hydrologic Unit Code (HUC) Areas",
+  "PublicationDate" : "2013-07-31T00:00",
+  "ResourceId" : "Missing",
+  "Authors" : [
+    {
+      "Name" : "Missing",
+      "OrganizationName" : "Arizona State Land Department, Arizona Land Resource Information System",
+      "ContactInformation" : {
+        "Phone" : "5202094265",
+        "email" : "bbruno@azland.gov",
+        "Address" : {
+          "Street" : "1616 West Adams Street�",
+          "City" : "Phoenix",
+          "State" : "Arizona�",
+          "Zip" : "85007"
+        }
+      }
+    }
+  ],
+  "Keywords" : [
+    "usginres:service",
+    "nhd",
+    "hydrology",
+    "hydrologic unit code boundaries",
+    "nrrc",
+    "arizona"
+  ],
+  "GeographicExtent" : {
+    "NorthBound" : 37.17296998,
+    "SouthBound" : 31.40471108,
+    "EastBound" : -108.9868212,
+    "WestBound" : -114.5239305
+  },
+  "Distributors" : [
+    {
+      "Name" : "Missing",
+      "OrganizationName" : "Arizona Geographic Information Council�",
+      "ContactInformation" : {
+        "Phone" : "5202094265",
+        "email" : "bbruno@azland.gov",
+        "Address" : {
+          "Street" : "1616 West Adams Street�",
+          "City" : "Phoenix",
+          "State" : "Arizona�",
+          "Zip" : "85007"
+        }
+      }
+    }
+  ],
+  "Links" : [
+    {
+      "URL" : "https://azgeo.az.gov/geoservices/rest/services/asld/NHD_HydroFeatures/MapServer",
+      "Name" : "Resource URL",
+      "Description" : "No Description Was Provided",
+      "Distributor" : "Missing",
+      "ServiceType" : "esri"
+    },
+    {
+      "URL" : "https://azgeo.az.gov/geoservices/services/asld/NHD_HydroFeatures/MapServer/WMSServer?request=GetCapabilities&amp;service=WMS",
+      "Name" : "Resource URL",
+      "Description" : "No Description Was Provided",
+      "Distributor" : "Missing",
+      "ServiceType" : "OGC:WMS"
+    }
+  ],
+  "MetadataContact" : {
+    "Name" : "Missing",
+    "OrganizationName" : "Arizona Geographic Information Council�",
+    "ContactInformation" : {
+      "Phone" : "5202094265",
+      "email" : "bbruno@azland.gov",
+      "Address" : {
+        "Street" : "1616 West Adams Street�",
+        "City" : "Phoenix",
+        "State" : "Arizona�",
+        "Zip" : "85007"
+      }
+    }
+  },
+  "HarvestInformation" : {
+    "OriginalFileIdentifier" : "csv_metadata",
+    "OriginalFormat" : "csv",
+    "HarvestURL" : "http://localhost:3030/sample-csv.csv",
+    "HarvestDate" : "2014-8-31T17:5:30Z",
+    "HarvestRecordId" : null
+  },
+  "Published" : false,
+  "Collections" : [],
+  "ModifiedDate" : "2014-8-31T17:5:30Z"
+}

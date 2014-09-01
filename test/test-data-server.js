@@ -8,13 +8,16 @@ var app
   , sampleCsv
   , isoXml
   , atomXml
-  , fgdcXml;
+  , fgdcXml
+  , sampleJson
+  ;
 
 app = express();
 sampleCsv = path.join(__dirname, 'sample-csv.csv');
 isoXml = path.join(__dirname, 'sample-iso.xml');
 atomXml = path.join(__dirname, 'sample-atom.xml');
 fgdcXml = path.join(__dirname, 'sample-fgdc.xml');
+sampleJson = path.join(__dirname, 'sample-post.json');
 
 app.get('/sample-csv.csv', function (req, res) {
   res.attachment('sample-csv.csv');
@@ -42,6 +45,13 @@ app.get('/sample-fgdc.xml', function (req, res) {
     if (err) throw err;
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(xml)
+  })
+});
+
+app.get('/sample-post.json', function (req, res) {
+  fs.readFile(sampleJson, 'utf8', function (err, data) {
+    data = JSON.parse(data);
+    res.json(data)
   })
 });
 

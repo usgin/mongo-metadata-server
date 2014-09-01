@@ -74,10 +74,13 @@ function setParams (req, res, next) {
 // * POST *
 // ********
 // Text-based search for records
+
+/*
 server.post(/^\/metadata\/search\/$/, function (req, res, next) {
   req.routeId = 'search';
   return next();
 }, setParams, routes.search);
+*/
 
 // Harvest an existing record
 server.post('/metadata/harvest', function (req, res, next) {
@@ -85,14 +88,13 @@ server.post('/metadata/harvest', function (req, res, next) {
   return next();
 }, setParams, routes.harvestRecord, routes.saveRecord);
 
-/*
-
 // Create a new record or collection
-server.post(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
+server.post('/metadata/record', function (req, res, next) {
   req.routeId = 'newResource';
   return next();
 }, setParams, routes.newResource);
 
+/*
 // Upload an existing record
 server.post(/^\/metadata\/upload\/$/, function (req, res, next) {
   req.routeId = 'uploadRecord';
@@ -113,7 +115,7 @@ server.post(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) 
 // *******
 // List records or collections as (JSON)
 
-server.get(/^\/metadata\/(record|collection)\/$/, function (req, res, next) {
+server.get('/metadata', function (req, res, next) {
   req.routeId = 'listResources';
   return next();
 }, setParams, routes.listResources);
