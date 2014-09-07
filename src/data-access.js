@@ -1,7 +1,7 @@
-var atomMapReduce = require('./mapReduce/atom')
-  , csvMapReduce = require('./mapReduce/csv')
-  , fgdcMapReduce = require('./mapReduce/fgdc')
-  , isoMapReduce = require('./mapReduce/iso')
+var atomMapReduce = require('./mapReduce/input-atom')
+  , csvMapReduce = require('./mapReduce/input-csv')
+  , fgdcMapReduce = require('./mapReduce/input-fgdc')
+  , isoMapReduce = require('./mapReduce/input-iso')
   , request = require('request')
   , _ = require('underscore');
 
