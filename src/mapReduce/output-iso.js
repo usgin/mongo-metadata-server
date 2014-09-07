@@ -8,7 +8,21 @@ function map () {
     , azgsContact
     , metaContact
     , dsId
+    , docAuthor
     , docAuthors
+    , docKeyword
+    , docKeywords
+    , docDistributors
+    , docLink
+    , docLinks
+    , docDistributor
+    , distName
+    , dl
+    , i
+    , j
+    , k
+    , l
+    , m
     ;
 
   function objGet (obj, prop, defVal) {
@@ -213,7 +227,65 @@ function map () {
   iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:date.gmd:CI_Date.gmd:dateType.gmd:CI_DateTypeCode.codeListValue", "publication");
   iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:date.gmd:CI_Date.gmd:dateType.gmd:CI_DateTypeCode.$t", "publication");
   docAuthors = objGet(doc, 'Authors', []);
-  
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:citedResponsibleParty", []);
+
+  for (i = 0; i < docAuthors.length; i++) {
+    docAuthor = docAuthors[i];
+    writeContactInfo(docAuthor, "gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:citation.gmd:CI_Citation.gmd:citedResponsibleParty." + i, "originator");
+  }
+
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:abstract.gco:CharacterString.$t", objGet(doc, "Description", "No Description Was Given"));
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:status.gmd:MD_ProgressCode.codeList", "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#MD_ProgressCode");
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:status.gmd:MD_ProgressCode.codeListValue", "completed");
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:status.gmd:MD_ProgressCode.$t", "completed");
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords", []);
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords.0.gmd:MD_Keywords.gmd:keyword", []);
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords.0.gmd:MD_Keywords.gmd:type.gmd:MD_KeywordTypeCode.codeList", "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode");
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords.0.gmd:MD_Keywords.gmd:type.gmd:MD_KeywordTypeCode.codeListValue", "theme");
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords.0.gmd:MD_Keywords.gmd:type.gmd:MD_KeywordTypeCode.$t", "theme");
+
+  docKeywords = objGet(doc, 'Keywords', []);
+  for (j = 0; j < docKeywords.length; j++) {
+    docKeyword = docKeywords[j];
+    iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:descriptiveKeywords.0.gmd:MD_Keywords.gmd:keyword." + j + ".gco:CharacterString.$t", docKeyword);
+  }
+
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:language.gco:CharacterString.$t", "eng");
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:topicCategory.gmd:MD_TopicCategoryCode.$t", "geoscientificInformation");
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.$t", "" + (objGet(doc, 'GeographicExtent.WestBound')));
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.$t", "" + (objGet(doc, 'GeographicExtent.EastBound')));
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.$t", "" + (objGet(doc, 'GeographicExtent.SouthBound')));
+  iso.setProperty("gmd:MD_Metadata.gmd:identificationInfo.gmd:MD_DataIdentification.gmd:extent.gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.$t", "" + (objGet(doc, 'GeographicExtent.NorthBound')));
+
+  docDistributors = objGet(doc, 'Distributors', []);
+  docLinks = objGet(doc, 'Links', []);
+
+  iso.setProperty("gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor", []);
+  iso.setProperty("gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions", []);
+
+  for (k = 0; k < docLinks.length; k++) {
+    docLink = docLinks[k];
+    writeLinkInfo(docLink, "gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions." + k, true);
+  }
+
+  for (l = 0; l < docDistributors.length; l++) {
+    docDistributor = docDistributors[l];
+    writeContactInfo(docDistributor, "gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor." + l + ".gmd:MD_Distributor.gmd:distributorContact", "distributor");
+    dl = 0;
+    for (m = 0; m < docLinks.length; m++) {
+      docLink = docLinks[m];
+      distName = objGet(docLink, 'Distributor', 'None').trim();
+      if (distName === objGet(docDistributor, 'Name', null || distName === objGet(docDistributor, 'OrganizationName', null))) {
+        if (!objGet(iso, "gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor." + l + ".gmd:MD_Distributor.gmd:distributorTransferOptions", false)) {
+          iso.setProperty("gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor." + l + ".gmd:MD_Distributor.gmd:distributorTransferOptions", []);
+        }
+        iso.setProperty("gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor." + l + ".gmd:MD_Distributor.gmd:distributorTransferOptions." + dl + ".xlink:href", "#" + computeId(docLink, false));
+        dl++;
+      }
+    }
+  }
+
+  emit(this._id, doc);
 }
 
 function reduce () {
