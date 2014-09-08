@@ -1,10 +1,13 @@
 function map () {
-  var geojson
+  var doc
+    , geojson
     , n
     , s
     , e
     , w
     ;
+
+  doc = this;
 
   function objGet (obj, prop, defVal) {
     var props
@@ -90,9 +93,9 @@ function map () {
   geojson.setProperty("crs.type", "name");
   geojson.setProperty("crs.properties.name", "urn:ogc:def:crs:OGC:1.3:CRS84");
 
-  emit(this._id, doc);
+  emit(this._id, geojson);
 }
 
-function reduce () {
-
+function reduce (data) {
+  return data;
 }

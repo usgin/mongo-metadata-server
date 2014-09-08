@@ -208,8 +208,8 @@ function map () {
   emit(csv._id, doc);
 }
 
-function reduce (key, values) {
-  return key;
+function reduce (data) {
+  return data;
 }
 
 exports.map = map;
