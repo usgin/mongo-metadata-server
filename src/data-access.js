@@ -1,7 +1,10 @@
-var atomMapReduce = require('./mapReduce/input-atom')
-  , csvMapReduce = require('./mapReduce/input-csv')
-  , fgdcMapReduce = require('./mapReduce/input-fgdc')
-  , isoMapReduce = require('./mapReduce/input-iso')
+var inputAtomMapReduce = require('./mapReduce/input-atom')
+  , inputCsvMapReduce = require('./mapReduce/input-csv')
+  , inputFgdcMapReduce = require('./mapReduce/input-fgdc')
+  , inputIsoMapReduce = require('./mapReduce/input-iso')
+  , outputAtomMapReduce = require('./mapReduce/output-atom')
+  , outputGeoJsonMapReduce = require('./mapReduce/output-geojson')
+  , outputIsoMapReduce = require('./mapReduce/output-iso')
   , request = require('request')
   , _ = require('underscore');
 
@@ -124,25 +127,42 @@ function listDocs (dbModel, options) {
 // Pass all or specific documents through a specified database view
 function mapReduce (dbModel, options) {
   var thisMapReduce;
+  if (!options.method) options.method = '';
   if (!options.format) options.format = '';
   if (!options.query) options.query = '';
   if (!options.clean_docs) options.clean_docs = false;
   if (!options.success) options.success = function () {};
   if (!options.error) options.error = function () {};
 
-  switch (options.format) {
-    case 'atom.xml':
-      thisMapReduce = atomMapReduce;
-      break;
-    case 'csv':
-      thisMapReduce = csvMapReduce;
-      break;
-    case 'fgdc.xml':
-      thisMapReduce = fgdcMapReduce;
-      break;
-    case 'iso.xml':
-      thisMapReduce = isoMapReduce;
-      break;
+  if (options.method === 'POST') {
+    switch (options.format) {
+      case 'atom.xml':
+        thisMapReduce = inputAtomMapReduce;
+        break;
+      case 'csv':
+        thisMapReduce = inputCsvMapReduce;
+        break;
+      case 'fgdc.xml':
+        thisMapReduce = inputFgdcMapReduce;
+        break;
+      case 'iso.xml':
+        thisMapReduce = inputIsoMapReduce;
+        break;
+    }
+  }
+
+  if (options.method === 'GET') {
+    switch (options.format) {
+      case 'iso.xml':
+        thisMapReduce = outputIsoMapReduce;
+        break;
+      case 'atom.xml':
+        thisMapReduce = outputAtomMapReduce;
+        break;
+      case 'geojson':
+        thisMapReduce = outputGeoJsonMapReduce;
+        break;
+    }
   }
 
   var o = {};
@@ -211,6 +231,21 @@ function search (searchUrl, options) {
 
 }
 
+// Pass all or specific documents through a specified map reduce output
+function viewDocs (dbModel, options) {
+  var params;
+  if (!options.design) options.design = '';
+  if (!options.format) options.format = '';
+  if (!options.success) options.success = '';
+  if (!options.error) options.error = '';
+
+  params = {};
+  if (options.key) params.key = options.key;
+  if (options.keys) params.keys = options.keys;
+  if (options.reduce) params.reduce = options.reduce;
+
+}
+
 exports.createDoc = createDoc;
 exports.createDocs = createDocs;
 exports.getDoc = getDoc;
@@ -222,3 +257,4 @@ exports.deleteFile =deleteFile;
 exports.getCollectionNames = getCollectionNames;
 exports.search = search;
 exports.emptyCollection = emptyCollection;
+exports.viewDocs = viewDocs;

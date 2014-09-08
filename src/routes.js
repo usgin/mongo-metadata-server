@@ -175,6 +175,7 @@ function saveRecord (req, res, next) {
     },
     success: function (newHarvestDocs) {
       var opts = {
+        method: req.method,
         format: req.format,
         query: (function () {
           var docIds = [];
@@ -259,7 +260,47 @@ function getResource (req, res, next) {
 
 // Retrieve a specific record in a specific format
 function viewRecord (req, res, next) {
-
+  var dbModel
+    , opts
+    ;
+  dbModel = mongo.getCollection(req.resourceType);
+  opts = {
+    method: req.method,
+    format: req.format,
+    key: req.resourceId,
+    query: { _id: { $in: [this.key] }},
+    error: function (err) {
+      return next(new errors.NotFoundError('Error running database view'));
+    },
+    success: function (result) {
+      if (result.length === 0) {
+        return next(new errors.NotFoundError('Requested document: ' + req.resourceId + ' was not found'));
+      } else {
+        console.log('VIEW RECORD', req.resourceId, 'AS', req.format);
+        result = result[0];
+        if (req.format.match(/iso\.xml/)) {
+          opts = {
+            id: req.resourceId,
+            error: function (err) {
+              return next(new errors.DatabaseReadError('Error reading from the database'));
+            },
+            success: function (names) {
+              result = xml2json.toXml(utils.addCollectionKeywords(result, names));
+              res.header('Content-Type', 'text/xml');
+              res.send(result);
+            }
+          };
+          da.getCollectionNames(opts);
+        }
+        if (req.format.match(/atom\.xml/)) {
+          result = utils.atomWrapper([result]);
+          result = xml2json.toXml(result);
+          res.header('Content-Type', 'text/xml');
+        }
+      }
+    }
+  };
+  return da.viewDocs(dbModel, opts);
 }
 
 // Retrieve all the records in a specific collection (as JSON)

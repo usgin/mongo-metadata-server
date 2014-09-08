@@ -8,20 +8,20 @@ function atomWrapper (entries) {
       'xmlns:georss': "http://www.georss.org/georss",
       'scast': "http://sciflo.jp;.nasa.gov/serviceCasting/2009v1",
       id: {
-        $t: '' + org.orgUrl + '/resources/atom'
+        t: '' + org.orgUrl + '/resources/atom'
       },
       title: {
-        $t: '' + org.orgName + ' Atom Feed'
+        t: '' + org.orgName + ' Atom Feed'
       },
       updated: {
-        $t: utils.getCurrentDate()
+        t: utils.getCurrentDate()
       },
       author: {
         name: {
-          $t: org.orgName
+          t: org.orgName
         },
         email: {
-          $t: org.orgEmail
+          t: org.orgEmail
         }
       },
       entries: {

@@ -126,6 +126,12 @@ server.get('/metadata/:resourceType/:resourceId', function (req, res, next) {
   return next();
 }, setParams, routes.getResource);
 
+// Retrieve a specific record in a specific format
+server.get('/metadata/record/:resourceId', function (req, res, next) {
+  req.routeId = 'viewRecord';
+  return next();
+}, setParams, routes.viewRecord);
+
 /*
 
 // List records in a specific format
@@ -133,12 +139,6 @@ server.get(/^\/metadata\/record\.(iso\.xml|atom\.xml|geojson)$/, function (req, 
   req.routeId = 'viewRecords';
   return next();
 }, setParams, routes.viewRecords);
-
-// Retrieve a specific record in a specific format
-server.get(/^\/metadata\/record\/([^\/]*)\.(iso.xml|atom\.xml|geojson)$/, function (req, res, next) {
-  req.routeId = 'viewRecord';
-  return next();
-}, setParams, routes.viewRecord);
 
 // Retrieve all the records in a specific collection (as JSON)
 server.get(/^\/metadata\/collection\/([^\/]*)\/records\/$/, function (req, res, next) {
