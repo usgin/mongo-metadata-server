@@ -39,26 +39,45 @@ framework.  Have a look at the
 [tests](https://github.com/usgin/mongo-metadata-server/tree/master/test) for 
 actual code samples and example data.
 
-##### POST
-**http://localhost:3000/metadata/record**
-Expects something like this is the request:
+##### POST /metadata/record
+Harvest csv, iso.xml, fgdc.xml or atom.xml documents into MongoDB.  Raw harvest
+documents get stored in the `harvest` collection and get stored in the `record`
+collection after successfully passing through algorithms which standardize the 
+data according to our schema.
+
+*User story: I want to harvest one or more hosted metadata documents into 
+MongoDB.*
+
+Request:
 ```
 {
   "inputFormat": "csv"|"iso.xml"|"fgdc.xml"|"atom.xml",
-  "recordUrl": "http url to file"
+  "recordUrl": "http://localhost:3030/path-to-document"
 }
 ```
-And will return **200** or **500** in the response:
+Response:
 * **200** if harvested documents are successfully harvested, processed and 
 stored in MongoDB.
 * **500** for any kind of error.
 
-Harvest csv, iso.xml, fgdc.xml or atom.xml documents into MongoDB.  Raw harvest
-documents get stored in the `harvest` collection and get stored in the `records`
-collection after successfully passing through algorithms which standardize the 
-data according to our schema.
+##### POST /metadata/record
+Create a single, schema-compliant metadata document from a hosted JSON source.
+The document will be stored in the `record` collection if it passes schema
+validation.
 
-*User story: I want to harvest one or more hosted metadata documents into MongoDB.*
+*User story: I have a single JSON metadata document that I want to store in 
+MongoDB.*
+
+Request:
+```
+{
+  "url": 'http://localhost:3030/my-metadata-doc.json'
+  "json": true
+}
+```
+Response:
+* **200** if document passes schema validation and gets stored in MongoDB.
+* **500** for any kind of error.
 
 ##### GET
 
