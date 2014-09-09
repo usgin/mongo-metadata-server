@@ -127,7 +127,7 @@ server.get('/metadata/:resourceType/:resourceId', function (req, res, next) {
   return next();
 }, setParams, routes.getResource);
 
-/*
+
 // Retrieve a specific record in a specific format
 server.get('/metadata/record/:standard/:resourceId.:format', function (req, res, next) {
   req.routeId = 'viewRecord';
