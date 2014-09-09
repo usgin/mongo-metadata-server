@@ -1,4 +1,5 @@
 var express = require('express')
+  , params = require('express-params')
   , bodyParser = require('body-parser')
   , errorHandler = require('errorhandler')
   , mongo = require('./mongo-config')
@@ -7,6 +8,7 @@ var express = require('express')
   ;
 
 var server = express();
+params.extend(server);
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(bodyParser.json());
 server.use(errorHandler({showStack: true, dumpExceptions: true}));
@@ -47,7 +49,12 @@ function setParams (req, res, next) {
     case 'viewCollectionRecords':
       req.standard = req.params.standard;
       req.resourceId = req.params.resourceId;
-      req.format = req.params.format;
+      if (req.params.format && req.params.mime) {
+        req.format = req.params.format + '.' + req.params.mime;
+      } else {
+        // can return null or undefined
+        req.format = req.params.format;
+      }
       break;
     case 'listFiles':
     case 'newFile':
@@ -72,6 +79,23 @@ function setParams (req, res, next) {
   }
   return next();
 }
+
+server.param(function (name, fn) {
+  var captures;
+  if (fn instanceof RegExp) {
+    return function (req, res, next, val) {
+      if (captures = fn.exec(String(val))) {
+        req.params[name] = captures;
+      } else {
+        next('route');
+      }
+    }
+  }
+});
+
+server.param('resourceType', /([^\/]*)/);
+server.param('resourceId', /([^\/]*)/);
+server.param('resourceIdFormat', /([^\/]*)\.(iso.xml|atom\.xml|geojson)$/);
 
 // ********
 // * POST *
@@ -127,9 +151,8 @@ server.get('/metadata/:resourceType/:resourceId', function (req, res, next) {
   return next();
 }, setParams, routes.getResource);
 
-
 // Retrieve a specific record in a specific format
-server.get('/metadata/record/:standard/:resourceId.:format', function (req, res, next) {
+server.get('/metadata/record/:resourceIdFormat', function (req, res, next) {
   req.routeId = 'viewRecord';
   return next();
 }, setParams, routes.viewRecord);

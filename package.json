@@ -24,7 +24,8 @@
     "assert": "1.1.1",
     "should": "4.0.4",
     "supertest": "0.13.0",
-    "mocha": "1.21.4"
+    "mocha": "1.21.4",
+    "express-params": "0.0.3"
   },
   "author": "",
   "license": "ISC",
