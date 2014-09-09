@@ -77,9 +77,7 @@ function createDocs (dbModel, options) {
 
 // Retrieve a document by it's ID from a given database
 function getDoc (dbModel, options) {
-  var query
-    , doc
-    ;
+  var query;
   if (!options.success) options.success = function () {};
   if (!options.error) options.error = function () {};
   if (!options.id) options.id = '';
@@ -130,7 +128,6 @@ function mapReduce (dbModel, options) {
   if (!options.method) options.method = '';
   if (!options.format) options.format = '';
   if (!options.query) options.query = '';
-  if (!options.clean_docs) options.clean_docs = false;
   if (!options.success) options.success = function () {};
   if (!options.error) options.error = function () {};
 
@@ -152,11 +149,11 @@ function mapReduce (dbModel, options) {
   }
 
   if (options.method === 'GET') {
-    switch (options.format) {
-      case 'iso.xml':
+    switch (options.standard) {
+      case 'iso':
         thisMapReduce = outputIsoMapReduce;
         break;
-      case 'atom.xml':
+      case 'atom':
         thisMapReduce = outputAtomMapReduce;
         break;
       case 'geojson':

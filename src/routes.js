@@ -263,14 +263,15 @@ function viewRecord (req, res, next) {
   var dbModel
     , opts
     ;
-  dbModel = mongo.getCollection(req.resourceType);
+  dbModel = mongo.getCollection('record');
   opts = {
     method: req.method,
     format: req.format,
+    standard: req.standard,
     key: req.resourceId,
     query: { _id: { $in: [this.key] }},
     error: function (err) {
-      return next(new errors.NotFoundError('Error running database view'));
+      return next(new errors.NotFoundError('Error reading from the database'));
     },
     success: function (result) {
       if (result.length === 0) {
@@ -291,16 +292,17 @@ function viewRecord (req, res, next) {
             }
           };
           da.getCollectionNames(opts);
-        }
-        if (req.format.match(/atom\.xml/)) {
-          result = utils.atomWrapper([result]);
-          result = xml2json.toXml(result);
-          res.header('Content-Type', 'text/xml');
+        } else {
+          if (req.format.match(/atom\.xml/)) {
+            result = utils.atomWrapper([result]);
+            result = xml2json.toXml(result);
+            res.header('Content-Type', 'text/xml');
+          }
         }
       }
     }
   };
-  return da.viewDocs(dbModel, opts);
+  return da.mapReduce(dbModel, opts);
 }
 
 // Retrieve all the records in a specific collection (as JSON)

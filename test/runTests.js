@@ -74,7 +74,7 @@ describe('Tests', function () {
         .expect(200, done)
     })
   });
-
+/*
   describe('List all documents in collection by _id', function () {
     it('should return 200 when getting from the server', function (done) {
       supertest(metadataServer)
@@ -134,5 +134,5 @@ describe('Tests', function () {
         .expect(200, done)
     })
   });
-
+*/
 });

@@ -99,3 +99,6 @@ function map () {
 function reduce (data) {
   return data;
 }
+
+exports.map = map;
+exports.reduce = reduce;

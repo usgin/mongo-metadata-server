@@ -45,8 +45,9 @@ function setParams (req, res, next) {
       break;
     case 'viewRecord':
     case 'viewCollectionRecords':
-      req.resourceId = req.params[0];
-      req.format = req.params[1];
+      req.standard = req.params.standard;
+      req.resourceId = req.params.resourceId;
+      req.format = req.params.format;
       break;
     case 'listFiles':
     case 'newFile':
@@ -127,7 +128,7 @@ server.get('/metadata/:resourceType/:resourceId', function (req, res, next) {
 }, setParams, routes.getResource);
 
 // Retrieve a specific record in a specific format
-server.get('/metadata/record/:resourceId', function (req, res, next) {
+server.get('/metadata/record/:standard/:resourceId.:format', function (req, res, next) {
   req.routeId = 'viewRecord';
   return next();
 }, setParams, routes.viewRecord);
