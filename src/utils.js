@@ -14,7 +14,7 @@ function atomWrapper (entries) {
         t: '' + org.orgName + ' Atom Feed'
       },
       updated: {
-        t: utils.getCurrentDate()
+        t: getCurrentDate()
       },
       author: {
         name: {

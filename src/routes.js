@@ -268,37 +268,29 @@ function viewRecord (req, res, next) {
     method: req.method,
     format: req.format,
     standard: req.standard,
-    key: req.resourceId,
-    query: { _id: { $in: [this.key] }},
+    query: { _id: { $in: [req.resourceId] }},
     error: function (err) {
       return next(new errors.NotFoundError('Error reading from the database'));
     },
     success: function (result) {
-      if (result.length === 0) {
-        return next(new errors.NotFoundError('Requested document: ' + req.resourceId + ' was not found'));
-      } else {
-        console.log('VIEW RECORD', req.resourceId, 'AS', req.format);
-        result = result[0];
-        if (req.format.match(/iso\.xml/)) {
-          opts = {
-            id: req.resourceId,
-            error: function (err) {
-              return next(new errors.DatabaseReadError('Error reading from the database'));
-            },
-            success: function (names) {
-              result = xml2json.toXml(utils.addCollectionKeywords(result, names));
-              res.header('Content-Type', 'text/xml');
-              res.send(result);
-            }
-          };
-          da.getCollectionNames(opts);
-        } else {
-          if (req.format.match(/atom\.xml/)) {
-            result = utils.atomWrapper([result]);
-            result = xml2json.toXml(result);
-            res.header('Content-Type', 'text/xml');
-          }
-        }
+      console.log('VIEW RECORD', req.resourceId, 'AS', req.format);
+      if (req.standard === 'iso') {
+        result = result[0]['value']['gmd:MD_Metadata'];
+        result = xml2json.toXml(result);
+        res.header('Content-Type', 'text/xml');
+        res.send(result);
+      }
+
+      if (req.standard === 'atom') {
+        result = result[0]['value'];
+        //result = utils.atomWrapper([result]);
+        result = xml2json.toXml(result);
+        res.header('Content-Type', 'text/xml');
+        res.send(result);
+      }
+
+      if (req.standard === 'geojson') {
+        res.send(result, 200);
       }
     }
   };

@@ -162,7 +162,7 @@ function map () {
     out = linkObj.URL.replace(/^[^A-Za-z]/, "id-");
     out = out.replace(/[^_A-Za-z0-9]/g, "_");
     if (addToUsed) {
-      if (usedIds.indexOf(out) >= 0) {
+      if (useIds.indexOf(out) >= 0) {
         out = "" + out + "-duplicate";
       }
       useIds.push(out);
@@ -175,6 +175,7 @@ function map () {
     var i
       , results
       ;
+    results = [];
     for (i = 0; i < serviceTypes.length; i++) {
       type = serviceTypes[i];
       results.push(type.toUpperCase());
