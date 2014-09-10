@@ -124,9 +124,7 @@ function listDocs (dbModel, options) {
 
 // Pass all or specific documents through a specified database view
 function mapReduce (dbModel, options) {
-  var thisMapReduce
-    , mimeFormat
-    ;
+  var thisMapReduce;
 
   if (!options.method) options.method = '';
   if (!options.format) options.format = '';

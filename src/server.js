@@ -23,7 +23,8 @@ function setParams (req, res, next) {
       break;
     case 'listResources':
     case 'newResource':
-      req.resourceType = req.params.resourceType[0];
+    case 'emptyCollection':
+      req.resourceType = req.params.resourceType[1];
       break;
     case 'viewRecords':
       req.format = req.params[0];
@@ -41,7 +42,6 @@ function setParams (req, res, next) {
     case 'getResource':
     case 'updateResource':
     case 'deleteResource':
-    case 'emptyCollection':
       req.resourceType = req.params.resourceType[1];
       req.resourceId = req.params.resourceId[1];
       break;
