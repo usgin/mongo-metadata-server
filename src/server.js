@@ -23,7 +23,7 @@ function setParams (req, res, next) {
       break;
     case 'listResources':
     case 'newResource':
-      req.resourceType = req.params.resourceType;
+      req.resourceType = req.params.resourceType[0];
       break;
     case 'viewRecords':
       req.format = req.params[0];
@@ -42,19 +42,13 @@ function setParams (req, res, next) {
     case 'updateResource':
     case 'deleteResource':
     case 'emptyCollection':
-      req.resourceType = req.params.resourceType;
-      req.resourceId = req.params.resourceId;
+      req.resourceType = req.params.resourceType[1];
+      req.resourceId = req.params.resourceId[1];
       break;
     case 'viewRecord':
     case 'viewCollectionRecords':
-      req.standard = req.params.standard;
-      req.resourceId = req.params.resourceId;
-      if (req.params.format && req.params.mime) {
-        req.format = req.params.format + '.' + req.params.mime;
-      } else {
-        // can return null or undefined
-        req.format = req.params.format;
-      }
+      req.resourceId = req.params.resourceFormat[1];
+      req.format = req.params.resourceFormat[2];
       break;
     case 'listFiles':
     case 'newFile':
@@ -93,9 +87,9 @@ server.param(function (name, fn) {
   }
 });
 
-server.param('resourceType', /([^\/]*)/);
+server.param('resourceType', /(record|collection|harvest)/);
 server.param('resourceId', /([^\/]*)/);
-server.param('resourceIdFormat', /([^\/]*)\.(iso.xml|atom\.xml|geojson)$/);
+server.param('resourceFormat', /([^\/]*)\.(iso\.xml|atom\.xml|geojson)$/);
 
 // ********
 // * POST *
@@ -146,16 +140,17 @@ server.get('/metadata/:resourceType', function (req, res, next) {
 }, setParams, routes.listResources);
 
 // Retrieve a specific record or collection (as JSON)
+server.get('/metadata/record/:resourceFormat', function (req, res, next) {
+  req.routeId = 'viewRecord';
+  return next();
+}, setParams, routes.viewRecord);
+
+// Retrieve a specific record in a specific format
 server.get('/metadata/:resourceType/:resourceId', function (req, res, next) {
   req.routeId = 'getResource';
   return next();
 }, setParams, routes.getResource);
 
-// Retrieve a specific record in a specific format
-server.get('/metadata/record/:resourceIdFormat', function (req, res, next) {
-  req.routeId = 'viewRecord';
-  return next();
-}, setParams, routes.viewRecord);
 
 /*
 
