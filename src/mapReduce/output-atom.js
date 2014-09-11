@@ -57,53 +57,52 @@ function map () {
     return value;
   }
 
-  atom = {
-    setProperty: function (prop, value) {
-      var count
-        , obj
-        , p
-        , props
-        , i
-        , results
-        ;
-      obj = this;
-      props = prop.split('.');
-      count = 0;
-      results = [];
-      for (i = 0; i < props.length; i++) {
-        p = props[i];
-        if (obj[p]) {
+  function setProperty (obj, prop, value) {
+    var count
+      , p
+      , props
+      , i
+      , results
+      ;
+    
+    props = prop.split('.');
+    count = 0;
+    results = [];
+    for (i = 0; i < props.length; i++) {
+      p = props[i];
+      if (obj[p]) {
+        obj = obj[p];
+        results.push(count++);
+      } else {
+        if (count + 1 === props.length) {
+          results.push(obj[p] = toXmlValidText(value));
+        } else {
+          obj[p] = {};
           obj = obj[p];
           results.push(count++);
-        } else {
-          if (count + 1 === props.length) {
-            results.push(obj[p] = toXmlValidText(value));
-          } else {
-            obj[p] = {};
-            obj = obj[p];
-            results.push(count++);
-          }
         }
       }
-      return results;
     }
-  };
+    return results;
+  }
 
-  atom.setProperty("title.t", objGet(doc, "Title", "No title given"));
-  atom.setProperty("id.t", doc._id);
-  atom.setProperty("author", []);
+  atom = {};
+
+  setProperty(atom, "title.t", objGet(doc, "Title", "No title given"));
+  setProperty(atom, "id.t", doc._id);
+  setProperty(atom, "author", []);
 
   theAuthors = objGet(doc, 'Authors', []);
   for (i = 0; i < theAuthors.length; i++) {
     author = theAuthors[i];
     thisPath = "author." + i;
-    atom.setProperty("" + thisPath + ".name.t", objGet(author, "Name", objGet(author, "OrganizationName", "")));
-    atom.setProperty("" + thisPath + ".contactInformation.phone.t", objGet(author, "ContactInformation.Phone", ""));
-    atom.setProperty("" + thisPath + ".contactInformation.email.t", objGet(author, "ContactInformation.Email", ""));
-    atom.setProperty("" + thisPath + ".contactInformation.address.street.t", objGet(author, "ContactInformation.Address.Street", ""));
-    atom.setProperty("" + thisPath + ".contactInformation.address.city.t", objGet(author, "ContactInformation.Address.City", ""));
-    atom.setProperty("" + thisPath + ".contactInformation.address.state.t", objGet(author, "ContactInformation.Address.State", ""));
-    atom.setProperty("" + thisPath + ".contactInformation.address.zip.t", objGet(author, "ContactInformation.Address.Zip", ""));
+    setProperty(atom, "" + thisPath + ".name.t", objGet(author, "Name", objGet(author, "OrganizationName", "")));
+    setProperty(atom, "" + thisPath + ".contactInformation.phone.t", objGet(author, "ContactInformation.Phone", ""));
+    setProperty(atom, "" + thisPath + ".contactInformation.email.t", objGet(author, "ContactInformation.Email", ""));
+    setProperty(atom, "" + thisPath + ".contactInformation.address.street.t", objGet(author, "ContactInformation.Address.Street", ""));
+    setProperty(atom, "" + thisPath + ".contactInformation.address.city.t", objGet(author, "ContactInformation.Address.City", ""));
+    setProperty(atom, "" + thisPath + ".contactInformation.address.state.t", objGet(author, "ContactInformation.Address.State", ""));
+    setProperty(atom, "" + thisPath + ".contactInformation.address.zip.t", objGet(author, "ContactInformation.Address.Zip", ""));
   }
 
   atomLinks = [
@@ -128,14 +127,14 @@ function map () {
     atomLinks.push(atomLink);
   }
 
-  atom.setProperty("link", atomLinks);
-  atom.setProperty("updated.t", doc.ModifiedDate || "");
-  atom.setProperty("summary.t", objGet(doc, "Description", ""));
+  setProperty(atom, "link", atomLinks);
+  setProperty(atom, "updated.t", doc.ModifiedDate || "");
+  setProperty(atom, "summary.t", objGet(doc, "Description", ""));
   n = objGet(doc, "GeographicExtent.NorthBound", 89);
   s = objGet(doc, "GeographicExtent.SouthBound", -89);
   e = objGet(doc, "GeographicExtent.EastBound", 179);
   w = objGet(doc, "GeographicExtent.WestBound", -179);
-  atom.setProperty("georss:box.t", [w, s, e, n].join(" "));
+  setProperty(atom, "georss:box.t", [w, s, e, n].join(" "));
 
   emit(this._id, atom);
 }

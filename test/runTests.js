@@ -127,6 +127,30 @@ describe('Tests', function () {
     })
   });
 
+  describe('View single record as iso.xml', function () {
+    it('should return 200 when getting data from the server', function (done) {
+      supertest(metadataServer)
+        .get('/metadata/record/hd943huo492hjnqpqncq384923d.iso.xml')
+        .expect(200, done);
+    })
+  });
+
+  describe('View single record as atom.xml', function () {
+    it('should return 200 when getting data from the server', function (done) {
+      supertest(metadataServer)
+        .get('/metadata/record/hd943huo492hjnqpqncq384923d.atom.xml')
+        .expect(200, done);
+    })
+  });
+
+  describe('View single record as GeoJSON', function () {
+    it('should return 200 when getting data from the server', function (done) {
+      supertest(metadataServer)
+        .get('/metadata/record/hd943huo492hjnqpqncq384923d.geojson')
+        .expect(200, done);
+    })
+  });
+
   describe('Delete single record', function () {
     it('should return when deleting from the server', function (done) {
       supertest(metadataServer)

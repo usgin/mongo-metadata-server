@@ -125,6 +125,7 @@ function listDocs (dbModel, options) {
 // Pass all or specific documents through a specified database view
 function mapReduce (dbModel, options) {
   var thisMapReduce;
+
   if (!options.method) options.method = '';
   if (!options.format) options.format = '';
   if (!options.query) options.query = '';
@@ -149,11 +150,11 @@ function mapReduce (dbModel, options) {
   }
 
   if (options.method === 'GET') {
-    switch (options.standard) {
-      case 'iso':
+    switch (options.format) {
+      case 'iso.xml':
         thisMapReduce = outputIsoMapReduce;
         break;
-      case 'atom':
+      case 'atom.xml':
         thisMapReduce = outputAtomMapReduce;
         break;
       case 'geojson':

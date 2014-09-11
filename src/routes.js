@@ -267,29 +267,29 @@ function viewRecord (req, res, next) {
   opts = {
     method: req.method,
     format: req.format,
-    standard: req.standard,
     query: { _id: { $in: [req.resourceId] }},
     error: function (err) {
       return next(new errors.NotFoundError('Error reading from the database'));
     },
     success: function (result) {
       console.log('VIEW RECORD', req.resourceId, 'AS', req.format);
-      if (req.standard === 'iso') {
-        result = result[0]['value']['gmd:MD_Metadata'];
-        result = xml2json.toXml(result);
-        res.header('Content-Type', 'text/xml');
-        res.send(result);
-      }
-
-      if (req.standard === 'atom') {
+      if (req.format === 'iso.xml') {
         result = result[0]['value'];
-        //result = utils.atomWrapper([result]);
+        result = xml2json.toXml(utils.addCollectionKeywords(result));
+        res.header('Content-Type', 'text/xml');
+        res.send(result, 200);
+      }
+
+      if (req.format === 'atom.xml') {
+        result = result[0]['value'];
+        result = utils.atomWrapper([result]);
         result = xml2json.toXml(result);
         res.header('Content-Type', 'text/xml');
         res.send(result);
       }
 
-      if (req.standard === 'geojson') {
+      if (req.format === 'geojson') {
+        result = result[0]['value'];
         res.send(result, 200);
       }
     }

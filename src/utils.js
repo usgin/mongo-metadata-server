@@ -76,19 +76,26 @@ function validateHarvestFormat (format, data) {
 }
 
 function addCollectionKeywords (iso, collectionNames) {
-  var outputKeywords = iso['gmd:MD_Metadata']['gmd:identificationInfo']
-    ['gmd:MD_DataIdentification']['gmd:descriptiveKeywords']
-    , collectionNames = (function () {
-      var results = [];
-      _.each(collectionNames, function (name) {
-        results.push({'gco:CharacterString': {'$t': name}});
-      });
-      return results;
-    })();
-  if (collectionNames.length > 0) {
-    var newKeywordBlock = {
+  var outputKeywords
+    , collectionNames
+    , newKeywordBlock
+    ;
+
+  outputKeywords = iso['gmd:MD_Metadata']['gmd:identificationInfo']['gmd:MD_DataIdentification']['gmd:descriptiveKeywords'];
+  /*
+  collectionNames = (function () {
+    var results = [];
+    _.each(collectionNames, function (name) {
+      results.push({'gco:CharacterString': {'$t': name}});
+    });
+    return results;
+  })();
+  */
+
+  //if (collectionNames.length > 0) {
+    newKeywordBlock = {
       "gmd:MD_Keywords": {
-        "gmd:keyword": collectionNames,
+//        "gmd:keyword": collectionNames,
         "gmd:thesaurusName": {
           "xlink:href": "/metadata/collection/",
           "gmd:CI_Citation": {
@@ -117,7 +124,7 @@ function addCollectionKeywords (iso, collectionNames) {
       }
     };
     outputKeywords.push(newKeywordBlock);
-  }
+  //}
   return iso;
 }
 
