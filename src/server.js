@@ -34,6 +34,11 @@ function setParams (req, res, next) {
       req.format = req.body.inputFormat;
       if (req.body.destinationCollections) req.collections = req.body.desinationCollections;
       break;
+    case 'transformedRecord':
+      req.data = req.body.data;
+      req.resourceType = 'record';
+      if (req.body.json) req.format = 'transformedjson';
+      break;
     case 'uploadRecord':
       if (req.body.destinationCollections) req.collections = req.body.desinationCollections;
       req.format = req.body.format;
@@ -100,6 +105,12 @@ server.post('/metadata/harvest', function (req, res, next) {
   req.routeId = 'harvestRecord';
   return next();
 }, setParams, routes.harvestRecord, routes.saveRecord);
+
+// Get some transformed data into the system
+server.post('/metadata/transformedrecord', function (req, res, next) {
+  req.routeId = 'transformedRecord';
+  return next();
+}, setParams, routes.transformRecord);
 
 // Create a new record or collection
 server.post('/metadata/:resourceType', function (req, res, next) {

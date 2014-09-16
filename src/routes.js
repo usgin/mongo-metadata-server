@@ -380,6 +380,16 @@ function emptyCollection (req, res, next) {
   return da.emptyCollection(dbModel, opts);
 }
 
+function transformRecord (req, res, next) {
+  var dbModel
+    , opts
+    ;
+
+  dbModel = mongo.getCollection(req.resourceType);
+  opts = {};
+  return da.mapReduce(dbModel, opts);
+}
+
 exports.search = search;
 exports.listResources = listResources;
 exports.viewRecords = viewRecords;
@@ -400,3 +410,4 @@ exports.deleteFile = deleteFile;
 exports.listSchemas = listSchemas;
 exports.getSchema = getSchema;
 exports.emptyCollection = emptyCollection;
+exports.transformRecord = transformRecord;
