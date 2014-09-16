@@ -385,9 +385,37 @@ function transformRecord (req, res, next) {
     , opts
     ;
 
-  dbModel = mongo.getCollection(req.resourceType);
-  opts = {};
-  return da.mapReduce(dbModel, opts);
+  dbModel = mongo.getCollection('harvest');
+  opts = {
+    data: req.data,
+    error: function (err) {
+      return next(new errors.DatabaseWriteError('Error writing to the database'));
+    },
+    success: function (newRecords) {
+      dbModel = mongo.getCollection('harvest');
+      opts = {
+        method: req.method,
+        format: req.format,
+        query: (function () {
+          var docIds = [];
+          _.each(newRecords, function (doc) {
+            docIds.push(doc._id);
+          });
+          return { _id: { $in: docIds } };
+        })(),
+        error: function (err) {
+          return next(new errors.DatabaseReadError(
+            'Error reading document from database'
+          ));
+        },
+        success: function (result) {
+          return res.send(result, 200);
+        }
+      };
+      return da.mapReduce(dbModel, opts);
+    }
+  };
+  return da.createTransformDoc(dbModel, opts);
 }
 
 exports.search = search;

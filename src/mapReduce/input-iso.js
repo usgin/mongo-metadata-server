@@ -298,7 +298,6 @@ function map () {
   doc.setProperty("GeographicExtent.EastBound", parseFloat(objGet(extent, "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.t", 179)));
   doc.setProperty("GeographicExtent.WestBound", parseFloat(objGet(extent, "gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.t", -179)));
 
-  // Distributors
   isoDistributors = objGet(iso, "gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:distributor", []);
   if (isoDistributors['gmd:MD_Distributor']) {
     isoDistributors = [isoDistributors];

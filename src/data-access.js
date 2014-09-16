@@ -51,7 +51,22 @@ function createDoc (dbModel, options) {
 
   dbModel.create(options.data, function (err, res) {
     if (err) {
-      console.log(err);
+      return options.error(err);
+    } else {
+      return options.success(res);
+    }
+  })
+}
+
+function createTransformDoc (dbModel, options) {
+  options.data = options.data !== null ? options.data : {};
+  options.success = options.success !== null ? options.success : function () {};
+  options.error = options.error !== null ? options.error : function () {};
+
+  options.data = cleanKeywords(options.data);
+
+  dbModel.collection.insert(options.data, function (err, res) {
+    if (err) {
       return options.error(err);
     } else {
       return options.success(res);
@@ -260,3 +275,4 @@ exports.getCollectionNames = getCollectionNames;
 exports.search = search;
 exports.emptyCollection = emptyCollection;
 exports.viewDocs = viewDocs;
+exports.createTransformDoc = createTransformDoc;
