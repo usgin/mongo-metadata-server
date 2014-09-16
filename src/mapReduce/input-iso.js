@@ -365,7 +365,7 @@ function map () {
         , results;
       for (i = 0; i < distOutput.length; i++) {
         distOpt = distOutput[i];
-        results.psuh(buildLink(onlineResource(distOpt), responsibleParty));
+        results.push(buildLink(onlineResource(distOpt), responsibleParty));
       }
       return results;
     })();
