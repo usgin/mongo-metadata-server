@@ -62,6 +62,24 @@ stored in MongoDB.
 
 ***
 
+##### POST /metadata/transformedrecord
+Transform and return a single JSON metadata document derived from an XML 
+document into our minimalistic vanilla internal JSON schema.
+
+*User story: I'm at the CINERGI meeting this week and want a proof-of-concept!*
+
+Request:
+```
+{
+  "data": "JSON string"
+}
+```
+Response:
+* **200** if document is successfully transformed, stored and returned.
+* **500** for any kind of error.
+
+***
+
 ##### POST /metadata/record
 Create a single, schema-compliant metadata document from a hosted JSON source.
 The document will be stored in the `record` collection if it passes schema
@@ -130,7 +148,7 @@ access it as GeoJSON.*
 
 Request:
 ```
-resourceId: alphanumeric MongoDB ObjectId
+resourceId: alphanumeric MongoDB ObjectId and format (*.iso.xml|*.atom.xml|*.geojson)
 ```
 
 Response:
