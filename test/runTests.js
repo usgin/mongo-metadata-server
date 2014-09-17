@@ -166,14 +166,14 @@ describe('Tests', function () {
   describe('Ingest a single transformed JSON document', function () {
     it('should return 200 and a json document', function (done) {
       var json = path.join(__dirname, 'transformed-data-post.json');
-      fs.readFile(json, 'utf-8', function (err, data) {
+      fs.readFile(json, 'utf8', function (err, data) {
         if (err) throw err;
         var req = {
-          data: JSON.parse(data),
-          json: true
+          data: data
         };
         supertest(metadataServer)
           .post('/metadata/transformedrecord')
+          .set('Content-Type', 'application/json')
           .send(req)
           .expect(200, done);
       })

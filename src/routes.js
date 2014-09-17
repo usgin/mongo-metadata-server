@@ -385,14 +385,14 @@ function transformRecord (req, res, next) {
     , opts
     ;
 
-  dbModel = mongo.getCollection('harvest');
+  dbModel = mongo.getCollection(req.resourceType);
   opts = {
-    data: req.data,
+    data: JSON.parse(req.data),
     error: function (err) {
       return next(new errors.DatabaseWriteError('Error writing to the database'));
     },
     success: function (newRecords) {
-      dbModel = mongo.getCollection('harvest');
+      dbModel = mongo.getCollection(req.resourceType);
       opts = {
         method: req.method,
         format: req.format,

@@ -10,7 +10,7 @@ var express = require('express')
 var server = express();
 params.extend(server);
 server.use(bodyParser.urlencoded({extended: true}));
-server.use(bodyParser.json());
+server.use(bodyParser.json({limit: '50mb'}));
 server.use(errorHandler({showStack: true, dumpExceptions: true}));
 
 function setParams (req, res, next) {
@@ -36,8 +36,8 @@ function setParams (req, res, next) {
       break;
     case 'transformedRecord':
       req.data = req.body.data;
-      req.resourceType = 'record';
-      if (req.body.json) req.format = 'transformedjson';
+      req.resourceType = 'harvest';
+      req.format = 'transformedjson';
       break;
     case 'uploadRecord':
       if (req.body.destinationCollections) req.collections = req.body.desinationCollections;

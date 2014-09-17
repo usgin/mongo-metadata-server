@@ -16,6 +16,19 @@ function map () {
     , ext
     , isoDistributors
     , isoDist
+    , linksList
+    , distributions
+    , linkLookup
+    , distribution
+    , id
+    , distOptions
+    , distOutput
+    , dist
+    , distOpt
+    , responsibleParty
+    , distributorLinks
+    , link
+    , url
     , i
     , j
     , k
