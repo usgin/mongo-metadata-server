@@ -202,7 +202,7 @@ function map () {
   doc = {};
 
   ident = objGet(input, 'gmi:MI_Metadata.gmd:identificationInfo', objGet(input, 'srv:SV_ServiceIdentification', {}));
-  ident = objGet(ident[2], 'gmd:MD_DataIdentification', objGet(input, 'srv:SV_ServiceIdentification', {}));
+  ident = objGet(ident[0], 'gmd:MD_DataIdentification', objGet(input, 'srv:SV_ServiceIdentification', {}));
   setProperty(doc, 'Title', objGet(ident, 'gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$', 'No Title Was Given'));
   setProperty(doc, 'Description', objGet(ident, 'gmd:abstract.gco:CharacterString._$', 'No Description Was Given'));
 

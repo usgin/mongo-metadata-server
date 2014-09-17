@@ -409,7 +409,8 @@ function transformRecord (req, res, next) {
           ));
         },
         success: function (result) {
-          return res.send(result, 200);
+          var result = {'data': result};
+          return res.send(JSON.stringify(result), 200);
         }
       };
       return da.mapReduce(dbModel, opts);
