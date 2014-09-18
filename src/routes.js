@@ -200,7 +200,7 @@ function saveRecord (req, res, next) {
               HarvestDate: utils.getCurrentDate(),
               HarvestRecordId: doc.id
             };
-            _.extend(doc.value.HarvestInformation, harvestInfo);
+            _.extend(doc['value']['cmd:CINERGI_MetadataObject']['cmd:HarvestInformation'], harvestInfo);
             _.extend(doc.value, {
               Collections: req.collections || [],
               ModifiedDate: utils.getCurrentDate()

@@ -283,6 +283,8 @@ function map () {
   mdProps['cmd:metadataContact'] = buildRelatedAgent(metaContact);
   mdProps['cmd:metadataUpdate'] = objGet(iso, 'gmd:MD_Metadata.gmd:dateStamp.gco:Date.t', 'Publication Date Not Given').trim();
 
+
+
   emit(this._id, doc);
 }
 
