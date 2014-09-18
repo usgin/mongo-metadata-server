@@ -6,7 +6,9 @@ var mongo = require('./mongo-config')
   , _ = require('underscore')
   , fs = require('fs')
   , request = require('request')
-  , xml2json = require('xml2json');
+  , xml2json = require('xml2json')
+  , cheerio = require('cheerio')
+  ;
 
 // Text-based search for records
 function search (req, res, next) {
@@ -422,6 +424,36 @@ function transformRecord (req, res, next) {
   return da.createTransformDoc(dbModel, opts);
 }
 
+function bulkHarvest (req, res, next) {
+  var opts
+    , host
+    , $
+    , paths
+    , metadataUrls
+    ;
+
+  if ((!req.url) || (!req.format)) {
+    return next(new errors.ArgumentError(
+      'Request did not supply the requisite arguments: url and format.'));
+  } else {
+    opts = {uri: req.url};
+    request(opts, function (err, response, body) {
+      if (err) {
+        return next(new errors.ValidationError(
+          'The document at the given URL did not match the format specified.'
+        ));
+      } else {
+        var host = response.request.host;
+        var $ = cheerio.load(body);
+        var links = $('a');
+        $(links).each(function (i, link) {
+          console.log($(link).text() + ':\n ', $(link).attr('href'));
+        });
+      }
+    })
+  }
+}
+
 exports.search = search;
 exports.listResources = listResources;
 exports.viewRecords = viewRecords;
@@ -443,3 +475,4 @@ exports.listSchemas = listSchemas;
 exports.getSchema = getSchema;
 exports.emptyCollection = emptyCollection;
 exports.transformRecord = transformRecord;
+exports.bulkHarvest = bulkHarvest;

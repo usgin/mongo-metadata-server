@@ -196,4 +196,20 @@ describe('Tests', function () {
     })
   });
 
+  describe('Batch harvest CZO iso.xml from WAF and save records', function () {
+    it('should return 200 when posting to the server', function (done) {
+      var req;
+      req = {
+        "destinationCollections": [""],
+        "inputFormat": "czo.iso.xml",
+        "wafUrl": "http://hydro10.sdsc.edu/metadata/Critical_Zone_Observatory_Catalog/"
+      };
+
+      supertest(metadataServer)
+        .post('/metadata/bulk')
+        .send(req)
+        .expect(200, done)
+    })
+  });
+
 });

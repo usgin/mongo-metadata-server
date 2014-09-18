@@ -34,19 +34,21 @@ recordsSchema = new mongoose.Schema({
   'cmd:processingStatus': {type: String},
   'cmd:metadataProperties': {
     'cmd:metadataContact': {
-      'cmd:agentRole': {
-        'cmd:agentRoleURI': {type: String},
-        'cmd:agentRoleLabel': {type: String},
-        'cmd:individual': {
-          'cmd:personURI': {type: String},
-          'cmd:personName': {type: String},
-          'cmd:personPosition': {type: String}
-        },
-        'cmd:organizationName': [],
-        'cmd:organizationURI': {type: String},
-        'cmd:phoneNumber': {type: String},
-        'cmd:contactEmail': {type: String},
-        'cmd:contactAddress': {type: String}
+      'cmd:relatedAgent': {
+        'cmd:agentRole': {
+          'cmd:agentRoleURI': {type: String},
+          'cmd:agentRoleLabel': {type: String},
+          'cmd:individual': {
+            'cmd:personURI': {type: String},
+            'cmd:personName': {type: String},
+            'cmd:personPosition': {type: String}
+          },
+          'cmd:organizationName': [],
+          'cmd:organizationURI': {type: String},
+          'cmd:phoneNumber': {type: String},
+          'cmd:contactEmail': {type: String},
+          'cmd:contactAddress': {type: String}
+        }
       }
     },
     'cmd:metadataUpdateDate': {type: String},
@@ -94,19 +96,21 @@ recordsSchema = new mongoose.Schema({
       }
     }],
     'cmd:citedSourceAgents': {
-      'cmd:agentRole': {
-        'cmd:agentRoleURI': {type: String},
-        'cmd:agentRoleLabel': {type: String},
-        'cmd:individual': {
-          'cmd:personURI': {type: String},
-          'cmd:personName': {type: String},
-          'cmd:personPosition': {type: String}
-        },
-        'cmd:organizationName': [],
-        'cmd:organizationURI': {type: String},
-        'cmd:phoneNumber': {type: String},
-        'cmd:contactEmail': {type: String},
-        'cmd:contactAddress': {type: String}
+      'cmd:relatedAgent': {
+        'cmd:agentRole': {
+          'cmd:agentRoleURI': {type: String},
+          'cmd:agentRoleLabel': {type: String},
+          'cmd:individual': {
+            'cmd:personURI': {type: String},
+            'cmd:personName': {type: String},
+            'cmd:personPosition': {type: String}
+          },
+          'cmd:organizationName': [],
+          'cmd:organizationURI': {type: String},
+          'cmd:phoneNumber': {type: String},
+          'cmd:contactEmail': {type: String},
+          'cmd:contactAddress': {type: String}
+        }
       }
     },
     'cmd:citationDates': {
@@ -121,23 +125,7 @@ recordsSchema = new mongoose.Schema({
     },
     'cmd:recommendedCitation': {type: String},
     'cmd:resourceContacts': {
-      'cmd:agentRole': {
-        'cmd:agentRoleURI': {type: String},
-        'cmd:agentRoleLabel': {type: String},
-        'cmd:individual': {
-          'cmd:personURI': {type: String},
-          'cmd:personName': {type: String},
-          'cmd:personPosition': {type: String}
-        },
-        'cmd:organizationName': [],
-        'cmd:organizationURI': {type: String},
-        'cmd:phoneNumber': {type: String},
-        'cmd:contactEmail': {type: String},
-        'cmd:contactAddress': {type: String}
-      }
-    },
-    'cmd:resourceAccessOptions': [{
-      'cmd:distributor': {
+      'cmd:relatedAgent': {
         'cmd:agentRole': {
           'cmd:agentRoleURI': {type: String},
           'cmd:agentRoleLabel': {type: String},
@@ -151,6 +139,26 @@ recordsSchema = new mongoose.Schema({
           'cmd:phoneNumber': {type: String},
           'cmd:contactEmail': {type: String},
           'cmd:contactAddress': {type: String}
+        }
+      }
+    },
+    'cmd:resourceAccessOptions': [{
+      'cmd:distributor': {
+        'cmd:relatedAgent': {
+          'cmd:agentRole': {
+            'cmd:agentRoleURI': {type: String},
+            'cmd:agentRoleLabel': {type: String},
+            'cmd:individual': {
+              'cmd:personURI': {type: String},
+              'cmd:personName': {type: String},
+              'cmd:personPosition': {type: String}
+            },
+            'cmd:organizationName': [],
+            'cmd:organizationURI': {type: String},
+            'cmd:phoneNumber': {type: String},
+            'cmd:contactEmail': {type: String},
+            'cmd:contactAddress': {type: String}
+          }
         }
       },
       'cmd:accessLinks': [{

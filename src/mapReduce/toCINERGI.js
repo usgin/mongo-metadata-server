@@ -130,6 +130,9 @@ function map () {
       , city
       , state
       , zip
+      , emails
+      , singleEmail
+      , i
       ;
 
     street = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:deliveryPoint.gco:CharacterString.t', 'No Street Address Was Given');
@@ -158,13 +161,24 @@ function map () {
       "cmd:organizationName": [objGet(input, 'gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.t', 'No Organization Name Was Given')]
     };
 
-    phone = {
-      "cmd:phoneNumber": objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:phone.gmd:CI_Telephone.gmd:voice.gco:CharacterString.t', 'No Phone Number Was Given')
-    };
+    phone = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:phone.gmd:CI_Telephone.gmd:voice.gco:CharacterString.t', 'No Phone Number Was Given');
 
-    email = {
-      "cmd:contactEmail": objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress.gco:CharacterString.t', 'No email Was Given')
-    };
+    email = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress', 'No email Was Given');
+    emails = [];
+    if (email[0]) {
+      for (i = 0; i < email.length; i++) {
+        singleEmail = email[i];
+        emails.push(objGet(singleEmail, 'gco:CharacterString.t', 'No Email Was Given'));
+      }
+    } else {
+      emails.push(objGet(email, 'gco:CharacterString.t', 'No Email Was Given'));
+    }
+
+    agent['cmd:individual'] = individual;
+    agent['cmd:organizationName'] = organization;
+    agent['cmd:phoneNumber'] = phone;
+    agent['cmd:contactEmail'] = emails;
+    return agent;
   }
 
   function buildLink (onlineResource, responsibleParty) {
@@ -235,6 +249,7 @@ function map () {
   mdDesc['cmd:resourceURI'].push({'cmd:citationIdentifier': citationId});
 
   mdDesc['cmd:geographicExtent'] = {};
+
   extent = objGet(ident, 'gmd:extent', objGet(ident, 'srv:extent', {}));
   if (extent['0']) {
     validExtents = [];
@@ -242,23 +257,43 @@ function map () {
       ext = extent[i];
       getGeoExt = objGet(ext, 'gmd:EX_Extent.gmd:geographicElement', null);
       getTemporalExt = objGet(ext, 'gmd:EX_Extent.gmd:temporalElement', null);
-      if (getGeoExt || getTemporalExt) {
+      if (getGeoExt) {
         validExtents.push(ext);
       }
     }
   }
   extent = validExtents;
-  northBound = objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.t', 89);
-  southBound = objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.t', -89);
-  eastBound = objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.t', 179);
-  westBound = objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.t', -179);
+
+  extent = objGet(ident, "gmd:extent", objGet(ident, "srv:extent", {}));
+  if (extent['0']) {
+    validExtents = (function () {
+      var i
+        , results;
+      results = [];
+      for (i = 0; i < extent.length; i++) {
+        ext = extent[i];
+        getGeoExt = 'gmd:EX_Extent.gmd:geographicElement';
+        getTemporalExt = 'gmd:EX_Extent.gmd:temporalElement';
+        if (objGet(ext, getGeoExt, null) || objGet(ext, getTemporalExt, null)) {
+          results.push(ext);
+        }
+      }
+      return results;
+    })();
+    extent = validExtents[0];
+  }
+
+  northBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.t', 89));
+  southBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.t', -89));
+  eastBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.t', 179));
+  westBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.t', -179));
   mdGeoExt = mdDesc['cmd:geographicExtent'];
   mdGeoExt['cmd:extentLabel'] = [northBound, southBound, eastBound, westBound].join(',');
   mdGeoExt['cmd:boundingBoxWGS84'] = {
-    'cmd:northBoundLatitude': parseFloat(northBound),
-    'cmd:southBoundLatitude': parseFloat(southBound),
-    'cmd:eastBoundLongitude': parseFloat(eastBound),
-    'cmd:westBoundLongitude': parseFloat(westBound)
+    'cmd:northBoundLatitude': northBound,
+    'cmd:southBoundLatitude': southBound,
+    'cmd:eastBoundLongitude': eastBound,
+    'cmd:westBoundLongitude': westBound
   };
 
   mdDesc['cmd:resourceTemporalExtent'] = {

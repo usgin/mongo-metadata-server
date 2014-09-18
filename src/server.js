@@ -34,6 +34,10 @@ function setParams (req, res, next) {
       req.format = req.body.inputFormat;
       if (req.body.destinationCollections) req.collections = req.body.desinationCollections;
       break;
+    case 'bulkHarvest':
+      req.url = req.body.wafUrl;
+      req.format = req.body.inputFormat;
+      break;
     case 'transformedRecord':
       req.data = req.body.data;
       req.resourceType = 'harvest';
@@ -105,6 +109,12 @@ server.post('/metadata/harvest', function (req, res, next) {
   req.routeId = 'harvestRecord';
   return next();
 }, setParams, routes.harvestRecord, routes.saveRecord);
+
+// Bulk harvest existing records
+server.post('/metadata/bulk', function (req, res, next) {
+  req.routeId = 'bulkHarvest';
+  return next();
+}, setParams, routes.bulkHarvest);
 
 // Get some transformed data into the system
 server.post('/metadata/transformedrecord', function (req, res, next) {
