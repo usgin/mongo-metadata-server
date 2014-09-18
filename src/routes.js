@@ -95,7 +95,7 @@ function harvestRecord (req, res, next) {
   } else {
     entries = [];
     count = 0;
-    bulkHarvestUrls = req.bulkHarvestUrls.slice(1, 20);
+    bulkHarvestUrls = req.bulkHarvestUrls;
     bulkHarvestLength = bulkHarvestUrls.length;
     function doBulkHarvest(bulkHarvestUrl) {
       opts = {uri: bulkHarvestUrl};

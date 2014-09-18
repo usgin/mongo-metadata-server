@@ -138,10 +138,10 @@ function map () {
       , i
       ;
 
-    street = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:deliveryPoint.gco:CharacterString.t', 'No Street Address Was Given');
-    city = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:city.gco:CharacterString.t', 'No City Was Given');
-    state = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:administrativeArea.gco:CharacterString.t', 'No State Was Given');
-    zip = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:postalCode.gco:CharacterString.t', 'No Zip Was Given');
+    street = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:deliveryPoint.gco:CharacterString._$', 'No Street Address Was Given');
+    city = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:city.gco:CharacterString._$', 'No City Was Given');
+    state = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:administrativeArea.gco:CharacterString._$', 'No State Was Given');
+    zip = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:postalCode.gco:CharacterString._$', 'No Zip Was Given');
 
     agent = {
       "cmd:relatedAgent": {
@@ -156,25 +156,25 @@ function map () {
 
     individual = {
       "cmd:PersonURI": "undefined",
-      "cmd:personName": objGet(input, 'gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString.t', 'No Name Was Given'),
-      "cmd:personPosition": objGet(input, 'gmd:CI_ResponsibleParty.gmd:positionName.gco:CharacterString.t', 'No Position Was Given')
+      "cmd:personName": objGet(input, 'gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString._$', 'No Name Was Given'),
+      "cmd:personPosition": objGet(input, 'gmd:CI_ResponsibleParty.gmd:positionName.gco:CharacterString._$', 'No Position Was Given')
     };
 
     organization = {
-      "cmd:organizationName": [objGet(input, 'gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.t', 'No Organization Name Was Given')]
+      "cmd:organizationName": [objGet(input, 'gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString._$', 'No Organization Name Was Given')]
     };
 
-    phone = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:phone.gmd:CI_Telephone.gmd:voice.gco:CharacterString.t', 'No Phone Number Was Given');
+    phone = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:phone.gmd:CI_Telephone.gmd:voice.gco:CharacterString._$', 'No Phone Number Was Given');
 
     email = objGet(input, 'gmd:CI_ResponsibleParty.gmd:contactInfo.gmd:CI_Contact.gmd:address.gmd:CI_Address.gmd:electronicMailAddress', 'No email Was Given');
     emails = [];
     if (email[0]) {
       for (i = 0; i < email.length; i++) {
         singleEmail = email[i];
-        emails.push(objGet(singleEmail, 'gco:CharacterString.t', 'No Email Was Given'));
+        emails.push(objGet(singleEmail, 'gco:CharacterString._$', 'No Email Was Given'));
       }
     } else {
-      emails.push(objGet(email, 'gco:CharacterString.t', 'No Email Was Given'));
+      emails.push(objGet(email, 'gco:CharacterString._$', 'No Email Was Given'));
     }
 
     agent['cmd:individual'] = individual;
@@ -202,10 +202,10 @@ function map () {
     resources = objGet(onlineResource, 'gmd:MD_DigitalTransferOptions.gmd:onLine', []);
     for (i = 0; i < resources.length; i++) {
       resource = resources[i];
-      url = objGet(resource, "gmd:CI_OnlineResource.gmd:linkage.gmd:URL.t", "No URL Was Given");
-      description = objGet(resource, "gmd:CI_OnlineResource.gmd:description.gco:CharacterString.t", "No Description Was Given");
-      protocol = objGet(resource, "gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString.t", "No Protocol Was Given");
-      title = objGet(resource, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString.t', 'No Title Was Given');
+      url = objGet(resource, "gmd:CI_OnlineResource.gmd:linkage.gmd:URL._$", "No URL Was Given");
+      description = objGet(resource, "gmd:CI_OnlineResource.gmd:description.gco:CharacterString._$", "No Description Was Given");
+      protocol = objGet(resource, "gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString._$", "No Protocol Was Given");
+      title = objGet(resource, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString._$', 'No Title Was Given');
       protocol = protocol.toUpperCase();
 
       if (capServiceTypes.indexOf(protocol) >= 0) {
@@ -217,9 +217,9 @@ function map () {
 
       name = null;
       if (responsibleParty) {
-        name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString.t", "No Name Was Given");
+        name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString._$", "No Name Was Given");
         if (['Missing', 'missing', 'No Name Was Given'].indexOf(name) > -1) {
-          name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.t", "No Organization Name Was Given");
+          name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString._$", "No Organization Name Was Given");
         }
       }
 
@@ -252,11 +252,11 @@ function map () {
   ident = objGet(iso, 'gmd:MD_Metadata.gmd:identificationInfo', {});
   ident = objGet(ident, '0', ident);
   ident = objGet(ident, 'gmd:MD_DataIdentification', objGet(ident, 'srv:SV_ServiceIdentification', {}));
-  setProperty(mdDesc, 'cmd:resourceTitle', objGet(ident, 'gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString.t', 'No Title Was Given'));
-  setProperty(mdDesc, 'cmd:resourceDescription', objGet(ident, 'gmd:abstract.gco:CharacterString.t', 'No Description Was Given'));
+  setProperty(mdDesc, 'cmd:resourceTitle', objGet(ident, 'gmd:citation.gmd:CI_Citation.gmd:title.gco:CharacterString._$', 'No Title Was Given'));
+  setProperty(mdDesc, 'cmd:resourceDescription', objGet(ident, 'gmd:abstract.gco:CharacterString._$', 'No Description Was Given'));
 
   mdDesc['cmd:resourceURI'] = [];
-  citationId = objGet(iso, 'gmd:MD_Metadata.gmd:dataSetURI.gco:CharacterString.t', null);
+  citationId = objGet(iso, 'gmd:MD_Metadata.gmd:dataSetURI.gco:CharacterString._$', null);
   mdDesc['cmd:resourceURI'].push({'cmd:citationIdentifier': citationId});
 
   mdDesc['cmd:geographicExtent'] = {};
@@ -294,10 +294,10 @@ function map () {
     extent = validExtents[0];
   }
 
-  northBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal.t', 89));
-  southBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal.t', -89));
-  eastBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal.t', 179));
-  westBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal.t', -179));
+  northBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:northBoundLatitude.gco:Decimal._$', 89));
+  southBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:southBoundLatitude.gco:Decimal._$', -89));
+  eastBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:eastBoundLongitude.gco:Decimal._$', 179));
+  westBound = parseFloat(objGet(extent, 'gmd:EX_Extent.gmd:geographicElement.gmd:EX_GeographicBoundingBox.gmd:westBoundLongitude.gco:Decimal._$', -179));
   mdGeoExt = mdDesc['cmd:geographicExtent'];
   mdGeoExt['cmd:extentLabel'] = [northBound, southBound, eastBound, westBound].join(',');
   mdGeoExt['cmd:boundingBoxWGS84'] = {
@@ -308,8 +308,8 @@ function map () {
   };
 
   mdDesc['cmd:resourceTemporalExtent'] = {
-    'temporalExtentBegin': objGet(extent, 'gmd:EX_Extent.gmd:temporalElement.gmd:EX_TemporalExtent.gmd:extent.gml:TimePeriod.gml:beginPosition.t', null),
-    'temporalExtentEnd': objGet(extent, 'gmd:EX_Extent.gmd:temporalElement.gmd:EX_TemporalExtent.gmd:extent.gml:TimePeriod.gml:endPosition.t', null)
+    'temporalExtentBegin': objGet(extent, 'gmd:EX_Extent.gmd:temporalElement.gmd:EX_TemporalExtent.gmd:extent.gml:TimePeriod.gml:beginPosition._$', null),
+    'temporalExtentEnd': objGet(extent, 'gmd:EX_Extent.gmd:temporalElement.gmd:EX_TemporalExtent.gmd:extent.gml:TimePeriod.gml:endPosition._$', null)
   };
 
   mdDesc['cmd:resourceUsageConstraints'] = [];
@@ -318,7 +318,7 @@ function map () {
   if (freeTextConstraints[0]) {
     for (j = 0; j < freeTextConstraints.length; j++) {
       freeText = freeTextConstraints[j];
-      validFreeText = {'cmd:constraintStatement': objGet(freeText, 'gco:CharacterString.t')};
+      validFreeText = {'cmd:constraintStatement': objGet(freeText, 'gco:CharacterString._$')};
       mdDesc['cmd:resourceUsageConstraints'].push(validFreeText);
     }
   }
@@ -347,7 +347,7 @@ function map () {
   metaContact = objGet(iso, 'gmd:MD_Metadata.gmd:contact');
   mdProps = doc['cmd:CINERGI_MetadataObject']['cmd:metadataProperties'];
   mdProps['cmd:metadataContact'] = buildRelatedAgent(metaContact);
-  mdProps['cmd:metadataUpdate'] = objGet(iso, 'gmd:MD_Metadata.gmd:dateStamp.gco:Date.t', 'Publication Date Not Given').trim();
+  mdProps['cmd:metadataUpdate'] = objGet(iso, 'gmd:MD_Metadata.gmd:dateStamp.gco:Date._$', 'Publication Date Not Given').trim();
 
   emit(this._id, doc);
 }

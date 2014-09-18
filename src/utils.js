@@ -136,7 +136,7 @@ function cleanJsonReservedChars (json) {
   if (json instanceof Object) {
     for (var key in json) {
       if (json.hasOwnProperty(key)) {
-        json[key.replace(/\$/g, '')] = cleanJsonReservedChars(json[key]);
+        json[key.replace(/\$t/g, '_$')] = cleanJsonReservedChars(json[key]);
         if (key.indexOf('$') > -1) {
           delete json[key];
         }
