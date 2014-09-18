@@ -15,7 +15,7 @@ describe('Tests', function () {
     testDataServer = require('./test-data-server');
     done();
   });
-
+/*
   describe('Harvest *.csv and save records', function () {
     it('should return 200 when posting to the server', function (done) {
       var req;
@@ -87,7 +87,7 @@ describe('Tests', function () {
         .expect(200, done)
     })
   });
-
+*/
   describe('Empty records collection', function () {
     it('should return 200 when deleting from the server', function (done) {
       supertest(metadataServer)
@@ -103,7 +103,7 @@ describe('Tests', function () {
         .expect(200, done)
     })
   });
-
+/*
   describe('Post single json record and save', function () {
     it('should return 200 when posting to the server', function (done) {
       request({
@@ -177,6 +177,22 @@ describe('Tests', function () {
           .send(req)
           .expect(200, done);
       })
+    })
+  });
+*/
+  describe('Harvest CZO iso.xml and save records', function () {
+    it('should return 200 when posting to the server', function (done) {
+      var req;
+      req = {
+        "destinationCollections": [""],
+        "inputFormat": "czo.iso.xml",
+        "recordUrl": "http://localhost:3030/sample-czo-iso.xml"
+      };
+
+      supertest(metadataServer)
+        .post('/metadata/harvest')
+        .send(req)
+        .expect(200, done)
     })
   });
 

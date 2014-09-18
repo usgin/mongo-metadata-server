@@ -68,6 +68,9 @@ function validateHarvestFormat (format, data) {
       case 'iso.xml':
         if (json['gmd:MD_Metadata']) return true;
         else return false;
+      case 'czo.iso.xml':
+        if (json['gmd:MD_Metadata']) return true;
+        else return false;
       case 'fgdc.xml':
         if (json.metadata) return true;
         else return false;

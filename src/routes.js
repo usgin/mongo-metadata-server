@@ -117,6 +117,9 @@ function harvestRecord (req, res, next) {
               case 'fgdc.xml':
                 entries = [data];
                 break;
+              case 'czo.iso.xml':
+                entries = [data];
+                break;
             }
             req.entries = entries;
             return next();

@@ -3,6 +3,7 @@ var inputAtomMapReduce = require('./mapReduce/input-atom')
   , inputFgdcMapReduce = require('./mapReduce/input-fgdc')
   , inputIsoMapReduce = require('./mapReduce/input-iso')
   , inputTransformMapReduce = require('./mapReduce/input-transform')
+  , inputToCINERGIMapReduce = require('./mapReduce/toCINERGI.js')
   , outputAtomMapReduce = require('./mapReduce/output-atom')
   , outputGeoJsonMapReduce = require('./mapReduce/output-geojson')
   , outputIsoMapReduce = require('./mapReduce/output-iso')
@@ -161,6 +162,9 @@ function mapReduce (dbModel, options) {
         break;
       case 'iso.xml':
         thisMapReduce = inputIsoMapReduce;
+        break;
+      case 'czo.iso.xml':
+        thisMapReduce = inputToCINERGIMapReduce;
         break;
       case 'transformedjson':
         thisMapReduce = inputTransformMapReduce;

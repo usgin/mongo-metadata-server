@@ -232,7 +232,7 @@ function map () {
   doc.setProperty("PublicationDate", pubDate);
 
   // Metadata contact
-  metaContact = objGet(iso, "gmd:MD_Metadata:gmd:contact");
+  metaContact = objGet(iso, "gmd:MD_Metadata.gmd:contact");
   doc.setProperty("MetadataContact", buildContact(metaContact));
 
   // Authors

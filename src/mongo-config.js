@@ -15,6 +15,53 @@ mongoUrl = ['mongodb:/', config.dbHost, config.dbName].join('/');
 // *****************************
 // * Records collection schema *
 // *****************************
+recordsSchema = new mongoose.schema({
+  'cmd:CINERGI_ID': {type: String, required: true, unique: true},
+  'cmd:harvestInformation': {
+    'cmd:version': {type: Number},
+    'cmd:crawlDate': {type: Date},
+    'cmd:indexDate': {type: String},
+    'cmd:originalFileIdentifier': {type: String},
+    'cmd:originalFormat': {type: String},
+    'cmd:harvestURL': {type: String},
+    'cmd:sourceInfo': {
+      'cmd:harvestSourceID': {type: String},
+      'cmd:viewID': {type: String},
+      'cmd:harvestSourceName': {type: String}
+    }
+  },
+  'cmd:originalHarvestedDoc': {},
+  'cmd:processingStatus': {type: String},
+  'cmd:metadataProperties': {
+    'cmd:metadataContact': {/* #/definitions/RelatedAgent */},
+    'cmd:metadataUpdateDate': {type: String},
+    'cmd:metadataRecordHistory': [
+      {
+        'cmd:stepSequenceNo': {type: Number},
+        'cmd:processStepStatement': {type: String},
+        'cmd:batchId': {type: String},
+        'cmd:provenanceLink': {/* #/definitions/Link */}
+      }
+    ]
+  },
+  'cmd:resourceDescription': {
+    'cmd:resourceTitle': {type: String},
+    'cmd:resourceDescription': {type: String},
+    'cmd:resourceURI': [
+      {
+        'cmd:citationIdentifier': {type: String},
+        'cmd:scopedIdentifierAuthority': {
+          'cmd:authorityURI': {type: String},
+          'cmd:authorityLabel': {type: String}
+        }
+      }
+    ]
+  },
+  'cmd:extras': {
+
+  }
+});
+
 recordsSchema = new mongoose.Schema({
   _id: {type: String, required: true, unique: true},
   Title: {type: String, required: true},

@@ -7,6 +7,7 @@ var app
   , server
   , sampleCsv
   , isoXml
+  , czoIsoXml
   , atomXml
   , fgdcXml
   , sampleJson
@@ -15,6 +16,7 @@ var app
 app = express();
 sampleCsv = path.join(__dirname, 'sample-csv.csv');
 isoXml = path.join(__dirname, 'sample-iso.xml');
+czoIsoXml = path.join(__dirname, 'sample-czo-iso.xml');
 atomXml = path.join(__dirname, 'sample-atom.xml');
 fgdcXml = path.join(__dirname, 'sample-fgdc.xml');
 sampleJson = path.join(__dirname, 'sample-post.json');
@@ -26,6 +28,14 @@ app.get('/sample-csv.csv', function (req, res) {
 
 app.get('/sample-iso.xml', function (req, res) {
   fs.readFile(isoXml, 'utf8', function (err, xml) {
+    if (err) throw err;
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(xml)
+  })
+});
+
+app.get('/sample-czo-iso.xml', function (req, res) {
+  fs.readFile(czoIsoXml, 'utf8', function (err, xml) {
     if (err) throw err;
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(xml)
