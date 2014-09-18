@@ -23,6 +23,9 @@ function map () {
     , validFreeText
     , freeText
     , citationId
+    , distributions
+    , moreLinks
+    , accessLinks
     , i
     , j
     ;
@@ -181,47 +184,55 @@ function map () {
     return agent;
   }
 
-  function buildLink (onlineResource, responsibleParty) {
+  function buildLinkObject (onlineResource, responsibleParty) {
     var url
       , protocol
-      , link
       , guess
       , serviceType
-      , name;
+      , description
+      , name
+      , title
+      , resources
+      , resource
+      , linksArray
+      , i
+      ;
 
-    url = objGet(onlineResource, "gmd:linkage.gmd:URL.t", "No URL Was Given");
-    protocol = objGet(onlineResource, "gmd:protocol.gco:CharacterString.t", "No Protocol Was Given");
-    protocol = protocol.toUpperCase();
+    linksArray = [];
+    resources = objGet(onlineResource, 'gmd:MD_DigitalTransferOptions.gmd:onLine', []);
+    for (i = 0; i < resources.length; i++) {
+      resource = resources[i];
+      url = objGet(resource, "gmd:CI_OnlineResource.gmd:linkage.gmd:URL.t", "No URL Was Given");
+      description = objGet(resource, "gmd:CI_OnlineResource.gmd:description.gco:CharacterString.t", "No Description Was Given");
+      protocol = objGet(resource, "gmd:CI_OnlineResource.gmd:protocol.gco:CharacterString.t", "No Protocol Was Given");
+      title = objGet(resource, 'gmd:CI_OnlineResource.gmd:name.gco:CharacterString.t', 'No Title Was Given');
+      protocol = protocol.toUpperCase();
 
-    if (capServiceTypes.indexOf(protocol) >= 0) {
-      serviceType = protocol;
-    } else {
-      guess = guessServiceType(url);
-      if (guess) serviceType = guess;
-    }
-
-    name = null;
-    if (responsibleParty) {
-      name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString.t", "No Name Was Given");
-      if (['Missing', 'missing', 'No Name Was Given'].indexOf(name) > -1) {
-        name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.t", "No Organization Name Was Given");
+      if (capServiceTypes.indexOf(protocol) >= 0) {
+        serviceType = protocol;
+      } else {
+        guess = guessServiceType(url);
+        if (guess) serviceType = guess;
       }
+
+      name = null;
+      if (responsibleParty) {
+        name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:individualName.gco:CharacterString.t", "No Name Was Given");
+        if (['Missing', 'missing', 'No Name Was Given'].indexOf(name) > -1) {
+          name = objGet(responsibleParty, "gmd:CI_ResponsibleParty.gmd:organisationName.gco:CharacterString.t", "No Organization Name Was Given");
+        }
+      }
+
+      linksArray.push({
+        'cmd:LinkObject': {
+          'cmd:url': url,
+          'cmd:linkDescription': description,
+          'cmd:linkTitle': title
+        }
+      })
     }
 
-    link = {
-      URL: url,
-      Description: objGet(onlineResource, "gmd:description.gco:CharacterString.t", "No Description Was Given")
-    };
-
-    if (serviceType) {
-      link.serviceType = serviceType;
-    }
-
-    if (name) {
-      link.Distributor = name;
-    }
-
-    return link;
+    return linksArray;
   }
 
   doc = {
@@ -312,13 +323,31 @@ function map () {
     }
   }
 
+  distributions = objGet(iso, "gmd:MD_Metadata.gmd:distributionInfo.gmd:MD_Distribution.gmd:transferOptions", []);
+  if (distributions['gmd:MD_DigitalTransferOptions']) {
+    distributions = [distributions];
+  }
+
+  moreLinks = (function () {
+    var i
+      , results
+      , distOpt
+      ;
+    results = [];
+    for (i = 0; i < distributions.length; i++) {
+      distOpt = distributions[i];
+      results.push(buildLinkObject(distOpt));
+    }
+    return results;
+  })();
+
+  mdDesc['cmd:resourceAccessOptions'] = {'cmd:accessLinks': moreLinks};
+
   // cmd:metadataProperties
   metaContact = objGet(iso, 'gmd:MD_Metadata.gmd:contact');
   mdProps = doc['cmd:CINERGI_MetadataObject']['cmd:metadataProperties'];
   mdProps['cmd:metadataContact'] = buildRelatedAgent(metaContact);
   mdProps['cmd:metadataUpdate'] = objGet(iso, 'gmd:MD_Metadata.gmd:dateStamp.gco:Date.t', 'Publication Date Not Given').trim();
-
-
 
   emit(this._id, doc);
 }
