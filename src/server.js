@@ -114,7 +114,7 @@ server.post('/metadata/harvest', function (req, res, next) {
 server.post('/metadata/bulk', function (req, res, next) {
   req.routeId = 'bulkHarvest';
   return next();
-}, setParams, routes.bulkHarvest);
+}, setParams, routes.bulkHarvest, routes.harvestRecord, routes.saveRecord);
 
 // Get some transformed data into the system
 server.post('/metadata/transformedrecord', function (req, res, next) {

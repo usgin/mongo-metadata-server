@@ -82,53 +82,76 @@ function newResource (req, res, next) {
 
 // Harvest an existing record
 function harvestRecord (req, res, next) {
+  var opts
+    , i
+    , bulkHarvestLength
+    , bulkHarvestUrls
+    , entries
+    , count
+    ;
   if ((!req.url) || (!req.format)) {
     return next(new errors.ArgumentError(
       'Request did not supply the requisite arguments: url and format.'))
   } else {
-    var opts = {uri: req.url};
-    request(opts, function (err, response, body) {
-      if (err) {
-       return next(new errors.RequestError(
-           'The given URL resulted in an error: ' + err));
-      } else {
-        if (!utils.validateHarvestFormat(req.format, body)) {
-          return next(new errors.ValidationError(
-            'The document at the given URL did not match the format specified.'));
+    entries = [];
+    count = 0;
+    bulkHarvestUrls = req.bulkHarvestUrls.slice(1, 5);
+    bulkHarvestLength = bulkHarvestUrls.length;
+    function doBulkHarvest(bulkHarvestUrl) {
+      opts = {uri: bulkHarvestUrl};
+      request(opts, function (err, response, body) {
+        var json
+          , data
+          ;
+
+        if (err) {
+         return next(new errors.RequestError(
+             'The given URL resulted in an error: ' + err));
         } else {
-          if (req.format === 'csv') {
-            csv2json.readCsv(body, req, res, next);
+          if (!utils.validateHarvestFormat(req.format, body)) {
+            return next(new errors.ValidationError(
+              'The document at the given URL did not match the format specified.'));
           } else {
-            var json = xml2json.toJson(body, {object: true, reversible: true})
-              , data = utils.cleanJsonReservedChars(json)
-              , entries;
-            switch (req.format) {
-              case 'atom.xml':
-                var entry = data.feed.entries.entry;
-                if (_.isArray(entry)) {
-                  entries = entry;
-                } else if (_.isObject(entry)) {
-                  entries = [entry];
-                } else {
-                  entries = [];
-                }
-                break;
-              case 'iso.xml':
-                entries = [data];
-                break;
-              case 'fgdc.xml':
-                entries = [data];
-                break;
-              case 'czo.iso.xml':
-                entries = [data];
-                break;
+            if (req.format === 'csv') {
+              csv2json.readCsv(body, req, res, next);
+            } else {
+              json = xml2json.toJson(body, {object: true, reversible: true});
+              data = utils.cleanJsonReservedChars(json);
+              switch (req.format) {
+                case 'atom.xml':
+                  var entry = data.feed.entries.entry;
+                  if (_.isArray(entry)) {
+                    entries.push(entry);
+                  } else if (_.isObject(entry)) {
+                    entries.push(entry);
+                  } else {
+                    entries = [];
+                  }
+                  break;
+                case 'iso.xml':
+                  entries.push(data);
+                  break;
+                case 'fgdc.xml':
+                  entries.push(data);
+                  break;
+                case 'czo.iso.xml':
+                  entries.push(data);
+                  count++;
+                  break;
+              }
             }
+          }
+          if (count < bulkHarvestLength) {
+            doBulkHarvest(bulkHarvestUrls[count]);
+          }
+          if (count === bulkHarvestLength) {
             req.entries = entries;
             return next();
           }
         }
-      }
-    })
+      })
+    }
+    doBulkHarvest(bulkHarvestUrls[count]);
   }
 }
 
@@ -443,12 +466,22 @@ function bulkHarvest (req, res, next) {
           'The document at the given URL did not match the format specified.'
         ));
       } else {
-        var host = response.request.host;
-        var $ = cheerio.load(body);
-        var links = $('a');
-        $(links).each(function (i, link) {
-          console.log($(link).text() + ':\n ', $(link).attr('href'));
+        host = response.request.host;
+        $ = cheerio.load(body);
+        paths = $('a');
+        metadataUrls = [];
+        $(paths).each(function (i, path) {
+          var fullPath
+            , href
+            ;
+          href = $(path).attr('href');
+          if (href.slice(-4) === '.xml') {
+            fullPath = 'http://' + host + href;
+            metadataUrls.push(fullPath);
+          }
         });
+        req.bulkHarvestUrls = metadataUrls;
+        return next();
       }
     })
   }

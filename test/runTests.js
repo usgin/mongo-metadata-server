@@ -179,7 +179,7 @@ describe('Tests', function () {
       })
     })
   });
-*/
+
   describe('Harvest CZO iso.xml and save records', function () {
     it('should return 200 when posting to the server', function (done) {
       var req;
@@ -195,7 +195,7 @@ describe('Tests', function () {
         .expect(200, done)
     })
   });
-
+*/
   describe('Batch harvest CZO iso.xml from WAF and save records', function () {
     it('should return 200 when posting to the server', function (done) {
       var req;

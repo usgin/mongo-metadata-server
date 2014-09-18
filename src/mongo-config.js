@@ -16,7 +16,7 @@ mongoUrl = ['mongodb:/', config.dbHost, config.dbName].join('/');
 // * Records collection schema *
 // *****************************
 recordsSchema = new mongoose.Schema({
-  'cmd:CINERGI_ID': {type: String, required: true, unique: true},
+  'cmd:CINERGI_ID': {type: String, required: true},
   'cmd:harvestInformation': {
     'cmd:version': {type: Number},
     'cmd:crawlDate': {type: Date},
