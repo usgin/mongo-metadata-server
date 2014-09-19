@@ -3,7 +3,6 @@ var inputAtomMapReduce = require('./mapreduce/input-atom')
   , inputFgdcMapReduce = require('./mapreduce/input-fgdc')
   , inputIsoMapReduce = require('./mapreduce/input-iso')
   , inputTransformMapReduce = require('./mapreduce/input-foundry-json')
-  , inputIsoToCinergiMapReduce = require('./mapreduce/input-iso-to-cinergi')
   , outputAtomMapReduce = require('./mapreduce/output-atom')
   , outputGeoJsonMapReduce = require('./mapreduce/output-geojson')
   , outputIsoMapReduce = require('./mapreduce/output-iso')
@@ -142,7 +141,9 @@ function listDocs (dbModel, options) {
 
 // Pass all or specific documents through a specified database view
 function mapReduce (dbModel, options) {
-  var thisMapReduce;
+  var thisMapReduce
+    , o = {}
+    ;
 
   if (!options.method) options.method = '';
   if (!options.format) options.format = '';
@@ -164,12 +165,18 @@ function mapReduce (dbModel, options) {
       case 'iso.xml':
         thisMapReduce = inputIsoMapReduce;
         break;
-      case 'czo.iso.xml':
-        thisMapReduce = inputIsoToCinergiMapReduce;
-        break;
       case 'transformedjson':
         thisMapReduce = inputTransformMapReduce;
         break;
+    }
+    switch (options.schema) {
+      case 'minimalist':
+        o.map = thisMapReduce.mapMinimalist;
+        o.reduce = thisMapReduce.reduceMinimalist;
+        break;
+      case 'cinergi':
+        o.map = thisMapReduce.mapCinergi;
+        o.reduce = thisMapReduce.reduceCinergi;
     }
   }
 
@@ -185,11 +192,10 @@ function mapReduce (dbModel, options) {
         thisMapReduce = outputGeoJsonMapReduce;
         break;
     }
+    o.map = thisMapReduce.map;
+    o.reduce = thisMapReduce.reduce;
   }
 
-  var o = {};
-  o.map = thisMapReduce.map;
-  o.reduce = thisMapReduce.reduce;
   o.query = options.query;
 
   dbModel.mapReduce(o, function (err, res) {

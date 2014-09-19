@@ -30,21 +30,21 @@ function setParams (req, res, next) {
       req.format = req.params[0];
       break;
     case 'harvestRecord':
-      req.url = req.body.recordUrl;
+      req.url = req.body.url;
       req.format = req.body.inputFormat;
-      if (req.body.destinationCollections) req.collections = req.body.desinationCollections;
+      req.schema = req.body.schema;
       break;
     case 'bulkHarvest':
       req.url = req.body.wafUrl;
       req.format = req.body.inputFormat;
+      req.schema = req.body.schema;
       break;
-    case 'transformedRecord':
+    case 'foundryRecord':
       req.data = req.body.data;
       req.resourceType = 'harvest';
-      req.format = 'transformedjson';
+      req.format = 'foundryjson';
       break;
     case 'uploadRecord':
-      if (req.body.destinationCollections) req.collections = req.body.desinationCollections;
       req.format = req.body.format;
       req.data = req.body.data;
       break;
@@ -73,7 +73,7 @@ function setParams (req, res, next) {
       req.schemaId = req.params[0];
       var params = ['resolve', 'emptyInstance'];
       for (var i = 0; i < params.length; i++) {
-        if ((req.query[params[i]] != null) && req.query[params[i]] === 'true') {
+        if ((req.query[params[i]]) && req.query[params[i]] === 'true') {
           req.query[params[i]] = JSON.parse(req.query[params[i]]);
         } else {
           req.query[params[i]] = false;
@@ -96,7 +96,7 @@ server.param(function (name, fn) {
   }
 });
 
-server.param('resourceType', /(record|collection|harvest)/);
+server.param('resourceType', /(record|harvest)/);
 server.param('resourceId', /([^\/]*)/);
 server.param('resourceFormat', /([^\/]*)\.(iso\.xml|atom\.xml|geojson)$/);
 
@@ -116,11 +116,11 @@ server.post('/metadata/bulk', function (req, res, next) {
   return next();
 }, setParams, routes.bulkHarvest, routes.harvestRecord, routes.saveRecord);
 
-// Get some transformed data into the system
-server.post('/metadata/transformedrecord', function (req, res, next) {
-  req.routeId = 'transformedRecord';
+// Get some foundry json data into the system
+server.post('/metadata/foundryrecord', function (req, res, next) {
+  req.routeId = 'foundryrecord';
   return next();
-}, setParams, routes.transformRecord);
+}, setParams, routes.foundryRecord);
 
 // Create a new record or collection
 server.post('/metadata/:resourceType', function (req, res, next) {
@@ -153,8 +153,8 @@ server.post(/^\/metadata\/record\/([^\/]*)\/file\/$/, function (req, res, next) 
 // *******
 // * GET *
 // *******
-// List records or collections as (JSON)
 
+// List records or collections as (JSON)
 server.get('/metadata/:resourceType', function (req, res, next) {
   req.routeId = 'listResources';
   return next();

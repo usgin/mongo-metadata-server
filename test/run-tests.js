@@ -6,7 +6,7 @@ var should = require('should')
   , request = require('request')
   , fs = require('fs')
   , path = require('path')
-  , metadataServer = require('./../src/server');
+  , metadataServer = require('./../source/server');
 
 describe('Tests', function () {
   var testDataServer;
@@ -15,14 +15,15 @@ describe('Tests', function () {
     testDataServer = require('./test-data-server');
     done();
   });
-/*
+
   describe('Harvest *.csv and save records', function () {
     it('should return 200 when posting to the server', function (done) {
       var req;
       req = {
         "destinationCollections": [""],
         "inputFormat": "csv",
-        "recordUrl": "http://localhost:3030/sample-csv.csv"
+        "schema": "minimalist",
+        "url": "http://localhost:3030/sample-csv.csv"
       };
 
       supertest(metadataServer)
@@ -38,7 +39,8 @@ describe('Tests', function () {
       req = {
         "destinationCollections": [""],
         "inputFormat": "atom.xml",
-        "recordUrl": "http://localhost:3030/sample-atom.xml"
+        "schema": "minimalist",
+        "url": "http://localhost:3030/sample-atom.xml"
       };
 
       supertest(metadataServer)
@@ -54,7 +56,8 @@ describe('Tests', function () {
       req = {
         "destinationCollections": [""],
         "inputFormat": "fgdc.xml",
-        "recordUrl": "http://localhost:3030/sample-fgdc.xml"
+        "schema": "minimalist",
+        "url": "http://localhost:3030/sample-fgdc.xml"
       };
 
       supertest(metadataServer)
@@ -70,7 +73,8 @@ describe('Tests', function () {
       req = {
         "destinationCollections": [""],
         "inputFormat": "iso.xml",
-        "recordUrl": "http://localhost:3030/sample-iso.xml"
+        "schema": "minimalist",
+        "url": "http://localhost:3030/sample-iso.xml"
       };
 
       supertest(metadataServer)
@@ -87,7 +91,7 @@ describe('Tests', function () {
         .expect(200, done)
     })
   });
-*/
+
   describe('Empty records collection', function () {
     it('should return 200 when deleting from the server', function (done) {
       supertest(metadataServer)
@@ -103,7 +107,7 @@ describe('Tests', function () {
         .expect(200, done)
     })
   });
-/*
+
   describe('Post single json record and save', function () {
     it('should return 200 when posting to the server', function (done) {
       request({
@@ -186,7 +190,7 @@ describe('Tests', function () {
       req = {
         "destinationCollections": [""],
         "inputFormat": "czo.iso.xml",
-        "recordUrl": "http://localhost:3030/sample-czo-iso.xml"
+        "url": "http://localhost:3030/sample-czo-iso.xml"
       };
 
       supertest(metadataServer)
@@ -195,14 +199,15 @@ describe('Tests', function () {
         .expect(200, done)
     })
   });
-*/
+
   describe('Batch harvest CZO iso.xml from WAF and save records', function () {
     it('should return 200 when posting to the server', function (done) {
       var req;
       req = {
         "destinationCollections": [""],
-        "inputFormat": "czo.iso.xml",
-        "wafUrl": "http://hydro10.sdsc.edu/metadata/Critical_Zone_Observatory_Catalog/"
+        "inputFormat": "iso.xml",
+        "schema": "cinergi",
+        "url": "http://hydro10.sdsc.edu/metadata/Critical_Zone_Observatory_Catalog/"
       };
 
       supertest(metadataServer)

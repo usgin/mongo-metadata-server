@@ -408,7 +408,7 @@ function emptyCollection (req, res, next) {
   return da.emptyCollection(dbModel, opts);
 }
 
-function transformRecord (req, res, next) {
+function foundryRecord (req, res, next) {
   var dbModel
     , opts
     ;
@@ -507,5 +507,5 @@ exports.deleteFile = deleteFile;
 exports.listSchemas = listSchemas;
 exports.getSchema = getSchema;
 exports.emptyCollection = emptyCollection;
-exports.transformRecord = transformRecord;
+exports.foundryRecord = foundryRecord;
 exports.bulkHarvest = bulkHarvest;
