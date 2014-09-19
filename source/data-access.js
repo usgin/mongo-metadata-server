@@ -1,14 +1,15 @@
-var inputAtomMapReduce = require('./mapReduce/input-atom')
-  , inputCsvMapReduce = require('./mapReduce/input-csv')
-  , inputFgdcMapReduce = require('./mapReduce/input-fgdc')
-  , inputIsoMapReduce = require('./mapReduce/input-iso')
-  , inputTransformMapReduce = require('./mapReduce/input-transform')
-  , inputToCINERGIMapReduce = require('./mapReduce/toCINERGI.js')
-  , outputAtomMapReduce = require('./mapReduce/output-atom')
-  , outputGeoJsonMapReduce = require('./mapReduce/output-geojson')
-  , outputIsoMapReduce = require('./mapReduce/output-iso')
+var inputAtomMapReduce = require('./mapreduce/input-atom')
+  , inputCsvMapReduce = require('./mapreduce/input-csv')
+  , inputFgdcMapReduce = require('./mapreduce/input-fgdc')
+  , inputIsoMapReduce = require('./mapreduce/input-iso')
+  , inputTransformMapReduce = require('./mapreduce/input-foundry-json')
+  , inputIsoToCinergiMapReduce = require('./mapreduce/input-iso-to-cinergi')
+  , outputAtomMapReduce = require('./mapreduce/output-atom')
+  , outputGeoJsonMapReduce = require('./mapreduce/output-geojson')
+  , outputIsoMapReduce = require('./mapreduce/output-iso')
   , request = require('request')
-  , _ = require('underscore');
+  , _ = require('underscore')
+  ;
 
 function cleanDoc (doc) {
   var cleaned = _.extend({}, doc);
@@ -164,7 +165,7 @@ function mapReduce (dbModel, options) {
         thisMapReduce = inputIsoMapReduce;
         break;
       case 'czo.iso.xml':
-        thisMapReduce = inputToCINERGIMapReduce;
+        thisMapReduce = inputIsoToCinergiMapReduce;
         break;
       case 'transformedjson':
         thisMapReduce = inputTransformMapReduce;

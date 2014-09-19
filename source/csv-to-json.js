@@ -1,5 +1,6 @@
-var errors = require('./errors');
-var csv = require('csv');
+var errors = require('./errors')
+  , csv = require('csv')
+  ;
 
 // Logic for reading CSV files and doing some basic validation
 function readCsv (body, req, res, next) {

@@ -1,5 +1,6 @@
 var org = require('./organization-config')
-  , xml2json = require('xml2json');
+  , xml2json = require('xml2json')
+  ;
 
 function atomWrapper (entries) {
   return {
@@ -132,7 +133,6 @@ function addCollectionKeywords (iso, collectionNames) {
 }
 
 function cleanJsonReservedChars (json) {
-
   if (json instanceof Object) {
     for (var key in json) {
       if (json.hasOwnProperty(key)) {

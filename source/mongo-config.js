@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
-  , _ = require('underscore');
+  , _ = require('underscore')
+  ;
 
 var config
   , mongoUrl
