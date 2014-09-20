@@ -392,7 +392,10 @@ function connectToMongoCollection (mongoDb, collection, schema) {
 
 function getCollection (collection) {
   switch (collection) {
-    case 'minmalistRecords':
+    case 'records':
+      return connectToMongoCollection(mongoDb, 'Records');
+      break;
+    case 'minimalistRecords':
       return connectToMongoCollection(mongoDb, 'Records', minimalistRecordsSchema);
       break;
     case 'cinergiRecords':
