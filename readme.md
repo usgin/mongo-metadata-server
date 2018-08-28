@@ -11,7 +11,11 @@ sources and serving out metadata in **ISO.xml**, **Atom.xml**, **JSON** and
 * [npmjs v1.4.16](https://www.npmjs.org/)
 
 #### Installation
-MongoDB should be running at this point.
+MongoDB should be running at this point.  Connnection to Mongo is set up in mongo-config.js. 
+Default is:
+```config = {dbHost: 'localhost', dbPort: '27071', dbName: 'cinergi'};```
+Note that this expects a database named 'cinergi'.
+
 ```
 $ git clone https://github.com/usgin/mongo-metadata-server.git
 $ cd mongo-metadata-server
