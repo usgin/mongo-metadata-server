@@ -15,6 +15,13 @@ MongoDB should be running at this point.
 ```
 $ git clone https://github.com/usgin/mongo-metadata-server.git
 $ cd mongo-metadata-server
+```
+SMR note 2018-08-28. Running Windows 10, had to install new vbBuild.exe, in power shell as admin:
+```
+npm install --global --production windows-build-tools
+```
+then
+```
 $ npm install
 ```
 
