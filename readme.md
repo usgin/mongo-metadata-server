@@ -34,7 +34,7 @@ $ node server.js
 
 #### Tests
 By default, the tests will run on localhost port 3030.  Run the tests with 
-[mocha](https://visionmedia.github.io/mocha/):
+[mocha](https://github.com/mochajs/mocha):
 ```
 $ cd mongo-metadata-server
 $ mocha test
